@@ -1,0 +1,48 @@
+// import google font
+@import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800;900&display=swap');
+
+:root {
+    /* font family */
+    --head-font: 'Kanit', sans-serif;
+    /* Color styles */
+    /* primary and secondary colors */
+    --primary-1: 255, 179, 64;
+    --primary-2: 122, 110, 255;
+    --primary-3: 255, 77, 66;
+    --secondary-1: 13, 226, 124;
+
+    /* neutral colors */
+    --n10: 250, 250, 251;
+    --n20: 245, 246, 247;
+    --n30: 235, 236, 239;
+    --n40: 223, 224, 228;
+    --n50: 193, 196, 204;
+    --n60: 178, 182, 191;
+    --n70: 166, 170, 181;
+    --n80: 151, 156, 168;
+    --n90: 136, 142, 156;
+    --n100: 121, 128, 144;
+    --n200: 106, 114, 131;
+    --n300: 91, 100, 119;
+    --n400: 79, 88, 109;
+    --n500: 64, 74, 96;
+    --n600: 52, 62, 86;
+    --n700: 34, 46, 72;
+    --n800: 19, 32, 59;
+    --n900: 7, 20, 49;
+    --n0: 255, 255, 255;
+
+    /* background colors */
+    --bg-1: 28, 29, 32;
+    --bg-2: 38, 38, 41;
+    --bg-3: 59, 59, 60;
+
+    // transition
+    --transition: all 0.5s ease-in-out;
+
+    // box shadow
+    --shadow: 0px 6px 30px 0px rgba(0, 0, 0, 0.60);
+
+    // gradient
+    --gradient: linear-gradient(180deg, rgba(0, 0, 0, 0.00) 0%, rgba(0, 0, 0, 0.00) 45.21%, rgba(0, 0, 0, 0.44) 67.45%, #000 100%)
+}

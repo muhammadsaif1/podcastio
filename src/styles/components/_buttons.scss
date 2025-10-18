@@ -1,0 +1,319 @@
+.bttn-1 {
+    display: inline-flex;
+    padding: 12px 12px 12px 32px;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    border-radius: 32px;
+    transition: var(--transition);
+    background: rgb(var(--primary-1));
+    color: rgb(var(--n900));
+    font-weight: 600;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    box-sizing: border-box;
+
+    &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        transform: translate(-50%, -50%);
+        transition: var(--transition);
+        background: rgb(var(--primary-2));
+        border-radius: inherit;
+        width: 0;
+        height: 0;
+        z-index: -1;
+    }
+
+    .icon {
+        @include box(32);
+        font-weight: 600;
+        color: rgb(var(--primary-1));
+        background: rgb(var(--bg-1));
+        transition: var(--transition);
+        border-radius: 50%;
+        font-size: 16px;
+        box-sizing: border-box;
+
+        @include maxQuery(991) {
+            @include box(24);
+        }
+    }
+
+    &:hover {
+        color: rgb(var(--n0));
+
+        &::before {
+            width: 300%;
+            height: 300%;
+        }
+
+        .icon {
+            color: rgb(var(--primary-2));
+        }
+
+        .icon-left {
+            transform: translateX(-6px);
+        }
+
+        .icon-right {
+            transform: translateX(6x);
+        }
+    }
+
+    &.red {
+        background: rgb(var(--primary-3));
+    }
+
+    &.green {
+        background: rgb(var(--secondary-1));
+    }
+
+    &.alt-position {
+        &::before {
+            top: unset;
+            left: unset;
+            bottom: 0;
+            right: 0;
+            transform: translate(50%, 50%);
+        }
+    }
+
+    &.bttn-outline {
+        border: 1px solid rgb(var(--primary-1));
+        background: unset;
+        color: rgb(var(--primary-1));
+
+        .icon {
+            color: rgb(var(--n900));
+            background: rgb(var(--primary-1));
+        }
+
+        &:hover {
+            color: rgb(var(--n0));
+            border-color: rgb(var(--n0));
+
+            .icon {
+                color: rgb(var(--primary-2));
+            }
+        }
+    }
+
+    &.bttn-outline-2 {
+        border: 1px solid rgb(var(--n900));
+        background: unset;
+        color: rgb(var(--n900));
+    }
+
+    &.bttn-fill {
+        background: rgb(var(--bg-3));
+        color: rgb(var(--primary-1));
+        border: 1px solid rgb(var(--primary-1), 0.10);
+
+        &:hover {
+            color: rgb(var(--n0));
+        }
+
+        &.fill-alt {
+            background: rgb(var(--bg-2));
+
+            .icon {
+                color: rgb(var(--bg-3));
+                background: rgb(var(--primary-1));
+            }
+        }
+    }
+}
+
+.bttn-2 {
+    @extend .bttn-1;
+    padding: 12px 24px;
+    font-weight: 500;
+
+    @include maxQuery(575) {
+        padding: 8px 16px;
+    }
+}
+
+.link-btn {
+    color: rgb(var(--primary-1));
+    border-bottom: 1px solid rgb(var(--primary-1));
+    transition: var(--transition);
+
+    &:hover {
+        color: rgb(var(--secondary-1));
+        border-bottom: 1px solid rgb(var(--secondary-1));
+    }
+}
+
+.icon-btn {
+    .icon {
+        @include box(48);
+        background: rgb(var(--primary-1));
+        color: rgb(var(--n900));
+        position: relative;
+        overflow: hidden;
+        z-index: 1;
+        transition: var(--transition);
+
+        &::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            transform: translate(-50%, -50%);
+            transition: var(--transition);
+            background: rgb(var(--primary-2));
+            border-radius: inherit;
+            width: 0;
+            height: 0;
+            z-index: -1;
+        }
+
+        &.alt-size {
+            @include box(40);
+        }
+    }
+
+    .text {
+        color: rgb(var(--primary-1));
+        border-bottom: 1px solid rgb(var(--primary-1));
+        transition: var(--transition);
+    }
+
+    &.alt-color {
+        .icon {
+            color: rgb(var(--primary-1));
+            background: rgb(var(--bg-2));
+        }
+
+        .text {
+            color: rgb(var(--bg-2));
+            border-bottom-color: rgb(var(--bg-2));
+        }
+    }
+
+    &:hover {
+        .icon {
+            color: rgb(var(--n0));
+
+            &::before {
+                width: 300%;
+                height: 300%;
+            }
+        }
+
+        .text {
+            color: rgb(var(--primary-2));
+            border-bottom-color: rgb(var(--primary-2));
+        }
+    }
+
+    @include maxQuery(575) {
+        .icon {
+            @include box(32);
+
+            &.alt-size {
+                @include box(28);
+            }
+        }
+    }
+}
+
+.icon-btn-2 {
+    @include box(60);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgb(var(--primary-1));
+    color: rgb(var(--primary-1));
+    transition: var(--transition);
+
+    &:hover {
+        color: rgb(var(--n0));
+        border-color: rgb(var(--n0));
+        cursor: pointer;
+    }
+
+    &.fill {
+        border: unset;
+        color: rgb(var(--n900));
+        background: rgb(var(--primary-1));
+    }
+
+    @include maxQuery(575) {
+        @include box(48);
+    }
+}
+
+// image bttn
+.img-bttn {
+    max-width: 290px;
+    max-height: 90px;
+    border-radius: 60px;
+
+    img {
+        border-radius: inherit;
+    }
+
+    @include maxQuery(1399) {
+        max-width: 200px;
+    }
+}
+
+.tag-btn {
+    display: inline-flex;
+    padding: 12px 24px;
+    border-radius: 32px;
+    background: rgb(var(--bg-3));
+    color: rgb(var(--primary-1));
+    font-weight: normal;
+
+    @include maxQuery(575) {
+        padding: 8px 16px;
+    }
+
+    &.alt-color {
+        background: rgb(var(--bg-1));
+    }
+}
+
+.tag-btn-2 {
+    @extend .tag-btn;
+    padding: 8px 20px;
+}
+
+.add-to-wishlist {
+    transition: var(--transition);
+    cursor: pointer;
+
+    &:hover {
+        color: rgb(var(--primary-1));
+    }
+
+    &.active {
+        i {
+            color: rgb(var(--primary-1));
+        }
+    }
+}
+
+.link-text {
+    transition: var(--transition);
+
+    &:hover {
+        color: rgb(var(--primary-1))
+    }
+}
+
+.link-text-2 {
+    transition: var(--transition);
+
+    &:hover {
+        color: rgb(var(--primary-2))
+    }
+}
+

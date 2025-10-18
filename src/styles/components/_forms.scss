@@ -1,0 +1,148 @@
+// input field
+.input-area {
+    display: flex;
+    align-items: center;
+    padding: 8px 8px 8px 32px;
+    border-radius: 32px;
+    background: rgb(var(--bg-3));
+    gap: 8px;
+
+    &.alt {
+        background: rgb(var(--bg-1));
+
+        input {
+
+            &::placeholder {
+                color: rgb(var(--n0));
+                font-weight: 300;
+            }
+
+            &:-internal-autofill-selected {
+                background-color: rgb(var(--bg-1)) !important;
+            }
+        }
+    }
+
+    @include maxQuery(480) {
+        button {
+            padding: 8px 32px;
+        }
+    }
+}
+
+input,
+textarea {
+    width: 100%;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: rgb(var(--n0));
+
+    &::placeholder {
+        color: rgb(var(--n40));
+        font-weight: 300;
+    }
+
+    &::-internal-autofill-selected {
+        background-color: rgb(var(--bg-1)) !important;
+    }
+}
+
+.input-wrapper {
+
+    input,
+    textarea {
+        padding: 12px 32px;
+        border-radius: 32px;
+        background: rgb(var(--bg-3));
+        transition: var(--transition);
+
+        &:focus-within {
+            outline: 1px solid rgb(var(--primary-1));
+        }
+
+        &:-internal-autofill-selected {
+            background-color: rgb(var(--bg-1)) !important;
+        }
+    }
+
+    &.alt-color {
+
+        input,
+        textarea {
+            background: rgb(var(--bg-1));
+
+            &::placeholder {
+                color: rgb(var(--n70));
+                font-weight: 300;
+            }
+        }
+    }
+
+    &.alt-color-2 {
+
+        input,
+        textarea {
+            background: rgb(var(--bg-2));
+
+            &::placeholder {
+                color: rgb(var(--n70));
+                font-weight: 300;
+            }
+        }
+    }
+
+    @include maxQuery(480) {
+
+        input,
+        textarea {
+            padding: 8px;
+        }
+    }
+}
+
+.input-password {
+    input {
+        &:focus-within {
+            outline: none;
+        }
+    }
+
+    &:focus-within {
+        outline: 1px solid rgb(var(--primary-1));
+    }
+}
+
+.custom-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: var(--transition);
+
+    .form-checkbox-sign {
+        @include box(20);
+        background: rgb(var(--bg-3));
+        position: relative;
+
+        @include maxQuery(767) {
+            @include box(16);
+        }
+
+        &::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+    }
+
+    input:checked+.form-checkbox-sign {
+        &::after {
+            content: '\ea5e';
+            font-family: 'tabler-icons';
+            color: rgb(var(--primary-1));
+        }
+
+    }
+}

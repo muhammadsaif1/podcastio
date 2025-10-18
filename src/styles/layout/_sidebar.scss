@@ -1,0 +1,118 @@
+.sidebar {
+    .sidebar-menu {
+
+        .side-menu-link,
+        .side-menu-item {
+            transition: var(--transition);
+            width: 100%;
+
+            &:hover,
+            &.active {
+                color: rgb(var(--n900));
+                background: rgb(var(--primary-1));
+            }
+        }
+
+        .active {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+
+            .side-menu-item {
+                color: rgb(var(--n900));
+                background: rgb(var(--primary-1));
+            }
+        }
+
+        .side-sub-menu {
+            .side-submenu-item {
+                transition: var(--transition);
+
+                &:hover {
+                    color: rgb(var(--primary-1));
+                }
+
+                &.active {
+                    color: rgb(var(--primary-1));
+                    background: unset;
+                }
+            }
+        }
+    }
+}
+
+
+// bottom menubar
+.bottom-menubar {
+    z-index: 999;
+    box-shadow: 1px -5px 20px rgba(255, 255, 255, 0.1);
+
+    .bottom-menu-btn {
+        @include box(60);
+        background: rgb(var(--bg-3));
+        color: rgb(var(--n0));
+        position: relative;
+        margin: auto;
+        z-index: 1;
+
+        .icon {
+            @include maxQuery(991) {
+                font-size: 20px;
+            }
+        }
+
+        .active,
+        &:hover {
+            background: rgb(var(--primary-1));
+            color: rgb(var(--n900));
+        }
+
+        @include maxQuery(991) {
+            @include box(48);
+        }
+    }
+
+    .menubar-item-wrapper {
+        max-width: 300px;
+        width: 100%;
+        max-height: 80vh;
+        position: fixed;
+        top: 75px;
+        left: 0;
+        overflow-y: auto;
+        transform: translateX(-100%);
+        transition: var(--transition);
+        transition-duration: 1s;
+
+        &.active {
+            transform: translateX(0);
+        }
+    }
+
+    .wishlist-btn,
+    .notification-btn {
+        .baddge {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateY(-50%);
+            @include box(22);
+            background: rgb(var(--primary-1));
+
+            span {
+                font-size: 14px;
+                font-weight: normal;
+            }
+        }
+    }
+
+    .profile-btn {
+        @include box(60);
+        margin: auto;
+
+        @include maxQuery(991) {
+            @include box(48);
+        }
+
+    }
+
+}
