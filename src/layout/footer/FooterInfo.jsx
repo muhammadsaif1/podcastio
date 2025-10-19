@@ -35,18 +35,6 @@ const FooterInfo = () => {
       <div className="footer-logo mb-lg-6 mb-4">
         <FooterLogo logo={footerInfoData?.logo} className="footer-logo" />
       </div>
-      <span className="d-block mb-lg-8 mb-sm-6 mb-4 me-xxl-6">
-        {footerInfoData?.info}
-      </span>
-      <ul className="footer-social d-flex align-items-center gap-3 fs-xl">
-        {footerInfoData?.social?.map((item) => (
-          <li key={item?.id}>
-            <Link to={item?.link}>
-              <i className={item?.icon}></i>
-            </Link>
-          </li>
-        ))}
-      </ul>
     </>
   );
 };

@@ -2,7 +2,7 @@
 import { Link } from "react-router-dom";
 
 const CircleTextBtn = () => {
-  const circleText = "Take your podcast to the next level";
+  const circleText = "Return to Africa podcast";
 
   return (
     <div className="circle-text-area position-absolute top-50 start-50 translate-middle rounded-circle d-center">

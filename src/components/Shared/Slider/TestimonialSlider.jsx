@@ -1,4 +1,3 @@
-import ShowRatingStar from "../ShowRatingStar";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, EffectFade, Navigation, Pagination } from "swiper/modules";
 
@@ -39,18 +38,11 @@ const TestimonialSlider = ({ nextEl, prevEl, sliderData }) => {
               <img className="w-100 rounded" src={data?.image} alt="image" />
             </div>
             <div className="content-area">
-              <div className="rating-list d-flex justify-content-center justify-content-lg-start tcp-1 mb-4">
-                <ShowRatingStar
-                  rating={data?.rating}
-                  style={"d-flex align-items-center gap-lg-2 gap-1 fs-xl"}
-                />
-              </div>
               <p className="quote-text fs-xl text-center text-lg-start fw-normal mb-4">
                 {data?.quote}
               </p>
               <div className="user-info text-center text-lg-start border-dashed pt-6 mb-lg-10 mb-sm-8 mb-6">
-                <h4 className="fw-medium mb-2">{data?.name}</h4>
-                <span className="fw-normal">{data?.designation}</span>
+                <h4 className="fw-medium mb-2 tcp-1">{data?.name}</h4>
               </div>
               <SliderNavigatorBtn
                 nextBtn={"testimonials-slider-next"}

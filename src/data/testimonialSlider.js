@@ -1,8 +1,8 @@
-import img1 from "../images/testimonial-card.png";
-import img2 from "../images/testimonial-card-2.png";
-import img3 from "../images/testimonial-card-3.png";
-import img4 from "../images/testimonial-card-4.png";
-import img5 from "../images/testimonial-card-5.png";
+import img1 from "../images/hero-banner-2.png";
+import img2 from "../images/hero-banner-2.png";
+import img3 from "../images/hero-banner-2.png";
+import img4 from "../images/hero-banner-2.png";
+import img5 from "../images/hero-banner-2.png";
 
 
 const testimonialData = [

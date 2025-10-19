@@ -11,10 +11,11 @@ const NewsLetter = ({ bg, pb = "" }) => {
         <FadeUp>
           <div className="row justify-content-between">
             <div className="col-xxl-6 col-xl-7 col-lg-8 pt-sm-20 pt-10 pb-lg-20 pb-sm-10 pb-6">
-              <div className="news-letter-content pt-xxl-10 pb-xxl-10">
-                <h4 className="display-four fw-bold tcn-700 mb-lg-10 mb-sm-6 mb-4">
-                  Get the Latest Episode & Never Miss an Episode
-                </h4>
+              <div className="news-letter-content newsletter-padding">
+                <h4 className="display-five fw-bold tcn-900 mb-lg-10 mb-sm-6 mb-4">Get the Latest 
+                  <span className="tcn-0"> Episode
+                    </span> &amp; Never Miss an Episode
+                    </h4>
                 <NewsLetterForm iconOnly={false} />
               </div>
             </div>

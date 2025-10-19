@@ -326,7 +326,7 @@
 
 // brand icon
 .brand-icon {
-    @include box(48);
+    @include box(40);
 
     &.brand-icon-mid {
         @include box(40);

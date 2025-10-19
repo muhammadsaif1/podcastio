@@ -61,6 +61,42 @@
 }
 
 // home 2 footer
+.footer-section {
+
+    .footer-pages {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+
+        .styling {
+            padding: 0rem 1rem;
+        }
+
+        .pages {
+            color: rgb(242,79,29);
+            font-size: 22px;
+        }
+
+        .pages-links {
+            border-left: white 1px solid;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+    }
+
+    .d-between-2 {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+}
+
+
 
 // home 3 footer
 // footer  3

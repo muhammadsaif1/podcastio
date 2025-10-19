@@ -9,6 +9,22 @@ header {
         background: rgb(var(--bg-1));
     }
 
+    .theme-mode-btn {
+        width: 36px;
+        min-width: 36px;
+        max-width: 36px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: rgb(var(--primary-1));
+        color: rgb(var(--n0));
+        border: 2px solid transparent;
+        border-radius: 20%;
+        cursor: pointer;
+        transition: var(--transition);
+    }
+
     .nav-wrapper {
         padding: 0 80px;
         gap: 40px;
@@ -168,6 +184,7 @@ header {
         @media (max-width:575px) {
             max-width: 150px;
         }
+
         .category-link {
             background: transparent;
             transition: all 0.4s ease-in-out;

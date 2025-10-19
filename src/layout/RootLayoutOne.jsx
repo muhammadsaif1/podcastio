@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
 import HeaderOne from "./header/HeaderOne";
-import FooterOne from "./footer/FooterOne";
+import FooterTwo from "./footer/FooterTwo";
 import AudioPlayerModalLayoutTwo from "../components/Modal/AudioPlayerModalLayoutTwo";
 
 const RootLayoutOne = () => {
@@ -8,7 +8,7 @@ const RootLayoutOne = () => {
     <>
       <HeaderOne />
       <Outlet />
-      <FooterOne />
+      <FooterTwo />
       <AudioPlayerModalLayoutTwo />
     </>
   );

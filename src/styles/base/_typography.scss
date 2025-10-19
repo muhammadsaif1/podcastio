@@ -63,7 +63,7 @@ footer {
 }
 
 .display-two {
-    font-size: 88px;
+    font-size: 48px;
     line-height: 120%;
 }
 
@@ -75,6 +75,11 @@ footer {
 .display-four {
     font-size: 56px;
     line-height: 120%;
+}
+.display-five {
+    font-size: 34px;
+    font-weight: 700;
+    line-height: normal;
 }
 
 .fs-one,
@@ -239,6 +244,13 @@ ol {
     list-style: disc;
 }
 
+.pt-60 {
+    padding-top: 60px;
+} 
+.pb-60 {
+    padding-bottom: 60px;
+}
+
 .pt-120 {
     padding-top: 120px;
 }
@@ -259,7 +271,7 @@ ol {
 
 @media (max-width: 1399px) {
     .display-two {
-        font-size: 70px;
+        font-size: 48px;
     }
 }
 
@@ -301,7 +313,7 @@ ol {
     }
 
     .display-two {
-        font-size: 64px;
+        font-size: 48px;
     }
 
     .display-three {
@@ -372,7 +384,7 @@ ol {
 @media (max-width: 767px) {
 
     .display-two {
-        font-size: 52px;
+        font-size: 48px;
     }
 
     .display-four {

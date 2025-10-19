@@ -1,122 +1,58 @@
-import CopyRight from "@/components/Shared/CopyRight";
-import FooterBottomNav from "@/components/Shared/FooterBottomNav";
-import ListenOnBtns from "@/components/Shared/ListenOnBtns";
-import SlideTrack from "@/components/Shared/SlideTrack";
-import FooterInfo from "./FooterInfo";
-import FooterWidget from "./FooterWidget";
-import trackImg from "@/images/record-4.png";
+import logo from '../../images/logo2-6556cbb2.png'
+import SlideTrack from "../../components/Shared/SlideTrack";
+import trackImg from "../../images/white-record.png";
+import ListenOnBtns from "../../components/Shared/ListenOnBtns";
 
 const FooterTwo = () => {
-  const pages = {
-    title: "Pages",
-    items: [
-      {
-        title: "Home",
-        isLink: true,
-        link: "/",
-        hasIcon: false,
-      },
-      {
-        title: "About Us",
-        isLink: true,
-        link: "/about-us",
-        hasIcon: false,
-      },
-      {
-        title: "Episode",
-        isLink: true,
-        link: "/latest-episodes",
-        hasIcon: false,
-      },
-      {
-        title: "Pricing Plan",
-        isLink: true,
-        link: "/pricing-plan",
-        hasIcon: false,
-      },
-      {
-        title: "Blog",
-        isLink: true,
-        link: "/blog-grid",
-        hasIcon: false,
-      },
-    ],
-  };
-
-  const contact = {
-    title: "Contact",
-    items: [
-      {
-        title: "+123 456 7890",
-        isLink: true,
-        link: "tel:+1234567890",
-        hasIcon: true,
-        icon: "ti ti-phone",
-      },
-      {
-        title: "info@example.com",
-        isLink: true,
-        link: "mailto:info@example.com",
-        hasIcon: true,
-        icon: "ti ti-mail",
-      },
-      {
-        title: "1901 Thornridge Cir. Shiloh, Hawaii 81063",
-        isLink: true,
-        link: "#",
-        hasIcon: true,
-        icon: "ti ti-map-pin",
-      },
-    ],
-  };
-
-  const usefulLinks = [
-    {
-      name: "Terms & Conditions",
-      link: "/terms-and-conditions",
-    },
-    {
-      name: "Privacy Policy",
-      link: "/privacy-policy",
-    },
-  ];
   return (
-    <footer className="footer-section texture-bg-2">
+    <footer className="footer-section footer-bg pt-120">
       <div className="container">
-        <div className="row g-6 pb-120">
-          <div className="col-lg-3 col-sm-6">
-            <FooterInfo />
+        <div className="footer-top d-between-2 gap-lg-6 gap-4 flex-wrap flex-lg-nowrap">
+          <div className="footer-logo">
+            <a href="/">
+              <div style={{ maxWidth: 200, maxHeight: 200 }}>
+                <img
+                  src={logo}
+                  alt="Return Logo"
+                  style={{ width: "100%", height: "100%" }}
+                />
+              </div>
+            </a>
           </div>
-          <div className="col-lg-3 col-sm-6">
-            <FooterWidget data={pages} />
-          </div>
-          <div className="col-lg-3 col-sm-6">
-            <div className="footer-widget">
-              <FooterWidget data={contact} />
+
+          <SlideTrack trackImg={trackImg} />
+
+          <div className="footer-pages">
+            <span className="styling pages">Pages</span>
+            <div className="pages-links styling">
+              <a href="/">Home</a>
+              <a href="/latest-episode">Episodes</a>
+              <a href="/contact">Contact</a>
             </div>
           </div>
 
-          <div className="col-lg-3 col-sm-6">
-            <div className="footer-widget">
-              <h4 className="widget-title mb-lg-6 mb-4 fw-semibold">
-                Subscribe
-              </h4>
-              <span className="d-block mb-lg-6 mb-4">
-                Don&apos;t miss out—subscribe today and let the excitement land
-                directly in your inbox!
-              </span>
-              <ListenOnBtns iconSize={"brand-icon-mid"} gap="gap-xl-4 gap-2" />
-            </div>
+          <div className="footer-podcast-icons d-flex align-items-center gap-xl-6 flex-sm-nowrap flex-wrap gap-4">
+            <p className="fs-lg fw-medium text-nowrap text-display-one">
+              Listen to Podcaster through :
+            </p>
+              <ListenOnBtns />
           </div>
         </div>
-        <div className="footer-bottom d-between flex-wrap-reverse gap-2 py-lg-8 py-sm-6 py-4 bt-2">
-          <CopyRight />
-          <SlideTrack
-            trackImg={trackImg}
-            isFooter={true}
-            visibility={"d-none d-lg-block"}
-          />
-          <FooterBottomNav items={usefulLinks} />
+
+        <div className="footer-bottom d-between flex-wrap-reverse gap-2 mt-lg-15 mt-sm-10 mt-6 py-lg-8 py-sm-6 py-4 bt-2">
+          <span className="text-display-one">© 2024 Kurudy. All rights reserved.</span>
+          <ul className="footer-menu d-flex gap-lg-6 gap-sm-4 gap-2">
+            <li>
+              <a href="/terms-and-conditions" className="link-text text-display-one">
+                Terms &amp; Conditions
+              </a>
+            </li>
+            <li>
+              <a href="/privacy-policy" className="link-text text-display-one">
+                Privacy Policy
+              </a>
+            </li>
+          </ul>
         </div>
       </div>
     </footer>
