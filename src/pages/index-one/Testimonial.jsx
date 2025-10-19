@@ -1,7 +1,7 @@
-import SectionHeading from "@/components/Shared/SectionHeading";
-import TestimonialSlider from "@/components/Shared/Slider/TestimonialSlider";
-import testimonialData from "@/data/testimonialSlider";
-import FadeDown from "@/motion/FadeDown";
+import SectionHeading from "../../components/Shared/SectionHeading";
+import TestimonialSlider from "../../components/Shared/Slider/TestimonialSlider";
+import testimonialData from "../../data/testimonialSlider";
+import FadeDown from "../../motion/FadeDown";
 
 const Testimonial = () => {
   return (

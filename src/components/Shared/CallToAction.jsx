@@ -5,7 +5,7 @@ import SectionHeading from "./SectionHeading";
 import { Link } from "react-router-dom";
 import FadeDown from "../../motion/FadeDown";
 
-const CallToAction = ({ bg }) => {
+const CallToAction = ({ bg="" }) => {
   return (
     <section className={`call-to-action ${bg}`}>
       <div className="container-fluid pb-120 pt-120">

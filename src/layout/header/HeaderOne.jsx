@@ -1,21 +1,21 @@
+import { NavLink } from "react-router-dom";
 import logo from "../../images/logo2-6556cbb2.png";
 
 const HeaderOne = () => {
-
   return (
     <header className="header-section position-fixed top-0 start-50 translate-middle-x w-100 py-4">
       <div className="container-fluid">
         <nav className="nav-wrapper d-between">
           <div className="logo">
-            <a href="/">
-              <div style={{ maxWidth: '150px', maxHeight: '150px' }}>
+            <NavLink to="/">
+              <div style={{ maxWidth: "150px", maxHeight: "150px" }}>
                 <img
                   src={logo}
                   alt="Return Logo"
-                  style={{ width: '100%', height: '100%' }}
+                  style={{ width: "100%", height: "100%" }}
                 />
               </div>
-            </a>
+            </NavLink>
           </div>
 
           <div className="menu-toggler d-flex align-items-center justify-content-lg-between flex-lg-row flex-column gap-xl-4 gap-2 w-100">
@@ -24,26 +24,34 @@ const HeaderOne = () => {
                 {/* Desktop Menu */}
                 <ul className="nav-menu d-lg-flex gap-xl-4 gap-3 d-none">
                   <li className="menu-item">
-                    <a className="menu-link" href="/">Podcast</a>
+                    <NavLink
+                      to="/"
+                      className={({ isActive }) =>
+                        isActive ? "menu-link-active" : "menu-link"
+                      }
+                    >
+                      Podcast
+                    </NavLink>
                   </li>
                   <li className="menu-item">
-                    <a className="menu-link active" href="/latest-episode">Episodes</a>
+                    <NavLink
+                      to="/latest-episode"
+                      className={({ isActive }) =>
+                        isActive ? "menu-link-active" : "menu-link"
+                      }
+                    >
+                      Episodes
+                    </NavLink>
                   </li>
                   <li className="menu-item">
-                    <a className="menu-link" href="/contact">Contact</a>
-                  </li>
-                </ul>
-
-                {/* Mobile Menu */}
-                <ul className="nav-menu gap-xl-4 gap-3 d-lg-none">
-                  <li className="menu-item">
-                    <a className="menu-link text-display-one" href="/">Podcast</a>
-                  </li>
-                  <li className="menu-item">
-                    <a className="menu-link active text-display-one" href="/latest-episode">Episodes</a>
-                  </li>
-                  <li className="menu-item">
-                    <a className="menu-link text-display-one" href="/contact">Contact</a>
+                    <NavLink
+                      to="/contact"
+                      className={({ isActive }) =>
+                        isActive ? "menu-link-active" : "menu-link"
+                      }
+                    >
+                      Contact
+                    </NavLink>
                   </li>
                 </ul>
               </div>
@@ -74,14 +82,6 @@ const HeaderOne = () => {
               </svg>
             </button>
           </div>
-
-          {/* Mobile Navbar Toggle */}
-          <button className="navbar-toggler-btn d-block d-lg-none" type="button">
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-          </button>
         </nav>
       </div>
     </header>

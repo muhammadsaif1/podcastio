@@ -6,9 +6,9 @@ import CircleTextBtn from "@/components/Shared/CircleTextBtn";
 import FadeDown from "@/motion/FadeDown";
 import { Link } from "react-router-dom";
 
-const Hero = () => {
+const Hero = ({ classes="" }) => {
   return (
-    <section className="hero-section texture-bg-2">
+    <section className={`hero-section texture-bg-2 ${classes}`}>
       <div className="vector-line position-absolute top-50 start-50 translate-middle w-100 h-100 z-n1 mt-20">
         <img className="w-100" src={waveLine} alt="line" />
       </div>

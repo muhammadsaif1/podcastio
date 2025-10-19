@@ -1,0 +1,155 @@
+// admin-dashboard.scss
+
+$bg-dark: #0f1624;
+$bg-sidebar: #1a1f2e;
+$bg-card: #2a3042;
+$primary-gradient: linear-gradient(to right, #00f6ff, #00bfff, #007bff);
+$primary-color: #00bfff;
+$text-white: #ffffff;
+$text-gray: #999999;
+
+.admin-dashboard {
+  display: flex;
+  min-height: 100vh;
+  background: $bg-dark;
+  color: $text-white;
+
+  aside {
+    width: 16rem; // 64
+    background: $bg-sidebar;
+    padding: 1.5rem; // 6
+    display: none; // hidden by default for mobile
+    flex-direction: column;
+    gap: 1rem;
+
+    h2 {
+      font-size: 1.5rem; // 2xl
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+    }
+
+    nav {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+
+      button {
+        width: 100%;
+        text-align: left;
+        padding: 0.5rem;
+        border-radius: 0.375rem;
+        background: $bg-card;
+        color: $text-white;
+        transition: background 0.3s;
+
+        &.active {
+          background: $primary-color;
+        }
+      }
+    }
+
+    @media (min-width: 640px) { // sm
+      display: flex;
+    }
+  }
+
+  main {
+    flex: 1;
+    padding: 1.5rem;
+
+    h3 {
+      font-size: 1.25rem;
+      margin-bottom: 1rem;
+    }
+
+    .add-episode-btn {
+      padding: 0.5rem 1rem;
+      border-radius: 0.375rem;
+      background: $primary-gradient;
+      color: $text-white;
+      cursor: pointer;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+
+      li {
+        background: $bg-card;
+        padding: 0.75rem;
+        border-radius: 0.375rem;
+      }
+    }
+  }
+}
+
+.episode-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+
+  .modal-content {
+    background: $bg-sidebar;
+    padding: 1.5rem;
+    border-radius: 1rem;
+    width: 24rem; // 96
+    color: $text-white;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    h2 {
+      font-size: 1.25rem;
+      margin-bottom: 1rem;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+
+      input,
+      textarea {
+        width: 100%;
+        padding: 0.5rem;
+        background: $bg-card;
+        border-radius: 0.375rem;
+        border: none;
+        color: $text-white;
+
+        &::placeholder {
+          color: rgba(255, 255, 255, 0.6);
+        }
+      }
+
+      .form-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 0.75rem;
+
+        button {
+          padding: 0.5rem 1rem;
+          border-radius: 0.375rem;
+          cursor: pointer;
+
+          &.cancel {
+            background: gray;
+          }
+
+          &.save {
+            background: $primary-gradient;
+            color: $text-white;
+          }
+        }
+      }
+    }
+  }
+}

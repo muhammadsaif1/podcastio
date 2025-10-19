@@ -1,12 +1,12 @@
 import { Link } from "react-router-dom";
-import TopWave from "@/components/Shared/TopWave";
-import BottomWave from "@/components/Shared/BottomWave";
-import shape1 from "@/images/shape-1.png";
-import shape2 from "@/images/shape-2.png";
-import shape3 from "@/images/shape-3.png";
-import banner from "@/images/error-banner.png";
-import topWaveShape from "@/images/top-wave-shape-2.png";
-import bottomWaveShape from "@/images/bottom-wave-shape-2.png";
+import TopWave from "../../components/Shared/TopWave";
+import BottomWave from "../../components/Shared/BottomWave";
+import shape1 from "../../images/shape-1.png";
+import shape2 from "../../images/shape-2.png";
+import shape3 from "../../images/shape-3.png";
+import banner from "../../images/error-banner.png";
+import topWaveShape from "../../images/top-wave-shape-2.png";
+import bottomWaveShape from "../../images/bottom-wave-shape-2.png";
 
 const Error = () => {
   return (

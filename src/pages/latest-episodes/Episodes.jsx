@@ -4,9 +4,9 @@ import EpisodesData from "@/data/EpisodesData";
 import FadeDown from "@/motion/FadeDown";
 import FadeUp from "@/motion/FadeUp";
 
-const Episodes = ({ searchKeyword, removeSearchHistory }) => {
+const Episodes = ({ searchKeyword = [], removeSearchHistory = () => {} }) => {
   return (
-    <section className="latest-episodes-section pt-15 pb-120 texture-bg-1">
+    <section className="latest-episodes-section pt-15 pb-120">
       <div className="container">
         {searchKeyword.length > 0 && (
           <FadeDown>

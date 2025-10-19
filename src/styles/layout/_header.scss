@@ -203,104 +203,125 @@ header {
 }
 
 .nav-menu-wrapper {
-    @media (max-width: 991px) {
-        .nav-menu {
-            display: grid;
-            overflow-x: hidden;
-            width: 100%;
+  // Mobile styles
+  @media (max-width: 991px) {
+    .nav-menu {
+      display: grid;
+      width: 100%;
+      overflow-x: hidden;
 
-            .menu-item {
-                position: relative;
-                margin-bottom: 10px;
-            }
+      .menu-item {
+        position: relative;
+        margin-bottom: 10px;
 
-            .sub-menu {
-                margin-left: 20px;
-                margin-top: 10px;
-                background: rgb(var(--bg-3));
-                padding: 20px;
-                border-radius: 10px;
-
-                li {
-                    padding: 5px 12px;
-                }
-            }
+        .menu-link,
+        button {
+          color: rgba(255, 255, 255, 0.7); // 70% white for inactive
+          transition: color 0.3s ease-in-out;
         }
-    }
 
-    .menu-item {
-        &.active {
-            button {
-                color: rgb(var(--primary-1));
-            }
+        &.menu-link-active {
+          .menu-link,
+          button {
+            color: #ffffff !important; // full white for active
+            filter: brightness(1.3);
+          }
         }
 
         .sub-menu {
-            .active {
-                color: rgb(var(--primary-1));
-            }
-        }
+          margin: 10px 0 0 20px;
+          background: rgb(var(--bg-3));
+          padding: 16px;
+          border-radius: 8px;
 
-        @media (max-width: 1199px) {
-            svg {
-                width: 16px;
-                height: 16px;
+          li {
+            padding: 6px 12px;
+
+            &.menu-link-active {
+              color: #ffffff !important;
             }
+          }
         }
+      }
     }
+  }
 
-    @media (min-width: 992px) {
-        display: flex;
-
-        .menu-item {
-            position: relative;
-
-            .sub-menu {
-                position: absolute;
-                top: 30px;
-                left: 0;
-                opacity: 0;
-                width: max-content;
-                visibility: hidden;
-                transform: translateY(20px);
-                text-wrap: nowrap;
-                transition: all 0.5s ease-in-out;
-                display: initial !important;
-                background: rgb(var(--bg-3));
-                padding: 20px;
-                border-radius: 8px;
-
-                li {
-                    padding: 5px 0;
-                }
-            }
-
-            &:hover {
-                button {
-                    color: rgb(var(--primary-1));
-                }
-
-                >.sub-menu {
-                    opacity: 1;
-                    visibility: visible;
-                    transform: translateY(0);
-
-                    .menu-link {
-                        transition: all 0.5s ease-in-out;
-
-                        &:hover {
-                            transform: translateX(10px);
-                            color: rgb(var(--primary-1));
-                        }
-                    }
-                }
-            }
-        }
+  .menu-item {
+    @media (max-width: 1199px) {
+      svg {
+        width: 16px;
+        height: 16px;
+      }
     }
+  }
+
+  // Desktop styles
+  @media (min-width: 992px) {
+    display: flex;
+
+    .menu-item {
+      position: relative;
+
+      .menu-link,
+      button {
+        color: rgba(255, 255, 255, 0.7); // default inactive
+        transition: color 0.3s ease-in-out;
+      }
+
+      &.menu-link-active {
+        .menu-link,
+        button {
+          color: #ffffff !important; // always white for active
+        }
+      }
+
+      .sub-menu {
+        position: absolute;
+        top: 30px;
+        left: 0;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(20px);
+        transition: all 0.4s ease-in-out;
+        background: rgb(var(--bg-3));
+        padding: 16px;
+        border-radius: 8px;
+        width: max-content;
+        white-space: nowrap;
+
+        li {
+          padding: 6px 0;
+
+          &.menu-link-active {
+            color: #ffffff !important;
+          }
+        }
+      }
+
+      &:hover {
+        // Hover only affects non-active links
+        .menu-link:not(.menu-link-active),
+        button:not(.menu-link-active) {
+          color: rgb(var(--primary-1)) !important;
+        }
+
+        > .sub-menu {
+          opacity: 1;
+          visibility: visible;
+          transform: translateY(0);
+
+          .menu-link:hover {
+            transform: translateX(10px);
+            color: rgb(var(--primary-1)) !important;
+          }
+        }
+      }
+    }
+  }
 }
 
-.search-wishlist-area,
-.search-area {
+
+.search-wishlist-area, .search-area {
     max-width: 440px;
     width: 100%;
 

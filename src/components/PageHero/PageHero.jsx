@@ -12,7 +12,7 @@ const PageHero = ({
 }) => {
   return (
     <section
-      className={`hero-section inner-hero-section texture-bg-2 pt-120  bg-bottom ${pb}`}
+      className={`hero-section inner-hero-section pt-120 bg-bottom ${pb}`}
     >
 
       <FadeDown>

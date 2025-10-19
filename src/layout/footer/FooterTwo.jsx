@@ -1,7 +1,8 @@
-import logo from '../../images/logo2-6556cbb2.png'
-import SlideTrack from "../../components/Shared/SlideTrack";
-import trackImg from "../../images/white-record.png";
-import ListenOnBtns from "../../components/Shared/ListenOnBtns";
+import logo from '@/images/logo2-6556cbb2.png'
+import SlideTrack from "@/components/Shared/SlideTrack";
+import trackImg from "@/images/record.base64?raw";
+import ListenOnBtns from "@/components/Shared/ListenOnBtns";
+
 
 const FooterTwo = () => {
   return (
@@ -20,7 +21,7 @@ const FooterTwo = () => {
             </a>
           </div>
 
-          <SlideTrack trackImg={trackImg} />
+          <SlideTrack trackImg={trackImg} isFooter={true} />
 
           <div className="footer-pages">
             <span className="styling pages">Pages</span>

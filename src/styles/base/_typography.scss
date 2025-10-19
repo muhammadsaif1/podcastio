@@ -76,6 +76,7 @@ footer {
     font-size: 56px;
     line-height: 120%;
 }
+
 .display-five {
     font-size: 34px;
     font-weight: 700;
@@ -246,7 +247,8 @@ ol {
 
 .pt-60 {
     padding-top: 60px;
-} 
+}
+
 .pb-60 {
     padding-bottom: 60px;
 }
@@ -257,6 +259,15 @@ ol {
 
 .pb-120 {
     padding-bottom: 120px;
+}
+
+.pt-200 {
+    padding-top: 200px;
+}
+
+.pb-150 {
+    padding-bottom: 150px;
+
 }
 
 .mt-120 {
@@ -409,6 +420,7 @@ ol {
     .display-four {
         font-size: 30px;
     }
+
     .fs-four,
     h4,
     h4>a {
