@@ -4,28 +4,70 @@
   justify-content: center;
   align-items: center;
   padding: 1rem;
-  background: linear-gradient(135deg, #000000, #0a0a2a, #000428);
+  background: linear-gradient(135deg, #0a0a0a, #1a1a1a, #0f0f0f);
+  position: relative;
+  overflow: hidden;
+
+  // Animated background elements
+  &::before {
+    content: "";
+    position: absolute;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(
+      circle,
+      rgba(255, 107, 53, 0.1) 0%,
+      transparent 70%
+    );
+    border-radius: 50%;
+    top: -100px;
+    left: -100px;
+    animation: float 6s ease-in-out infinite;
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(
+      circle,
+      rgba(255, 107, 53, 0.08) 0%,
+      transparent 70%
+    );
+    border-radius: 50%;
+    bottom: -50px;
+    right: -50px;
+    animation: float 8s ease-in-out infinite reverse;
+  }
 
   .admin-login-card {
-    background: #1a1f2e;
+    background: #141414;
     border-radius: 1.5rem;
     overflow: hidden;
     display: flex;
     flex-direction: column;
     max-width: 64rem;
     width: 100%;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7), 0 0 40px rgba(255, 107, 53, 0.1);
+    border: 1px solid rgba(255, 107, 53, 0.15);
+    position: relative;
+    z-index: 1;
 
-    @media(min-width: 768px) {
+    @media (min-width: 768px) {
       flex-direction: row;
     }
 
     .login-image {
       display: none;
-      width: 50%;
+      width: 100%;
+      height: 400px;
+      position: relative;
 
-      @media(min-width: 768px) {
+      @media (min-width: 768px) {
         display: block;
+        width: 50%;
+        height: auto;
       }
 
       img {
@@ -42,12 +84,21 @@
       flex-direction: column;
       justify-content: center;
 
+      @media (min-width: 768px) {
+        width: 50%;
+        padding: 3rem;
+      }
+
       .login-title {
         font-size: 2rem;
         font-weight: 600;
         color: #ffffff;
         text-align: center;
         margin-bottom: 1.5rem;
+        background: linear-gradient(135deg, #ff6b35, #ff8c42);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
       }
 
       .login-form {
@@ -62,19 +113,35 @@
           label {
             color: #b0b0b0;
             font-size: 0.875rem;
-            margin-bottom: 0.25rem;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
           }
 
           input {
-            padding: 0.75rem;
-            border-radius: 0.5rem;
-            background: #2a3042;
+            padding: 0.875rem;
+            border-radius: 0.75rem;
+            background: #1f1f1f;
             color: #ffffff;
-            border: none;
+            border: 2px solid transparent;
             outline: none;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+
+            &::placeholder {
+              color: #6b7280;
+            }
 
             &:focus {
-              box-shadow: 0 0 0 2px #00bfff;
+              border-color: #ff6b35;
+              box-shadow: 0 0 20px rgba(255, 107, 53, 0.3);
+              background: #252525;
+            }
+
+            &:disabled {
+              opacity: 0.6;
+              cursor: not-allowed;
             }
           }
         }
@@ -82,18 +149,73 @@
         .error-msg {
           color: #ff4d4f;
           font-size: 0.875rem;
+          padding: 0.75rem;
+          background: rgba(255, 77, 79, 0.1);
+          border-left: 3px solid #ff4d4f;
+          border-radius: 0.5rem;
+          animation: shake 0.5s ease-in-out;
         }
 
         .login-btn {
-          padding: 0.75rem;
-          border-radius: 0.5rem;
-          font-weight: 500;
+          padding: 0.875rem;
+          border-radius: 0.75rem;
+          font-weight: 600;
           color: #ffffff;
-          background: linear-gradient(to right, #00f6ff, #00bfff, #007bff);
+          background: linear-gradient(to right, #ff6b35, #ff8c42, #ff9d5c);
           border: none;
           cursor: pointer;
+          font-size: 1rem;
+          transition: all 0.3s ease;
+          text-transform: uppercase;
+          letter-spacing: 1px;
+
+          &:hover:not(:disabled) {
+            box-shadow: 0 0 30px rgba(255, 107, 53, 0.5);
+            transform: translateY(-2px);
+          }
+
+          &:active:not(:disabled) {
+            transform: translateY(0);
+          }
+
+          &:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+          }
         }
       }
+
+      .demo-hint {
+        text-align: center;
+        color: #6b7280;
+        font-size: 0.75rem;
+        margin-top: 1rem;
+        opacity: 0.7;
+      }
     }
+  }
+}
+
+// Animations
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(20px);
+  }
+}
+
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  75% {
+    transform: translateX(5px);
   }
 }

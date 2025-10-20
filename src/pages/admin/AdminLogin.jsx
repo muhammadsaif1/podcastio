@@ -1,25 +1,55 @@
+"use client";
+
 import { useState } from "react";
 import { motion } from "framer-motion";
-import signupImg from "@/images/sign-up-img.png";
-import "./admin-login.scss"; // SCSS file
+import loginImage from "@/images/sign-up-img.png";
+
+import "./admin-login.scss";
+import { useNavigate } from "react-router-dom";
 
 const AdminLogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
+  const navigate = useNavigate();
   const ADMIN_EMAIL = "admin@example.com";
   const ADMIN_PASSWORD = "admin123";
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
+    setError("");
+    setIsLoading(true);
+
+    // Simulate API call delay
+    setTimeout(() => {
+      if (!email) {
+        setError("Email is required");
+        setIsLoading(false);
+        return;
+      }
+      if (!password) {
+        setError("Password is required");
+        setIsLoading(false);
+        return;
+      }
+      if (email !== ADMIN_EMAIL) {
+        setError("Invalid email address");
+        setIsLoading(false);
+        return;
+      }
+      if (password !== ADMIN_PASSWORD) {
+        setError("Incorrect password");
+        setIsLoading(false);
+        return;
+      }
+
       setError("");
-      alert("Login successful! Welcome Admin.");
+      setIsLoading(false);
+      navigate("/admin/dashboard");
       // navigate to dashboard or next page
-    } else {
-      setError("Invalid admin credentials!");
-    }
+    }, 500);
   };
 
   return (
@@ -27,45 +57,82 @@ const AdminLogin = () => {
       <motion.div
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
         className="admin-login-card"
       >
         <div className="login-image">
-          <img src={signupImg} alt="Signup Graphic" />
+          <img
+            src={loginImage}
+            alt="Admin Login Illustration"
+            fill
+            className="object-cover"
+            priority
+          />
         </div>
 
         <div className="login-form-wrapper">
-          <h2 className="login-title">Admin Login</h2>
+          <motion.h2
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2, duration: 0.6 }}
+            className="login-title"
+          >
+            Admin Login
+          </motion.h2>
+
           <form onSubmit={handleSubmit} className="login-form">
-            <div className="form-group">
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.3, duration: 0.6 }}
+              className="form-group"
+            >
               <label>Email</label>
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Enter admin email"
+                disabled={isLoading}
               />
-            </div>
+            </motion.div>
 
-            <div className="form-group">
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.4, duration: 0.6 }}
+              className="form-group"
+            >
               <label>Password</label>
               <input
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Enter admin password"
+                disabled={isLoading}
               />
-            </div>
+            </motion.div>
 
-            {error && <p className="error-msg">{error}</p>}
+            {error && (
+              <motion.p
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.3 }}
+                className="error-msg"
+              >
+                ⚠️ {error}
+              </motion.p>
+            )}
 
             <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.97 }}
+              whileHover={{ scale: isLoading ? 1 : 1.05 }}
+              whileTap={{ scale: isLoading ? 1 : 0.97 }}
               type="submit"
               className="login-btn"
+              disabled={isLoading}
             >
-              Login
+              {isLoading ? "Logging in..." : "Login"}
             </motion.button>
           </form>
         </div>

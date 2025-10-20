@@ -1,124 +1,344 @@
-import { useState } from "react";
-import { motion } from "framer-motion";
-import "./admin-dashboard.scss"; // SCSS file
+"use client";
 
-// Episode modal
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Menu, X } from "lucide-react";
+import "./admin-dashboard.scss";
+
 const EpisodeModal = ({ isOpen, onClose, onSubmit }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [youtubeUrl, setYoutubeUrl] = useState("");
+  const [authorName, setAuthorName] = useState("");
   const [spotifyUrl, setSpotifyUrl] = useState("");
+  const [errors, setErrors] = useState({});
+
+  const validateForm = () => {
+    const newErrors = {};
+    if (!title.trim()) newErrors.title = "Title is required";
+    if (!description.trim()) newErrors.description = "Description is required";
+    if (!youtubeUrl.trim()) newErrors.youtubeUrl = "YouTube URL is required";
+    if (!authorName.trim()) newErrors.authorName = "Author name is required";
+    return newErrors;
+  };
+
+  const isFormValid =
+    title.trim() &&
+    description.trim() &&
+    youtubeUrl.trim() &&
+    authorName.trim();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit({ title, description, youtubeUrl, spotifyUrl });
+    const newErrors = validateForm();
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+
+    onSubmit({ title, description, youtubeUrl, authorName, spotifyUrl });
+    setTitle("");
+    setDescription("");
+    setYoutubeUrl("");
+    setAuthorName("");
+    setSpotifyUrl("");
+    setErrors({});
     onClose();
+  };
+
+  const handleFieldChange = (field, value) => {
+    if (field === "title") setTitle(value);
+    if (field === "description") setDescription(value);
+    if (field === "youtubeUrl") setYoutubeUrl(value);
+    if (field === "authorName") setAuthorName(value);
+    if (field === "spotifyUrl") setSpotifyUrl(value);
+
+    if (errors[field]) {
+      setErrors({ ...errors, [field]: "" });
+    }
   };
 
   if (!isOpen) return null;
 
   return (
-    <div className="episode-modal">
+    <AnimatePresence>
       <motion.div
-        initial={{ scale: 0.8, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        className="modal-content"
+        className="episode-modal"
+        onClick={onClose}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.2 }}
       >
-        <h2>Add Episode</h2>
-        <form onSubmit={handleSubmit}>
-          <input
-            type="text"
-            placeholder="Title (required)"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            required
-          />
-          <textarea
-            placeholder="Description (required)"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            required
-          />
-          <input
-            type="text"
-            placeholder="YouTube URL (required)"
-            value={youtubeUrl}
-            onChange={(e) => setYoutubeUrl(e.target.value)}
-            required
-          />
-          <input
-            type="text"
-            placeholder="Spotify URL (optional)"
-            value={spotifyUrl}
-            onChange={(e) => setSpotifyUrl(e.target.value)}
-          />
-          <div className="form-actions">
-            <button type="button" className="cancel" onClick={onClose}>
-              Cancel
-            </button>
-            <button type="submit" className="save">
-              Save
-            </button>
-          </div>
-        </form>
+        <motion.div
+          className="modal-content"
+          onClick={(e) => e.stopPropagation()}
+          initial={{ scale: 0.8, opacity: 0, y: 20 }}
+          animate={{ scale: 1, opacity: 1, y: 0 }}
+          exit={{ scale: 0.8, opacity: 0, y: 20 }}
+          transition={{ duration: 0.3 }}
+        >
+          <h2>Add New Episode</h2>
+          <form onSubmit={handleSubmit}>
+            <div className="form-group">
+              <label>
+                Title
+                <span className="required">*</span>
+              </label>
+              <input
+                type="text"
+                placeholder="Enter episode title"
+                value={title}
+                onChange={(e) => handleFieldChange("title", e.target.value)}
+                className={errors.title ? "error" : ""}
+              />
+              {errors.title && (
+                <span className="error-message">{errors.title}</span>
+              )}
+            </div>
+
+            <div className="form-group">
+              <label>
+                Description
+                <span className="required">*</span>
+              </label>
+              <textarea
+                placeholder="Enter episode description"
+                value={description}
+                onChange={(e) =>
+                  handleFieldChange("description", e.target.value)
+                }
+                className={errors.description ? "error" : ""}
+              />
+              {errors.description && (
+                <span className="error-message">{errors.description}</span>
+              )}
+            </div>
+
+            <div className="form-group">
+              <label>
+                YouTube URL
+                <span className="required">*</span>
+              </label>
+              <input
+                type="text"
+                placeholder="https://youtube.com/..."
+                value={youtubeUrl}
+                onChange={(e) =>
+                  handleFieldChange("youtubeUrl", e.target.value)
+                }
+                className={errors.youtubeUrl ? "error" : ""}
+              />
+              {errors.youtubeUrl && (
+                <span className="error-message">{errors.youtubeUrl}</span>
+              )}
+            </div>
+
+            <div className="form-group">
+              <label>
+                Author Name
+                <span className="required">*</span>
+              </label>
+              <input
+                type="text"
+                placeholder="Enter author name"
+                value={authorName}
+                onChange={(e) =>
+                  handleFieldChange("authorName", e.target.value)
+                }
+                className={errors.authorName ? "error" : ""}
+              />
+              {errors.authorName && (
+                <span className="error-message">{errors.authorName}</span>
+              )}
+            </div>
+
+            <div className="form-group">
+              <label>Spotify URL (Optional)</label>
+              <input
+                type="text"
+                placeholder="https://spotify.com/..."
+                value={spotifyUrl}
+                onChange={(e) =>
+                  handleFieldChange("spotifyUrl", e.target.value)
+                }
+              />
+            </div>
+
+            <div className="form-actions">
+              <button type="button" className="cancel" onClick={onClose}>
+                Cancel
+              </button>
+              <button type="submit" className="save" disabled={!isFormValid}>
+                Save Episode
+              </button>
+            </div>
+          </form>
+        </motion.div>
       </motion.div>
-    </div>
+    </AnimatePresence>
   );
 };
 
-// Admin Dashboard
 const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState("episodes");
   const [episodes, setEpisodes] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(
+    typeof window !== "undefined" ? window.innerWidth <= 639 : false
+  );
+
+  // keep track of viewport size so we only apply slide animation on mobile
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 639);
+      // if switching to desktop, ensure mobile menu closed
+      if (window.innerWidth > 639) {
+        setIsMobileMenuOpen(false);
+      }
+    };
+    window.addEventListener("resize", handleResize);
+    // initial run in case render was server-side
+    handleResize();
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const handleAddEpisode = (episode) => {
     setEpisodes([...episodes, episode]);
   };
 
+  const handleTabClick = (tab) => {
+    setActiveTab(tab);
+    setIsMobileMenuOpen(false);
+  };
+
   return (
     <div className="admin-dashboard">
-      <aside>
+      <motion.button
+        className="mobile-menu-btn"
+        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+        whileTap={{ scale: 0.95 }}
+      >
+        {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+      </motion.button>
+
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div
+            className="mobile-menu-overlay"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setIsMobileMenuOpen(false)}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* on desktop we force x: 0 so the aside stays visible */}
+      <motion.aside
+        className={isMobileMenuOpen ? "open" : ""}
+        initial={false}
+        animate={
+          isMobile ? (isMobileMenuOpen ? { x: 0 } : { x: "-100%" }) : { x: 0 }
+        }
+        transition={{ duration: 0.3 }}
+        style={{ willChange: "transform" }}
+      >
         <h2>Admin Panel</h2>
         <nav>
-          <button
+          <motion.button
             className={activeTab === "episodes" ? "active" : ""}
-            onClick={() => setActiveTab("episodes")}
+            onClick={() => handleTabClick("episodes")}
+            whileHover={{ x: 4 }}
+            whileTap={{ scale: 0.98 }}
           >
             Episodes
-          </button>
-          <button
+          </motion.button>
+          <motion.button
             className={activeTab === "messages" ? "active" : ""}
-            onClick={() => setActiveTab("messages")}
+            onClick={() => handleTabClick("messages")}
+            whileHover={{ x: 4 }}
+            whileTap={{ scale: 0.98 }}
           >
             Messages
-          </button>
+          </motion.button>
         </nav>
-      </aside>
+      </motion.aside>
 
       <main>
-        {activeTab === "episodes" && (
-          <div>
-            <div className="header">
-              <h3>Episodes</h3>
-              <button className="add-episode-btn" onClick={() => setIsModalOpen(true)}>
-                Add Episode
-              </button>
-            </div>
-            <ul className="episodes-list">
-              {episodes.map((ep, idx) => (
-                <li key={idx}>{ep.title}</li>
-              ))}
-            </ul>
-          </div>
-        )}
+        <AnimatePresence mode="wait">
+          {activeTab === "episodes" && (
+            <motion.div
+              key="episodes"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.2 }}
+            >
+              <div className="header">
+                <h3>Episodes</h3>
+                <motion.button
+                  className="add-episode-btn"
+                  onClick={() => setIsModalOpen(true)}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  + Add Episode
+                </motion.button>
+              </div>
+              {episodes.length === 0 ? (
+                <div className="empty-state">
+                  <p>
+                    No episodes added yet. Click "Add Episode" to get started.
+                  </p>
+                </div>
+              ) : (
+                <ul className="episodes-list">
+                  <AnimatePresence>
+                    {episodes.map((ep, idx) => (
+                      <motion.li
+                        key={idx}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -20 }}
+                        transition={{ duration: 0.3, delay: idx * 0.1 }}
+                      >
+                        <h4>{ep.title}</h4>
+                        <p>{ep.description}</p>
+                        <p
+                          style={{
+                            fontSize: "0.85rem",
+                            marginTop: "0.75rem",
+                            color: "#FF8C42",
+                          }}
+                        >
+                          By {ep.authorName}
+                        </p>
+                      </motion.li>
+                    ))}
+                  </AnimatePresence>
+                </ul>
+              )}
+            </motion.div>
+          )}
 
-        {activeTab === "messages" && (
-          <div>
-            <h3>Messages</h3>
-            <p>Messages will be fetched from main.</p>
-          </div>
-        )}
+          {activeTab === "messages" && (
+            <motion.div
+              key="messages"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.2 }}
+            >
+              <h3>Messages</h3>
+              <p style={{ color: "#999999" }}>
+                Messages will be fetched from main.
+              </p>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </main>
 
       <EpisodeModal
