@@ -5,6 +5,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Mail, Clock, User, X } from "lucide-react";
 import "./messages-list.scss";
 
+//  NEW IMPORTS
+import { useDispatch, useSelector } from "react-redux";
+import { getAllMessages } from "../../redux/slices/messageSlice";
+
 const MessageDetailModal = ({ isOpen, message, onClose }) => {
   if (!isOpen || !message) return null;
 
@@ -84,56 +88,17 @@ const MessageDetailModal = ({ isOpen, message, onClose }) => {
 };
 
 export const MessagesList = () => {
-  const [messages, setMessages] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const dispatch = useDispatch();
+
+  //  Get data from Redux
+  const { messages, isLoading, error } = useSelector((state) => state.messages);
+
   const [selectedMessage, setSelectedMessage] = useState(null);
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
 
-  const dummyMessage = {
-    _id: "dummy-1",
-    name: "John Doe",
-    email: "john@example.com",
-    phoneNumber: "+1234567890",
-    countryCode: "+1",
-    message:
-      "This is a test message to demonstrate how the messages list looks. This is a dummy message that will be removed later.",
-    createdAt: new Date().toISOString(),
-  };
-
   useEffect(() => {
-    const fetchMessages = async () => {
-      try {
-        setLoading(true);
-        const backendUrl = process.env.NEXT_PUBLIC_BACKEND_API_URL;
-
-        if (!backendUrl) {
-          throw new Error("Backend URL not configured");
-        }
-
-        const response = await fetch(`${backendUrl}/api/messages`, {
-          method: "GET",
-          headers: { "Content-Type": "application/json" },
-        });
-
-        if (!response.ok) {
-          throw new Error(`Failed to fetch messages: ${response.statusText}`);
-        }
-
-        const data = await response.json();
-        setMessages([dummyMessage, ...data]);
-        setError(null);
-      } catch (err) {
-        console.error("[v0] Error fetching messages:", err);
-        setError("Could not fetch the messages at this moment");
-        setMessages([dummyMessage]);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchMessages();
-  }, []);
+    dispatch(getAllMessages());
+  }, [dispatch]);
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -159,7 +124,7 @@ export const MessagesList = () => {
     setIsDetailModalOpen(true);
   };
 
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="messages-container">
         <div className="loading-state">

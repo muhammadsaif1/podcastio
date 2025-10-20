@@ -9,9 +9,13 @@ import "swiper/css/pagination";
 import "swiper/css/thumbs";
 import "swiper/css/free-mode";
 import "./assets/webfont/tabler-icons.min.css";
+import { Provider } from "react-redux";
+import store from "./redux/store/store.js";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
+  // <React.StrictMode>
+  <Provider store={store}>
     <App />
-  </React.StrictMode>
+  </Provider>
+  // </React.StrictMode>
 );

@@ -2,7 +2,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const BASE_URL = import.meta.env.VITE_API_BASE_URL; // e.g. http://localhost:5000
+const BASE_URL = import.meta.env.VITE_API_BASE_URL; // e.g. http://localhost:5000/api
 
 // ---------------------- ASYNC THUNKS ----------------------
 
@@ -11,7 +11,7 @@ export const createMessage = createAsyncThunk(
   "messages/createMessage",
   async (payload, { rejectWithValue }) => {
     try {
-      const { data } = await axios.post(`${BASE_URL}/messages/create`, payload);
+      const { data } = await axios.post(`${BASE_URL}/messages`, payload);
       return data;
     } catch (err) {
       return rejectWithValue(
