@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import "./admin-dashboard.scss";
+import { EpisodesList } from "@/components/admin/episodes-list";
+import { MessagesList } from "@/components/admin/messages-list";
 
 const EpisodeModal = ({ isOpen, onClose, onSubmit }) => {
   const [title, setTitle] = useState("");
@@ -183,7 +185,6 @@ const EpisodeModal = ({ isOpen, onClose, onSubmit }) => {
 
 const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState("episodes");
-  const [episodes, setEpisodes] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(
@@ -206,7 +207,7 @@ const AdminDashboard = () => {
   }, []);
 
   const handleAddEpisode = (episode) => {
-    setEpisodes([...episodes, episode]);
+    // handleAddEpisode logic
   };
 
   const handleTabClick = (tab) => {
@@ -288,39 +289,7 @@ const AdminDashboard = () => {
                   + Add Episode
                 </motion.button>
               </div>
-              {episodes.length === 0 ? (
-                <div className="empty-state">
-                  <p>
-                    No episodes added yet. Click "Add Episode" to get started.
-                  </p>
-                </div>
-              ) : (
-                <ul className="episodes-list">
-                  <AnimatePresence>
-                    {episodes.map((ep, idx) => (
-                      <motion.li
-                        key={idx}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -20 }}
-                        transition={{ duration: 0.3, delay: idx * 0.1 }}
-                      >
-                        <h4>{ep.title}</h4>
-                        <p>{ep.description}</p>
-                        <p
-                          style={{
-                            fontSize: "0.85rem",
-                            marginTop: "0.75rem",
-                            color: "#FF8C42",
-                          }}
-                        >
-                          By {ep.authorName}
-                        </p>
-                      </motion.li>
-                    ))}
-                  </AnimatePresence>
-                </ul>
-              )}
+              <EpisodesList />
             </motion.div>
           )}
 
@@ -333,9 +302,7 @@ const AdminDashboard = () => {
               transition={{ duration: 0.2 }}
             >
               <h3>Messages</h3>
-              <p style={{ color: "#999999" }}>
-                Messages will be fetched from main.
-              </p>
+              <MessagesList />
             </motion.div>
           )}
         </AnimatePresence>
