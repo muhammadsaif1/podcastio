@@ -43,7 +43,7 @@ const FooterTwo = () => {
             <p className="fs-lg fw-medium text-nowrap text-display-one">
               Follow Us:
             </p>
-            <div className="footer-socials d-flex gap-3">
+            {/* <div className="footer-socials d-flex gap-3">
               <a
                 className="yt"
                 href="https://www.youtube.com"
@@ -83,6 +83,24 @@ const FooterTwo = () => {
                 rel="noopener noreferrer"
               >
                 <ListenOnBtns />
+              </a>
+            </div> */}
+
+            <div className="contact-socials">
+              <a style={{ fontSize: "28px", marginLeft: "15px" }}>
+                <i className="ti ti-brand-spotify"></i>
+              </a>
+              <a style={{ fontSize: "28px", marginLeft: "15px" }}>
+                <i className="ti ti-brand-youtube"></i>
+              </a>
+              <a style={{ fontSize: "28px", marginLeft: "15px" }}>
+                <i className="ti ti-brand-instagram"></i>
+              </a>
+              <a style={{ fontSize: "28px", marginLeft: "15px" }}>
+                <i className="ti ti-brand-x"></i>
+              </a>
+              <a style={{ fontSize: "28px", marginLeft: "15px" }}>
+                <i className="ti ti-brand-linkedin"></i>
               </a>
             </div>
           </div>

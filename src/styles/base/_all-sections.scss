@@ -28,19 +28,20 @@
 
   @include maxQuery(1399) {
     .display-two {
-      font-size: 70px;
+      font-size: 68px;
     }
   }
 
   @include minQuery(1399) {
     .display-two {
-      font-size: 84px;
+      font-size: 64px;
     }
   }
 
   @include maxQuery(575) {
     .display-two {
       font-size: 48px;
+      margin-top: 6px;
     }
   }
 

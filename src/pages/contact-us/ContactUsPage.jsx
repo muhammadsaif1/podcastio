@@ -151,11 +151,21 @@ const ContactUsPage = () => {
 
       {/* ✅ Social Icons */}
       <div className="contact-socials">
-        <i className="ti ti-brand-spotify"></i>
-        <i className="ti ti-brand-youtube"></i>
-        <i className="ti ti-brand-instagram"></i>
-        <i className="ti ti-brand-x"></i>
-        <i className="ti ti-brand-linkedin"></i>
+        <a>
+          <i className="ti ti-brand-spotify"></i>
+        </a>
+        <a>
+          <i className="ti ti-brand-youtube"></i>
+        </a>
+        <a>
+          <i className="ti ti-brand-instagram"></i>
+        </a>
+        <a>
+          <i className="ti ti-brand-x"></i>
+        </a>
+        <a>
+          <i className="ti ti-brand-linkedin"></i>
+        </a>
       </div>
 
       {/* ✅ Business Address */}

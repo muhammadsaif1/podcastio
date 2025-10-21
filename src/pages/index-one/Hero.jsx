@@ -6,7 +6,7 @@ import CircleTextBtn from "@/components/Shared/CircleTextBtn";
 import FadeDown from "@/motion/FadeDown";
 import { Link } from "react-router-dom";
 
-const Hero = ({ classes="" }) => {
+const Hero = ({ classes = "" }) => {
   return (
     <section className={`hero-section texture-bg-2 ${classes}`}>
       <div className="vector-line position-absolute top-50 start-50 translate-middle w-100 h-100 z-n1 mt-20">
@@ -21,11 +21,13 @@ const Hero = ({ classes="" }) => {
               </div>
               <FadeDown>
                 <h2 className="hero-title display-two mb-6">
-                  Explore <span className="tcp-1">Connections</span> to Africa.
-
+                  Turning Ideas into{" "}
+                  <span className="tcp-1">Innovation and Investment</span> into
+                  Generational Impact.
                 </h2>
                 <p className="fs-xl fw-normal me-xl-20 pe-xxl-5">
-                  Experience the soulful unity of dialogue among African descendants—nurturing clarity, connection, and a legacy of belonging.
+                  A podcast and pitch platform connecting diverse founders with
+                  everyday investors through Regulation Crowdfunding.
                 </p>
                 <div className="d-flex align-items-center justify-content-lg-start justify-content-center flex-wrap gap-sm-6 gap-3 mt-xxl-10 mt-lg-8 mt-6 mb-xxl-17 mb-lg-10 mb-8">
                   <Link to="/latest-episode" className="bttn-1">
