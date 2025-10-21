@@ -1,5 +1,3 @@
-// pitch-contest.scss
-// uses your theme variables; you may merge into global.scss or keep here
 $bg-dark: #0f0f0f;
 $bg-card: #1f1f1f;
 $bg-input: #2a2a2a;
@@ -10,11 +8,13 @@ $text-gray: #bdbdbd;
 $error-red: #ff4d4f;
 $glass: rgba(255, 255, 255, 0.03);
 
-.pitch-contest-section {
+.pitch-contest-main-container {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   color: $text-white;
+  background: $bg-dark;
+  overflow: hidden;
 
-  .hero {
+  .pitch-contest-hero-section {
     position: relative;
     height: clamp(420px, 55vh, 720px);
     display: flex;
@@ -22,8 +22,9 @@ $glass: rgba(255, 255, 255, 0.03);
     justify-content: center;
     overflow: hidden;
     border-bottom: 1px solid rgba($orange, 0.06);
+    width: 100%;
 
-    .hero-video {
+    .pitch-contest-hero-video {
       position: absolute;
       inset: 0;
       width: 100%;
@@ -33,7 +34,7 @@ $glass: rgba(255, 255, 255, 0.03);
       filter: brightness(0.45) saturate(1.05);
     }
 
-    .hero-overlay {
+    .pitch-contest-hero-overlay {
       position: absolute;
       inset: 0;
       background: linear-gradient(
@@ -44,7 +45,7 @@ $glass: rgba(255, 255, 255, 0.03);
       z-index: 1;
     }
 
-    .hero-content {
+    .pitch-contest-hero-content {
       position: relative;
       z-index: 2;
       width: 100%;
@@ -67,7 +68,7 @@ $glass: rgba(255, 255, 255, 0.03);
       }
     }
 
-    .sub {
+    .pitch-contest-sub-text {
       color: $text-gray;
       margin-bottom: 1.25rem;
       font-size: 1rem;
@@ -76,9 +77,9 @@ $glass: rgba(255, 255, 255, 0.03);
       margin-right: auto;
     }
 
-    .btn-primary {
+    .pitch-contest-primary-button {
       background: linear-gradient(135deg, $orange, $orange-dark);
-      color: #000;
+      color: $text-white; // Fixed to white for contrast
       border: none;
       padding: 0.75rem 1.25rem;
       border-radius: 0.6rem;
@@ -92,25 +93,27 @@ $glass: rgba(255, 255, 255, 0.03);
     }
   }
 
-  .how-it-works {
+  .pitch-contest-how-it-works-section {
     padding: 2.25rem 1rem;
     max-width: 1100px;
     margin: 0 auto;
+    clear: both;
 
-    h2 {
+    .pitch-contest-how-it-works-title {
       font-size: 1.5rem;
       margin-bottom: 1rem;
       color: $text-white;
       text-align: center;
     }
 
-    .steps {
+    .pitch-contest-steps-container {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 1rem;
       margin-top: 1rem;
+      width: 100%;
 
-      .step {
+      .pitch-contest-step-item {
         background: linear-gradient(
           180deg,
           rgba(255, 255, 255, 0.02),
@@ -121,8 +124,11 @@ $glass: rgba(255, 255, 255, 0.03);
         border-radius: 0.75rem;
         text-align: center;
         min-height: 120px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
 
-        .num {
+        .pitch-contest-step-number {
           width: 40px;
           height: 40px;
           border-radius: 10px;
@@ -147,19 +153,19 @@ $glass: rgba(255, 255, 255, 0.03);
     }
 
     @media (max-width: 980px) {
-      .steps {
+      .pitch-contest-steps-container {
         grid-template-columns: repeat(2, 1fr);
       }
     }
 
     @media (max-width: 560px) {
-      .steps {
+      .pitch-contest-steps-container {
         grid-template-columns: 1fr;
       }
     }
   }
 
-  .cta-strip {
+  .pitch-contest-call-to-action-strip {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -171,13 +177,16 @@ $glass: rgba(255, 255, 255, 0.03);
       rgba($orange, 0.01)
     );
     border-top: 1px solid rgba($orange, 0.04);
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
 
     p {
       margin: 0;
       color: $text-white;
       font-weight: 600;
     }
-    .btn-outline {
+    .pitch-contest-outline-button {
       background: transparent;
       border: 1px solid rgba($orange, 0.14);
       color: $orange;
@@ -189,21 +198,23 @@ $glass: rgba(255, 255, 255, 0.03);
     @media (max-width: 560px) {
       flex-direction: column;
       align-items: stretch;
+      text-align: center;
     }
   }
 
   // Modal
-  .pitch-modal {
+  .pitch-contest-modal-overlay {
     position: fixed;
     inset: 0;
-    display: grid;
-    place-items: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background: rgba(0, 0, 0, 0.6);
     z-index: 60;
     padding: 1.25rem;
   }
 
-  .modal-card {
+  .pitch-contest-modal-card {
     width: 100%;
     max-width: 980px;
     background: linear-gradient(180deg, $bg-card, darken($bg-card, 4%));
@@ -213,10 +224,21 @@ $glass: rgba(255, 255, 255, 0.03);
     box-shadow: 0 30px 90px rgba(0, 0, 0, 0.6);
     color: $text-white;
     max-height: 82vh;
-    overflow: auto;
+    overflow-y: auto;
+
+    &::-webkit-scrollbar {
+      width: 8px;
+    }
+    &::-webkit-scrollbar-track {
+      background: $bg-card;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: rgba($orange, 0.3);
+      border-radius: 4px;
+    }
   }
 
-  .modal-head {
+  .pitch-contest-modal-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -229,7 +251,7 @@ $glass: rgba(255, 255, 255, 0.03);
       font-weight: 700;
       color: $text-white;
     }
-    .close-btn {
+    .pitch-contest-modal-close-button {
       background: transparent;
       border: none;
       color: $text-white;
@@ -246,22 +268,23 @@ $glass: rgba(255, 255, 255, 0.03);
     }
   }
 
-  .pitch-form {
+  .pitch-contest-form-container {
     display: flex;
     flex-direction: column;
     gap: 1rem;
 
-    .row.two {
+    .pitch-contest-form-row-two-columns {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 1rem;
+      width: 100%;
 
       @media (max-width: 760px) {
         grid-template-columns: 1fr;
       }
     }
 
-    .form-group {
+    .pitch-contest-form-group {
       display: flex;
       flex-direction: column;
       gap: 0.45rem;
@@ -286,7 +309,7 @@ $glass: rgba(255, 255, 255, 0.03);
           box-shadow: 0 8px 30px rgba($orange, 0.07);
           transform: translateY(-1px);
         }
-        &.error {
+        &.pitch-contest-input-error {
           border-color: $error-red;
           box-shadow: 0 6px 18px rgba($error-red, 0.08);
         }
@@ -297,21 +320,21 @@ $glass: rgba(255, 255, 255, 0.03);
         resize: vertical;
       }
 
-      .field-error {
+      .pitch-contest-field-error {
         color: $error-red;
         font-size: 0.85rem;
         margin-top: 0.2rem;
       }
     }
 
-    .file-input-wrap {
+    .pitch-contest-file-input-wrapper {
       display: flex;
       align-items: center;
       gap: 0.75rem;
       input[type="file"] {
         color: $text-white;
       }
-      .file-hint {
+      .pitch-contest-file-hint {
         color: $text-gray;
         display: flex;
         align-items: center;
@@ -320,11 +343,11 @@ $glass: rgba(255, 255, 255, 0.03);
       }
     }
 
-    .consent-row {
+    .pitch-contest-consent-row {
       display: flex;
       flex-direction: column;
       gap: 0.5rem;
-      .consent {
+      .pitch-contest-consent-label {
         display: flex;
         gap: 0.5rem;
         align-items: center;
@@ -336,7 +359,7 @@ $glass: rgba(255, 255, 255, 0.03);
       }
     }
 
-    .form-actions {
+    .pitch-contest-form-actions {
       display: flex;
       justify-content: flex-end;
       align-items: center;
@@ -347,7 +370,7 @@ $glass: rgba(255, 255, 255, 0.03);
         align-items: stretch;
       }
 
-      .btn-outline {
+      .pitch-contest-outline-button {
         background: transparent;
         border: 1px solid rgba($orange, 0.12);
         color: $text-white;
@@ -355,9 +378,9 @@ $glass: rgba(255, 255, 255, 0.03);
         border-radius: 8px;
       }
 
-      .btn-primary {
+      .pitch-contest-primary-button {
         background: linear-gradient(135deg, $orange, $orange-dark);
-        color: #000;
+        color: $text-white; // Fixed to white for contrast
         border: none;
         padding: 0.7rem 1.1rem;
         border-radius: 8px;
@@ -365,7 +388,7 @@ $glass: rgba(255, 255, 255, 0.03);
       }
     }
 
-    .submit-block {
+    .pitch-contest-submit-block {
       margin-top: 0.75rem;
       padding: 0.75rem;
       background: rgba(255, 255, 255, 0.02);
@@ -374,7 +397,7 @@ $glass: rgba(255, 255, 255, 0.03);
       color: $text-gray;
     }
 
-    .server-error {
+    .pitch-contest-server-error {
       margin-top: 0.5rem;
       color: $error-red;
     }
@@ -382,7 +405,7 @@ $glass: rgba(255, 255, 255, 0.03);
 }
 
 /* tiny helpers */
-.required {
+.pitch-contest-required-mark {
   color: $orange;
   margin-left: 0.25rem;
   font-weight: 700;

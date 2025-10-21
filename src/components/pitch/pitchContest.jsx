@@ -54,11 +54,9 @@ const PitchContest = () => {
   const stageOptions = ["Idea", "MVP", "Traction", "Raising"];
 
   useEffect(() => {
-    // keep pitches fresh in store if you want (optional)
     dispatch(fetchPitches());
   }, [dispatch]);
 
-  // convert a file to base64 data URL (warning: large files)
   const fileToDataUrl = (file) =>
     new Promise((resolve, reject) => {
       if (!file) return resolve("");
@@ -72,7 +70,6 @@ const PitchContest = () => {
     const e = {};
     if (!form.fullName.trim()) e.fullName = "Full name is required";
     if (!form.email.trim()) e.email = "Email is required";
-    // basic email pattern
     if (form.email && !/^\S+@\S+\.\S+$/.test(form.email))
       e.email = "Email is invalid";
     if (!form.pitchCategory) e.pitchCategory = "Pitch category is required";
@@ -83,7 +80,6 @@ const PitchContest = () => {
     if (!form.whyYou.trim())
       e.whyYou = "Please tell us why you (100 words max)";
     if (!form.consent) e.consent = "Consent is required";
-    // optional: limit whyYou length
     if (form.whyYou && form.whyYou.length > 1000)
       e.whyYou = "Why You must be under 1000 characters";
     setErrors(e);
@@ -100,7 +96,6 @@ const PitchContest = () => {
     if (!file) return;
     try {
       const dataUrl = await fileToDataUrl(file);
-      // set data url into logoOrDeck (backend currently stores URL string — base64 will work too)
       handleField("logoOrDeck", dataUrl);
     } catch (err) {
       console.error("file read error", err);
@@ -132,15 +127,12 @@ const PitchContest = () => {
     if (!validate()) return;
 
     try {
-      // show loader from redux
       await dispatch(createPitch(form)).unwrap();
       setSubmitted(true);
       setSubmitMsg(
         "Thanks! Our producers review new pitches weekly. If selected, you’ll receive an invite to record your live pitch session."
       );
       resetForm();
-      // optionally keep modal open and show message
-      // close modal after short delay (optional)
       setTimeout(() => {
         setIsModalOpen(false);
         setSubmitted(false);
@@ -153,21 +145,20 @@ const PitchContest = () => {
   };
 
   return (
-    <section className="pitch-contest-section">
-      {/* HERO */}
-      <div className="hero">
+    <section className="pitch-contest-main-container">
+      <div className="pitch-contest-hero-section">
         <video
-          className="hero-video"
+          className="pitch-contest-hero-video"
           autoPlay
           loop
           muted
           playsInline
           aria-hidden
-          src="/assets/pitch-hero-loop.mp4" // replace with your video path; fallback image handled in CSS
+          src="/assets/pitch-hero-loop.mp4"
         />
-        <div className="hero-overlay" />
+        <div className="pitch-contest-hero-overlay" />
         <motion.div
-          className="hero-content"
+          className="pitch-contest-hero-content"
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
@@ -175,13 +166,13 @@ const PitchContest = () => {
           <h1>
             Pitch Your Idea. <span>Win $100.</span> Launch on Kurudy.
           </h1>
-          <p className="sub">
+          <p className="pitch-contest-sub-text">
             Submit a 60-second pitch — top founders go live on Returnus.
             Audience votes in real-time. Winner gets $100, mentorship &
             exposure.
           </p>
           <motion.button
-            className="btn-primary"
+            className="pitch-contest-primary-button"
             onClick={() => setIsModalOpen(true)}
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.98 }}
@@ -192,98 +183,92 @@ const PitchContest = () => {
         </motion.div>
       </div>
 
-      {/* HOW IT WORKS */}
-      <div className="how-it-works">
+      <div className="pitch-contest-how-it-works-section">
         <motion.h2
+          className="pitch-contest-how-it-works-title"
           initial={{ opacity: 0, y: 8 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
           How It Works
         </motion.h2>
-
-        <div className="steps">
+        <div className="pitch-contest-steps-container">
           <motion.div
-            className="step"
+            className="pitch-contest-step-item"
             initial={{ opacity: 0, y: 12 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.05 }}
           >
-            <div className="num">1</div>
+            <div className="pitch-contest-step-number">1</div>
             <h3>Submit</h3>
             <p>Send a 60-second pitch (video + 1-line summary).</p>
           </motion.div>
-
           <motion.div
-            className="step"
+            className="pitch-contest-step-item"
             initial={{ opacity: 0, y: 12 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.15 }}
           >
-            <div className="num">2</div>
+            <div className="pitch-contest-step-number">2</div>
             <h3>Top 3 Live</h3>
             <p>Top 3 founders pitch live on Returnus.</p>
           </motion.div>
-
           <motion.div
-            className="step"
+            className="pitch-contest-step-item"
             initial={{ opacity: 0, y: 12 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.25 }}
           >
-            <div className="num">3</div>
+            <div className="pitch-contest-step-number">3</div>
             <h3>Vote</h3>
             <p>Audience votes in real-time.</p>
           </motion.div>
-
           <motion.div
-            className="step"
+            className="pitch-contest-step-item"
             initial={{ opacity: 0, y: 12 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.35 }}
           >
-            <div className="num">4</div>
+            <div className="pitch-contest-step-number">4</div>
             <h3>Win</h3>
             <p>$100 + mentorship + exposure for the winner.</p>
           </motion.div>
         </div>
       </div>
 
-      {/* CTA strip */}
-      <div className="cta-strip">
+      {/* <div className="pitch-contest-call-to-action-strip">
         <p>Ready to take the stage?</p>
         <motion.button
-          className="btn-outline"
+          className="pitch-contest-outline-button"
           onClick={() => setIsModalOpen(true)}
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
         >
           Create Pitch
         </motion.button>
-      </div>
+      </div> */}
 
-      {/* Modal */}
       <AnimatePresence>
         {isModalOpen && (
           <motion.div
-            className="pitch-modal"
+            className="pitch-contest-modal-overlay"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => !creating && setIsModalOpen(false)}
           >
             <motion.div
-              className="modal-card"
+              className="pitch-contest-modal-card"
               onClick={(e) => e.stopPropagation()}
               initial={{ scale: 0.9, y: 10, opacity: 0 }}
               animate={{ scale: 1, y: 0, opacity: 1 }}
               exit={{ scale: 0.9, y: 10, opacity: 0 }}
               transition={{ duration: 0.25 }}
             >
-              <div className="modal-head">
+              <div className="pitch-contest-modal-header">
                 <h3>Submit Your Pitch to Returnus</h3>
                 <button
-                  className="close-btn"
+                  className="pitch-contest-modal-close-button"
                   onClick={() => !creating && setIsModalOpen(false)}
                   aria-label="Close"
                   type="button"
@@ -291,26 +276,32 @@ const PitchContest = () => {
                   <X size={18} />
                 </button>
               </div>
-
-              <form className="pitch-form" onSubmit={handleSubmit}>
-                <div className="row two">
-                  <div className="form-group">
+              <form
+                className="pitch-contest-form-container"
+                onSubmit={handleSubmit}
+              >
+                <div className="pitch-contest-form-row-two-columns">
+                  <div className="pitch-contest-form-group">
                     <label>
-                      Full Name<span className="required">*</span>
+                      Full Name
+                      <span className="pitch-contest-required-mark">*</span>
                     </label>
                     <input
                       type="text"
                       value={form.fullName}
                       onChange={(e) => handleField("fullName", e.target.value)}
-                      className={errors.fullName ? "error" : ""}
+                      className={
+                        errors.fullName ? "pitch-contest-input-error" : ""
+                      }
                       disabled={creating}
                     />
                     {errors.fullName && (
-                      <div className="field-error">{errors.fullName}</div>
+                      <div className="pitch-contest-field-error">
+                        {errors.fullName}
+                      </div>
                     )}
                   </div>
-
-                  <div className="form-group">
+                  <div className="pitch-contest-form-group">
                     <label>Company Name</label>
                     <input
                       type="text"
@@ -322,25 +313,28 @@ const PitchContest = () => {
                     />
                   </div>
                 </div>
-
-                <div className="row two">
-                  <div className="form-group">
+                <div className="pitch-contest-form-row-two-columns">
+                  <div className="pitch-contest-form-group">
                     <label>
-                      Email Address<span className="required">*</span>
+                      Email Address
+                      <span className="pitch-contest-required-mark">*</span>
                     </label>
                     <input
                       type="email"
                       value={form.email}
                       onChange={(e) => handleField("email", e.target.value)}
-                      className={errors.email ? "error" : ""}
+                      className={
+                        errors.email ? "pitch-contest-input-error" : ""
+                      }
                       disabled={creating}
                     />
                     {errors.email && (
-                      <div className="field-error">{errors.email}</div>
+                      <div className="pitch-contest-field-error">
+                        {errors.email}
+                      </div>
                     )}
                   </div>
-
-                  <div className="form-group">
+                  <div className="pitch-contest-form-group">
                     <label>Phone (optional)</label>
                     <input
                       type="text"
@@ -350,18 +344,20 @@ const PitchContest = () => {
                     />
                   </div>
                 </div>
-
-                <div className="row two">
-                  <div className="form-group">
+                <div className="pitch-contest-form-row-two-columns">
+                  <div className="pitch-contest-form-group">
                     <label>
-                      Pitch Category<span className="required">*</span>
+                      Pitch Category
+                      <span className="pitch-contest-required-mark">*</span>
                     </label>
                     <select
                       value={form.pitchCategory}
                       onChange={(e) =>
                         handleField("pitchCategory", e.target.value)
                       }
-                      className={errors.pitchCategory ? "error" : ""}
+                      className={
+                        errors.pitchCategory ? "pitch-contest-input-error" : ""
+                      }
                       disabled={creating}
                     >
                       <option value="">Select category</option>
@@ -372,13 +368,15 @@ const PitchContest = () => {
                       ))}
                     </select>
                     {errors.pitchCategory && (
-                      <div className="field-error">{errors.pitchCategory}</div>
+                      <div className="pitch-contest-field-error">
+                        {errors.pitchCategory}
+                      </div>
                     )}
                   </div>
-
-                  <div className="form-group">
+                  <div className="pitch-contest-form-group">
                     <label>
-                      1-Sentence Summary<span className="required">*</span>
+                      1-Sentence Summary
+                      <span className="pitch-contest-required-mark">*</span>
                     </label>
                     <input
                       type="text"
@@ -386,21 +384,25 @@ const PitchContest = () => {
                       onChange={(e) =>
                         handleField("oneSentenceSummary", e.target.value)
                       }
-                      className={errors.oneSentenceSummary ? "error" : ""}
+                      className={
+                        errors.oneSentenceSummary
+                          ? "pitch-contest-input-error"
+                          : ""
+                      }
                       disabled={creating}
                     />
                     {errors.oneSentenceSummary && (
-                      <div className="field-error">
+                      <div className="pitch-contest-field-error">
                         {errors.oneSentenceSummary}
                       </div>
                     )}
                   </div>
                 </div>
-
-                <div className="row two">
-                  <div className="form-group">
+                <div className="pitch-contest-form-row-two-columns">
+                  <div className="pitch-contest-form-group">
                     <label>
-                      Pitch Video Link<span className="required">*</span>
+                      Pitch Video Link
+                      <span className="pitch-contest-required-mark">*</span>
                     </label>
                     <input
                       type="text"
@@ -408,23 +410,29 @@ const PitchContest = () => {
                       onChange={(e) =>
                         handleField("pitchVideo", e.target.value)
                       }
-                      className={errors.pitchVideo ? "error" : ""}
+                      className={
+                        errors.pitchVideo ? "pitch-contest-input-error" : ""
+                      }
                       placeholder="YouTube / Loom / Vimeo link (max 5m)"
                       disabled={creating}
                     />
                     {errors.pitchVideo && (
-                      <div className="field-error">{errors.pitchVideo}</div>
+                      <div className="pitch-contest-field-error">
+                        {errors.pitchVideo}
+                      </div>
                     )}
                   </div>
-
-                  <div className="form-group">
+                  <div className="pitch-contest-form-group">
                     <label>
-                      Stage<span className="required">*</span>
+                      Stage
+                      <span className="pitch-contest-required-mark">*</span>
                     </label>
                     <select
                       value={form.stage}
                       onChange={(e) => handleField("stage", e.target.value)}
-                      className={errors.stage ? "error" : ""}
+                      className={
+                        errors.stage ? "pitch-contest-input-error" : ""
+                      }
                       disabled={creating}
                     >
                       <option value="">Select stage</option>
@@ -435,13 +443,14 @@ const PitchContest = () => {
                       ))}
                     </select>
                     {errors.stage && (
-                      <div className="field-error">{errors.stage}</div>
+                      <div className="pitch-contest-field-error">
+                        {errors.stage}
+                      </div>
                     )}
                   </div>
                 </div>
-
-                <div className="row two">
-                  <div className="form-group">
+                <div className="pitch-contest-form-row-two-columns">
+                  <div className="pitch-contest-form-group">
                     <label>Funding Goal (optional)</label>
                     <input
                       type="text"
@@ -453,25 +462,27 @@ const PitchContest = () => {
                       placeholder="e.g. 50000"
                     />
                   </div>
-
-                  <div className="form-group">
+                  <div className="pitch-contest-form-group">
                     <label>Why You? (100 words)</label>
                     <textarea
                       value={form.whyYou}
                       onChange={(e) => handleField("whyYou", e.target.value)}
-                      className={errors.whyYou ? "error" : ""}
+                      className={
+                        errors.whyYou ? "pitch-contest-input-error" : ""
+                      }
                       disabled={creating}
                     />
                     {errors.whyYou && (
-                      <div className="field-error">{errors.whyYou}</div>
+                      <div className="pitch-contest-field-error">
+                        {errors.whyYou}
+                      </div>
                     )}
                   </div>
                 </div>
-
-                <div className="row two">
-                  <div className="form-group">
+                <div className="pitch-contest-form-row-two-columns">
+                  <div className="pitch-contest-form-group">
                     <label>Upload Logo / Deck (optional)</label>
-                    <div className="file-input-wrap">
+                    <div className="pitch-contest-file-input-wrapper">
                       <input
                         type="file"
                         accept=".png,.jpg,.jpeg,.pdf,.ppt,.pptx"
@@ -479,17 +490,18 @@ const PitchContest = () => {
                         ref={fileInputRef}
                         disabled={creating}
                       />
-                      <div className="file-hint">
+                      <div className="pitch-contest-file-hint">
                         <UploadCloud size={16} />{" "}
                         {form.logoOrDeck ? "File selected" : "No file selected"}
                       </div>
                     </div>
                     {errors.logoOrDeck && (
-                      <div className="field-error">{errors.logoOrDeck}</div>
+                      <div className="pitch-contest-field-error">
+                        {errors.logoOrDeck}
+                      </div>
                     )}
                   </div>
-
-                  <div className="form-group">
+                  <div className="pitch-contest-form-group">
                     <label>Logo / Deck URL (optional)</label>
                     <input
                       type="text"
@@ -506,9 +518,8 @@ const PitchContest = () => {
                     />
                   </div>
                 </div>
-
-                <div className="consent-row">
-                  <label className="consent">
+                <div className="pitch-contest-consent-row">
+                  <label className="pitch-contest-consent-label">
                     <input
                       type="checkbox"
                       checked={form.consent}
@@ -517,18 +528,19 @@ const PitchContest = () => {
                     />
                     <span>
                       I agree to share my pitch publicly and to Returnus’ terms.{" "}
-                      <span className="required">*</span>
+                      <span className="pitch-contest-required-mark">*</span>
                     </span>
                   </label>
                   {errors.consent && (
-                    <div className="field-error">{errors.consent}</div>
+                    <div className="pitch-contest-field-error">
+                      {errors.consent}
+                    </div>
                   )}
                 </div>
-
-                <div className="form-actions">
+                <div className="pitch-contest-form-actions">
                   <button
                     type="button"
-                    className="btn-outline"
+                    className="pitch-contest-outline-button"
                     onClick={() => {
                       if (!creating) {
                         setIsModalOpen(false);
@@ -539,29 +551,25 @@ const PitchContest = () => {
                   >
                     Cancel
                   </button>
-
                   <button
                     type="submit"
-                    className="btn-primary"
+                    className="pitch-contest-primary-button"
                     disabled={creating}
                   >
                     {creating ? "Sending..." : "Send My Pitch"}
                   </button>
                 </div>
-
-                {/* submit message */}
                 {submitted || submitMsg ? (
                   <motion.div
-                    className="submit-block"
+                    className="pitch-contest-submit-block"
                     initial={{ opacity: 0, y: 6 }}
                     animate={{ opacity: 1, y: 0 }}
                   >
                     <p>{submitMsg}</p>
                   </motion.div>
                 ) : null}
-
                 {creatingError && (
-                  <div className="field-error server-error">
+                  <div className="pitch-contest-server-error">
                     {String(creatingError)}
                   </div>
                 )}
