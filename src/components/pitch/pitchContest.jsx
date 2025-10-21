@@ -252,6 +252,7 @@ const PitchContest = () => {
           </motion.div>
         </div>
       </section>
+      
       <AnimatePresence>
         {isModalOpen && (
           <motion.div
