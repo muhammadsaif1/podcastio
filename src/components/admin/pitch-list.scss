@@ -354,3 +354,10 @@ $error-red: #ff4d4f;
     border-radius: 8px;
   }
 }
+
+.body-locked {
+  overflow: hidden !important;
+  height: 100vh;
+  position: fixed;
+  width: 100%;
+}

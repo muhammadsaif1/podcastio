@@ -1,5 +1,4 @@
 import trackImg from "@/images/track-line.png";
-import ListenOnBtns from "@/components/Shared/ListenOnBtns";
 import waveLine from "@/images/wave-line.png";
 import bannerImg from "@/images/hero-new-image.png";
 import CircleTextBtn from "@/components/Shared/CircleTextBtn";
@@ -29,39 +28,36 @@ const Hero = ({ classes = "" }) => {
                   A podcast and pitch platform connecting diverse founders with
                   everyday investors through Regulation Crowdfunding.
                 </p>
-                <div className="d-flex align-items-center justify-content-lg-start justify-content-center flex-wrap gap-sm-6 gap-3 mt-xxl-10 mt-lg-8 mt-6 mb-xxl-17 mb-lg-10 mb-8">
-                  <Link to="/latest-episode" className="bttn-1">
-                    <span className="text-nowrap fw-semibold">
-                      Latest Episode
-                    </span>
-                    <span className="icon icon-right">
-                      <i className="ti ti-arrow-right"></i>
-                    </span>
-                  </Link>
+
+                <div className="hero-cta-group d-flex align-items-center justify-content-lg-start justify-content-center flex-wrap gap-sm-6 gap-3 mt-xxl-10 mt-lg-8 mt-6 mb-xxl-17 mb-lg-10 mb-8">
                   <a
-                    href="#newsletter"
-                    className="bttn-1 bttn-outline alt-position"
+                    href="https://creators.spotify.com/pod/show/returnus"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="bttn-1"
                   >
-                    <span className="text-nowrap fw-semibold">Subscribe</span>
-                    <span className="icon icon-right">
-                      <i className="ti ti-arrow-right"></i>
-                    </span>
+                    🎧 Listen on Spotify
                   </a>
-                </div>
-                <div className="listen-to-area">
-                  <p className="fs-lg mb-6 fw-medium">
-                    Listen to Podcaster through :
-                  </p>
-                  <ListenOnBtns
-                    justify={"justify-content-lg-start justify-content-center"}
-                  />
+
+                  <a
+                    href="https://www.youtube.com/@ReturnUs"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="bttn-1 bttn-outline"
+                  >
+                    ▶️ Watch on YouTube
+                  </a>
+
+                  <Link to="/pitch" className="bttn-1">
+                    📝 Enter the Pitch Contest
+                  </Link>
                 </div>
               </FadeDown>
             </div>
           </div>
 
           <div className="col-lg-4">
-            <div className="hero-banner-wrapper scrollAnimation ">
+            <div className="hero-banner-wrapper scrollAnimation">
               <CircleTextBtn />
               <img className="w-100" src={bannerImg} alt="banner" />
             </div>

@@ -5,7 +5,7 @@ import FadeDown from "../../motion/FadeDown";
 
 const Testimonial = () => {
   return (
-    <section className="testimonials-section pt-60 pb-60 texture-bg-1">
+    <section className="testimonials-section pt-60 pb-60 texture-bg-2">
       <div className="container">
         <div className="row justify-content-center mb-lg-15 mb-sm-10 mb-8">
           <div className="col-lg-7">

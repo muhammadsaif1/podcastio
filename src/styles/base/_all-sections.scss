@@ -207,11 +207,13 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background: linear-gradient(180deg,
-            rgba(0, 0, 0, 0) 0%,
-            rgba(0, 0, 0, 0) 45.21%,
-            rgba(0, 0, 0, 0.44) 67.45%,
-            #000 100%);
+        background: linear-gradient(
+          180deg,
+          rgba(0, 0, 0, 0) 0%,
+          rgba(0, 0, 0, 0) 45.21%,
+          rgba(0, 0, 0, 0.44) 67.45%,
+          #000 100%
+        );
         border-radius: inherit;
         transition: var(--transition);
       }
@@ -313,7 +315,7 @@
         width: 100%;
         min-width: 300px;
 
-        >* {
+        > * {
           opacity: 0;
           transform: translateX(-250px);
           transition: var(--transition);
@@ -342,7 +344,7 @@
       }
 
       .content-area {
-        >* {
+        > * {
           opacity: 0;
           transform: translateX(250px);
           transition: var(--transition);
@@ -374,10 +376,9 @@
     .swiper-slide {
       &.swiper-slide-active {
         .testimonial-card {
-
           .img-area,
           .content-area {
-            >* {
+            > * {
               opacity: 1;
               transform: none;
               transition: var(--transition);
@@ -2229,7 +2230,6 @@
     }
 
     @include maxQuery(991) {
-
       .commenter-info,
       .comment-sending-box {
         .img-area {
@@ -2239,7 +2239,6 @@
     }
 
     @include maxQuery(575) {
-
       .commenter-info,
       .comment-sending-box {
         .img-area {
@@ -2258,6 +2257,52 @@
   .related-blog-card {
     .img-area {
       max-width: 80px;
+    }
+  }
+}
+
+.hero-cta-group {
+  .bttn-1 {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center !important;
+    padding: 0.9rem 1.8rem;
+    min-width: 200px; // makes buttons consistent width
+    font-weight: 600;
+    transition: 0.3s ease;
+    border-radius: 50px;
+    position: relative;
+    overflow: hidden;
+
+    // Orange primary theme
+    background: #f24f1d;
+    border: 1px solid #f24f1d;
+    color: #fff !important;
+
+    &:hover {
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 8px 20px rgba(242, 79, 29, 0.35);
+    }
+
+    &.bttn-outline {
+      background: transparent;
+      color: #f24f1d !important;
+      border: 1px solid #f24f1d;
+
+      &:hover {
+        background: #f24f1d;
+        color: #ffffff !important;
+        box-shadow: 0 8px 20px rgba(242, 79, 29, 0.35);
+      }
+    }
+  }
+
+  // responsiveness
+  @media (max-width: 575px) {
+    .bttn-1 {
+      width: 100%;
+      min-width: unset;
     }
   }
 }

@@ -1,0 +1,138 @@
+$bg-dark: #0f0f0f;
+$bg-card: #1a1a1a;
+$accent: #f24f1d;
+$accent-2: #ff8c42;
+$text-white: #ffffff;
+$text-muted: #bbbbbb;
+$text-error: #ff4d4f;
+
+.pitch-contest-section {
+  //   background: $bg-dark;
+  padding: 4rem 1.5rem;
+  color: $text-white;
+  display: flex;
+  justify-content: center;
+
+  .container {
+    max-width: 1200px;
+    width: 100%;
+  }
+
+  .content-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    align-items: center;
+    text-align: center;
+
+    .headline {
+      font-size: 2rem;
+      font-weight: 700;
+    }
+
+    .description {
+      font-size: 1.05rem;
+      color: $text-muted;
+      max-width: 650px;
+    }
+
+    .visuals {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      align-items: center;
+
+      .clip-reel {
+        width: 100%;
+        max-width: 500px;
+        border-radius: 12px;
+        overflow: hidden;
+        video {
+          width: 100%;
+          height: auto;
+          display: block;
+          border-radius: 12px;
+        }
+      }
+
+      .countdown {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: $accent;
+        display: flex;
+        gap: 0.5rem;
+      }
+    }
+
+    .cta-btn {
+      display: inline-block;
+      background: linear-gradient(135deg, $accent, $accent-2);
+      color: #000;
+      font-weight: 700;
+      padding: 0.75rem 1.5rem;
+      border-radius: 10px;
+      text-decoration: none;
+      transition: transform 0.2s ease;
+      &:hover {
+        transform: scale(1.03);
+      }
+    }
+
+    .pitches-preview {
+      margin-top: 2rem;
+      width: 100%;
+      max-width: 600px;
+      ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.6rem;
+        li {
+          background: $bg-card;
+          padding: 0.75rem 1rem;
+          border-radius: 10px;
+          color: $text-white;
+          font-size: 0.95rem;
+        }
+      }
+
+      .loading {
+        color: $accent;
+      }
+      .error {
+        color: $text-error;
+      }
+      .empty {
+        color: $text-muted;
+      }
+    }
+  }
+}
+
+/* Responsive */
+@media (max-width: 860px) {
+  .pitch-contest-section {
+    padding: 3rem 1rem;
+    .content-wrapper {
+      .headline {
+        font-size: 1.75rem;
+      }
+      .description {
+        font-size: 1rem;
+      }
+      .visuals {
+        .clip-reel {
+          max-width: 100%;
+        }
+        .countdown {
+          font-size: 1.1rem;
+        }
+      }
+      .pitches-preview {
+        max-width: 100%;
+      }
+    }
+  }
+}

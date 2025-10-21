@@ -1,0 +1,178 @@
+$bg-dark: #0f0f0f;
+$bg-card: #1a1a1a;
+$bg-card-2: #2a2a2a;
+$accent: #f24f1d;
+$accent-2: #ff8c42;
+$text-white: #ffffff;
+$text-muted: #999999;
+
+.podcast-highlights-section {
+  color: $text-white;
+  padding: 2rem 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+
+    h2 {
+      font-size: 1.75rem;
+      margin: 0;
+    }
+
+    .view-all {
+      color: $accent;
+      text-decoration: none;
+      font-weight: 600;
+      &:hover {
+        color: $accent-2;
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .loading-row,
+  .error-row,
+  .empty-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    padding: 2rem;
+    color: $text-muted;
+  }
+
+  .spinner {
+    width: 30px;
+    height: 30px;
+    border-radius: 999px;
+    border: 3px solid rgba($accent, 0.18);
+    border-top-color: $accent;
+  }
+
+  .carousel {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+
+    @media (max-width: 1024px) {
+      grid-template-columns: 1fr; // full width
+    }
+
+    .episode-card {
+      background: linear-gradient(135deg, $bg-card 0%, $bg-card-2 100%);
+      border-radius: 12px;
+      overflow: hidden;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.2s ease;
+
+      .thumbnail-wrap {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 16/9;
+        overflow: hidden;
+
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          display: block;
+          filter: brightness(0.7);
+          transition: transform 0.3s ease;
+        }
+
+        &:hover img {
+          transform: scale(1.05);
+        }
+
+        .play-overlay {
+          position: absolute;
+          inset: 0;
+          display: grid;
+          place-items: center;
+          color: $text-white;
+          svg {
+            background: rgba($accent, 0.14);
+            border-radius: 999px;
+            padding: 8px;
+          }
+        }
+      }
+
+      .episode-info {
+        padding: 0.75rem 1rem;
+        h3 {
+          margin: 0;
+          font-size: 1rem;
+        }
+        .tagline {
+          margin-top: 0.25rem;
+          font-size: 0.875rem;
+          color: $text-muted;
+        }
+      }
+    }
+  }
+
+  .episode-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.75);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    padding: 1rem;
+
+    .modal-content {
+      background: linear-gradient(135deg, $bg-card 0%, $bg-card-2 100%);
+      border-radius: 16px;
+      max-width: 900px;
+      width: 100%;
+      overflow: hidden;
+
+      .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem;
+        border-bottom: 1px solid rgba($accent, 0.18);
+
+        h2 {
+          margin: 0;
+          font-size: 1.25rem;
+        }
+
+        .close-btn {
+          background: none;
+          border: none;
+          color: $accent;
+          cursor: pointer;
+          padding: 0.5rem;
+          border-radius: 8px;
+          transition: all 0.2s;
+          &:hover {
+            background: rgba($accent, 0.06);
+          }
+        }
+      }
+
+      .modal-body {
+        iframe {
+          width: 100%;
+          aspect-ratio: 16/9;
+          border: none;
+        }
+      }
+    }
+  }
+}

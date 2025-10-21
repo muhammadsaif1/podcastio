@@ -43,12 +43,15 @@ const PitchList = () => {
   useEffect(() => {
     if (detailOpen) {
       document.body.style.overflow = "hidden";
+      document.body.classList.add("body-locked");
     } else {
       document.body.style.overflow = "";
+      document.body.classList.remove("body-locked");
       setIsPlayingInline(false);
     }
     return () => {
       document.body.style.overflow = "";
+      document.body.classList.remove("body-locked");
     };
   }, [detailOpen]);
 
