@@ -60,9 +60,9 @@ const ContactUsPage = () => {
   };
 
   return (
-    <div className="contact-container">
+    <section className="contact-container pt-120 pb-60">
       <p className="contact-short-intro">
-        We love <span className="highlight-orange">collaboration.</span> Reach
+        We love <span>collaboration.</span> Reach
         out to the team
       </p>
 
@@ -154,9 +154,9 @@ const ContactUsPage = () => {
       {/* ✅ Business Address */}
       <p className="contact-address">
         Physical / Business Address:{" "}
-        <span className="highlight-orange">Kurudy Inc., Delaware, USA</span>
+        <span>Kurudy Inc., Delaware, USA</span>
       </p>
-    </div>
+    </section>
   );
 };
 
