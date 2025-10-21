@@ -9,6 +9,7 @@ import { MessagesList } from "@/components/admin/messages-list";
 
 import { useDispatch, useSelector } from "react-redux";
 import { createEpisode as createEpisodeAction } from "@/redux/slices/episodeSlice"; // adjust path if needed
+import PitchList from "@/components/admin/pitch-list";
 
 const EpisodeModal = ({ isOpen, onClose }) => {
   const dispatch = useDispatch();
@@ -389,8 +390,9 @@ const AdminDashboard = () => {
               transition={{ duration: 0.2 }}
             >
               <h3>Pitch</h3>
-              {/* You said you'll add the list later — placeholder */}
-              <div className="pitch-placeholder">Pitch list coming soon.</div>
+
+              {/* <div className="pitch-placeholder">Pitch list coming soon.</div> */}
+              <PitchList />
             </motion.div>
           )}
         </AnimatePresence>
