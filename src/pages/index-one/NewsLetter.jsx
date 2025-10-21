@@ -193,7 +193,6 @@ const NewsLetter = ({ bg, pb = "" }) => {
                     type="text"
                     name="name"
                     placeholder="Your Name"
-                    value={""}
                     required
                   />
                   <input
@@ -216,11 +215,11 @@ const NewsLetter = ({ bg, pb = "" }) => {
               <div className="news-letter-banner-wrapper">
                 <canvas ref={canvasRef} className="network-canvas"></canvas>
 
-                <SlideTrack trackImg={trackImg} position={"top-img"} />
+                {/* <SlideTrack trackImg={trackImg} position={"top-img"} /> */}
                 <div className="news-letter-banner">
                   {/* <img className="w-100" src={banner} alt="microphone" /> */}
                 </div>
-                <SlideTrack trackImg={trackImg} position={"bottom-img"} />
+                {/* <SlideTrack trackImg={trackImg} position={"bottom-img"} /> */}
               </div>
             </div>
           </div>

@@ -89,6 +89,17 @@ const HeaderOne = () => {
                       Contact
                     </NavLink>
                   </li>
+                  <li className="menu-item">
+                    <NavLink
+                      to="/about-us"
+                      onClick={() => setMenuOpen(false)}
+                      className={({ isActive }) =>
+                        isActive ? "menu-link-active" : "menu-link"
+                      }
+                    >
+                      About-us
+                    </NavLink>
+                  </li>
                 </ul>
               </div>
             </div>

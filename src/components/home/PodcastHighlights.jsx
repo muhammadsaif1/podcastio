@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchEpisodes } from "@/redux/slices/episodeSlice"; // adjust path
+import { fetchEpisodes } from "@/redux/slices/episodeSlice";
 import { motion, AnimatePresence } from "framer-motion";
-import { Play, X } from "lucide-react";
+import { Play, X, ChevronLeft, ChevronRight } from "lucide-react";
 import "./podcast-highlights.scss";
 
 // helpers
@@ -46,21 +46,70 @@ const PodcastHighlights = () => {
   const [selected, setSelected] = useState(null);
   const [detailOpen, setDetailOpen] = useState(false);
   const [iframeKey, setIframeKey] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [itemsPerView, setItemsPerView] = useState(3);
+  const carouselRef = useRef(null);
 
   useEffect(() => {
     dispatch(fetchEpisodes());
   }, [dispatch]);
 
+  // Handle responsive items per view
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 768) {
+        setItemsPerView(1);
+      } else if (window.innerWidth < 1024) {
+        setItemsPerView(2);
+      } else {
+        setItemsPerView(3);
+      }
+      // Reset to first slide when changing screen size
+      setCurrentIndex(0);
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const maxIndex = Math.max(0, listFromStore.length - itemsPerView);
+  const canGoLeft = currentIndex > 0;
+  const canGoRight = currentIndex < maxIndex;
+
+  const handlePrev = () => {
+    if (canGoLeft) {
+      setCurrentIndex((prev) => prev - 1);
+    }
+  };
+
+  const handleNext = () => {
+    if (canGoRight) {
+      setCurrentIndex((prev) => prev + 1);
+    }
+  };
+
   const handleOpen = (episode) => {
     setSelected(episode);
     setDetailOpen(true);
     setIframeKey((k) => k + 1);
+    // Prevent body scroll when modal opens
+    document.body.style.overflow = "hidden";
   };
 
   const handleClose = () => {
     setSelected(null);
     setDetailOpen(false);
+    // Restore body scroll when modal closes
+    document.body.style.overflow = "unset";
   };
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, []);
 
   return (
     <section className="podcast-highlights-section texture-bg-2">
@@ -89,32 +138,63 @@ const PodcastHighlights = () => {
           <p>No episodes yet. Stay tuned!</p>
         </div>
       ) : (
-        <div className="carousel">
-          {listFromStore.map((ep, i) => (
+        <div className="carousel-container">
+          <button
+            className="carousel-nav left"
+            onClick={handlePrev}
+            disabled={!canGoLeft}
+            aria-label="Previous episodes"
+          >
+            <ChevronLeft size={24} />
+          </button>
+
+          <div className="carousel-wrapper" ref={carouselRef}>
             <motion.div
-              className="episode-card"
-              key={ep._id || i}
-              whileHover={{ scale: 1.03 }}
-              onClick={() => handleOpen(ep)}
+              className="carousel"
+              animate={{
+                x: `-${currentIndex * (100 / itemsPerView)}%`,
+              }}
+              transition={{ type: "spring", stiffness: 300, damping: 30 }}
             >
-              <div className="thumbnail-wrap">
-                <img src={getYoutubeThumbnail(ep.youtubeLink)} alt={ep.title} />
-                <div className="play-overlay">
-                  <Play size={36} />
-                </div>
-              </div>
-              <div className="episode-info">
-                <h3>{ep.title}</h3>
-                <p className="tagline">
-                  {
-                    randomTaglines[
-                      Math.floor(Math.random() * randomTaglines.length)
-                    ]
-                  }
-                </p>
-              </div>
+              {listFromStore.map((ep, i) => (
+                <motion.div
+                  className="episode-card"
+                  key={ep._id || i}
+                  whileHover={{ scale: 1.03 }}
+                  onClick={() => handleOpen(ep)}
+                >
+                  <div className="thumbnail-wrap">
+                    <img
+                      src={getYoutubeThumbnail(ep.youtubeLink)}
+                      alt={ep.title}
+                    />
+                    <div className="play-overlay">
+                      <Play size={36} />
+                    </div>
+                  </div>
+                  <div className="episode-info">
+                    <h3>{ep.title}</h3>
+                    <p className="tagline">
+                      {
+                        randomTaglines[
+                          Math.floor(Math.random() * randomTaglines.length)
+                        ]
+                      }
+                    </p>
+                  </div>
+                </motion.div>
+              ))}
             </motion.div>
-          ))}
+          </div>
+
+          <button
+            className="carousel-nav right"
+            onClick={handleNext}
+            disabled={!canGoRight}
+            aria-label="Next episodes"
+          >
+            <ChevronRight size={24} />
+          </button>
         </div>
       )}
 

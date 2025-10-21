@@ -1,0 +1,122 @@
+$bg-dark: #0f0f0f;
+$bg-card: #1a1a1a;
+$bg-card-2: #2a2a2a;
+$accent: #f24f1d;
+$accent-2: #ff8c42;
+$text-white: #ffffff;
+$text-muted: #999999;
+
+.about-page {
+  margin-top: 18px;
+  color: $text-white;
+  padding: 4rem 1rem;
+  width: 100%;
+  margin: 0 auto;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+
+  .section {
+    margin-bottom: 4rem;
+    text-align: center;
+
+    h1,
+    h2 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      color: $accent;
+    }
+
+    p {
+      font-size: 1.2rem;
+      max-width: 800px;
+      margin: 0 auto;
+      color: $text-muted;
+    }
+  }
+
+  .mission {
+    h1 {
+      font-style: italic;
+    }
+  }
+
+  .hosts {
+    h2 {
+      font-size: 2rem;
+    }
+
+    .hosts-grid {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+
+      @media (max-width: 768px) {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .host-profile {
+        background: linear-gradient(135deg, $bg-card 0%, $bg-card-2 100%);
+        border-radius: 12px;
+        padding: 1.5rem;
+        width: 300px;
+        text-align: left;
+        cursor: pointer;
+
+        .host-photo {
+          width: 100%;
+          height: 200px;
+          object-fit: cover;
+          border-radius: 8px;
+          margin-bottom: 1rem;
+        }
+
+        h3 {
+          font-size: 1.5rem;
+          margin-bottom: 0.5rem;
+        }
+
+        .host-title {
+          font-size: 1rem;
+          color: $accent;
+          margin-bottom: 0.75rem;
+        }
+
+        .host-bio {
+          font-size: 0.95rem;
+          color: $text-muted;
+        }
+      }
+    }
+  }
+
+  .partners {
+    h2 {
+      font-size: 2rem;
+    }
+
+    .partners-grid {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+
+      .partner-logo {
+        background: linear-gradient(135deg, $bg-card 0%, $bg-card-2 100%);
+        border-radius: 8px;
+        padding: 1rem;
+        width: 150px;
+        height: 150px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        img {
+          max-width: 100%;
+          max-height: 100%;
+          object-fit: contain;
+        }
+      }
+    }
+  }
+}

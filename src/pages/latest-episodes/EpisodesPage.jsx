@@ -1,6 +1,7 @@
 import PageHero from "@/components/PageHero/PageHero";
 import Episodes from "./Episodes";
 import CallToAction from "@/components/Shared/CallToAction";
+import EpisodesList from "@/components/EpisodesCard/Episode-list";
 
 const EpisodesPage = () => {
   return (
@@ -11,7 +12,8 @@ const EpisodesPage = () => {
         highlightColor="tcp-1"
         pb={"pb-lg-15"}
       />
-      <Episodes />
+      {/* <Episodes /> */}
+      <EpisodesList />
       <CallToAction />
     </div>
   );

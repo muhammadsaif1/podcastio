@@ -1,10 +1,9 @@
 import ReturnusSection from "@/components/home/ReturnusSection";
 import Hero from "./Hero";
 import NewsLetter from "./NewsLetter";
-import Testimonial from "./Testimonial";
+// import Testimonial from "./Testimonial";
 import PodcastHighlights from "@/components/home/PodcastHighlights";
 import PitchContestSection from "@/components/home/PitchContestSection";
-import JoinMovementSection from "@/components/home/JoinMovementSection";
 
 const HomeOne = () => {
   return (
@@ -15,7 +14,7 @@ const HomeOne = () => {
       <PodcastHighlights />
       <PitchContestSection />
       {/* <JoinMovementSection /> */}
-      <Testimonial />
+      {/* <Testimonial /> */}
       <NewsLetter bg={"texture-bg-1"} pb={"pb-120"} />
     </>
   );
