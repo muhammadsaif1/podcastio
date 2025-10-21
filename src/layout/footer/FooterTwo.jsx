@@ -1,9 +1,10 @@
 import logo from "@/images/logo2-6556cbb2.png";
 import SlideTrack from "@/components/Shared/SlideTrack";
 import trackImg from "@/images/record.base64?raw";
-import ListenOnBtns from "@/components/Shared/ListenOnBtns";
+import SocialIcons from "@/components/Shared/Social/SocialIcons"
+// import ListenOnBtns from "@/components/Shared/ListenOnBtns";
 
-import { Youtube, Instagram, Linkedin, Twitter } from "lucide-react";
+// import { Youtube, Instagram, Linkedin, Twitter } from "lucide-react";
 
 const FooterTwo = () => {
   return (
@@ -43,66 +44,8 @@ const FooterTwo = () => {
             <p className="fs-lg fw-medium text-nowrap text-display-one">
               Follow Us:
             </p>
-            {/* <div className="footer-socials d-flex gap-3">
-              <a
-                className="yt"
-                href="https://www.youtube.com"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Youtube />
-              </a>
-              <a
-                className="ig"
-                href="https://www.instagram.com"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Instagram />
-              </a>
-              <a
-                className="tw"
-                href="https://www.twitter.com"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Twitter />
-              </a>
-              <a
-                className="ln"
-                href="https://www.linkedin.com"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Linkedin />
-              </a>
-              <a
-                className="sp"
-                href="https://open.spotify.com"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <ListenOnBtns />
-              </a>
-            </div> */}
 
-            <div className="contact-socials">
-              <a style={{ fontSize: "28px", marginLeft: "15px" }}>
-                <i className="ti ti-brand-spotify"></i>
-              </a>
-              <a style={{ fontSize: "28px", marginLeft: "15px" }}>
-                <i className="ti ti-brand-youtube"></i>
-              </a>
-              <a style={{ fontSize: "28px", marginLeft: "15px" }}>
-                <i className="ti ti-brand-instagram"></i>
-              </a>
-              <a style={{ fontSize: "28px", marginLeft: "15px" }}>
-                <i className="ti ti-brand-x"></i>
-              </a>
-              <a style={{ fontSize: "28px", marginLeft: "15px" }}>
-                <i className="ti ti-brand-linkedin"></i>
-              </a>
-            </div>
+            <SocialIcons />
           </div>
         </div>
 

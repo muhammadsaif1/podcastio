@@ -137,9 +137,9 @@ $success-green: #52c41a;
         border-top: 1px solid rgba($text-gray, 0.2);
 
         .logout-btn {
-          display: flex; // 👈 aligns icon & text horizontally
-          align-items: center; // 👈 vertically center them
-          justify-content: start; // 👈 optional, centers content horizontally
+          display: flex;
+          align-items: center;
+          justify-content: start;
           gap: 0.5rem;
           background: rgba($error-red, 0.08);
           color: $error-red;

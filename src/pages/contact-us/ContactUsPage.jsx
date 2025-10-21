@@ -2,6 +2,7 @@ import { useState } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 import { useDispatch } from "react-redux";
 import { createMessage } from "../../redux/slices/messageSlice";
+import SocialIcons from "@/components/Shared/Social/SocialIcons";
 
 const ContactUsPage = () => {
   const dispatch = useDispatch();
@@ -60,7 +61,6 @@ const ContactUsPage = () => {
 
   return (
     <div className="contact-container">
-      {/* ✅ Short intro / top text */}
       <p className="contact-short-intro">
         We love <span className="highlight-orange">collaboration.</span> Reach
         out to the team
@@ -149,24 +149,7 @@ const ContactUsPage = () => {
         </button>
       </form>
 
-      {/* ✅ Social Icons */}
-      <div className="contact-socials">
-        <a>
-          <i className="ti ti-brand-spotify"></i>
-        </a>
-        <a>
-          <i className="ti ti-brand-youtube"></i>
-        </a>
-        <a>
-          <i className="ti ti-brand-instagram"></i>
-        </a>
-        <a>
-          <i className="ti ti-brand-x"></i>
-        </a>
-        <a>
-          <i className="ti ti-brand-linkedin"></i>
-        </a>
-      </div>
+      <SocialIcons />
 
       {/* ✅ Business Address */}
       <p className="contact-address">
