@@ -6,6 +6,9 @@ import loginImage from "@/images/sign-up-img.png";
 
 import "./admin-login.scss";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { login } from "@/redux/slices/authSlice";
+
 
 const AdminLogin = () => {
   const [email, setEmail] = useState("");
@@ -14,6 +17,7 @@ const AdminLogin = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const ADMIN_EMAIL = "admin@example.com";
   const ADMIN_PASSWORD = "admin123";
 
@@ -44,6 +48,8 @@ const AdminLogin = () => {
         setIsLoading(false);
         return;
       }
+
+      dispatch(login());
 
       setError("");
       setIsLoading(false);

@@ -11,6 +11,7 @@ import EpisodesPage from "@/pages/latest-episodes/EpisodesPage";
 import ContactUsPage from "@/pages/contact-us/ContactUsPage";
 import AdminLogin from "@/pages/admin/AdminLogin";
 import AdminDashboard from "@/pages/admin-dashboard/AdminDashboard";
+import ProtectedAdminRoute from "@/components/ProtectedAdminRoute";
 
 const router = createBrowserRouter([
   {
@@ -42,7 +43,11 @@ const router = createBrowserRouter([
   },
   {
     path: "/admin/dashboard",
-    element: <AdminDashboard />,
+     element: (
+      <ProtectedAdminRoute>
+        <AdminDashboard />
+      </ProtectedAdminRoute>
+    ),
   }
 ]);
 

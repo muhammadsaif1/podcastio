@@ -94,6 +94,76 @@ header {
     }
 }
 
+.hamburger-btn {
+  border: none;
+  background: transparent;
+  color: rgb(var(--n0));
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 110;
+
+  svg {
+    transition: transform 0.3s ease, color 0.3s ease;
+  }
+
+  &:hover svg {
+    transform: scale(1.1);
+    color: rgb(var(--primary-1));
+  }
+
+  @media (min-width: 992px) {
+    display: none;
+  }
+}
+
+/* Mobile Menu Animation */
+.menu-toggler {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+
+  @media (max-width: 991px) {
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: rgb(var(--bg-1));
+    width: 100%;
+    height: 100vh;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transform: translateY(-100%);
+    transition: transform 0.4s ease;
+    z-index: 100;
+    gap: 30px;
+
+    &.active {
+      transform: translateY(0);
+    }
+
+    .nav-menu {
+      flex-direction: column;
+      gap: 24px;
+      .menu-link {
+        font-size: 1.25rem;
+        color: rgb(var(--n900));
+        transition: color 0.3s ease;
+        
+        &:hover {
+            color: rgb(var(--primary-1));
+        }
+    }
+    .menu-link-active {
+        font-size: 1.25rem;
+        color: rgb(var(--primary-1));
+        font-weight: 600;
+      }
+    }
+  }
+}
+
 .category-toggle-btn {
     position: relative;
     padding: 16px 32px;

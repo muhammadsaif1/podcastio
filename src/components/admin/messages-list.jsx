@@ -63,14 +63,6 @@ const MessageDetailModal = ({ isOpen, message, onClose }) => {
               <label>Email</label>
               <p className="detail-value">{message.email}</p>
             </div>
-
-            <div className="detail-group">
-              <label>Phone</label>
-              <p className="detail-value">
-                {message.countryCode} {message.phoneNumber}
-              </p>
-            </div>
-
             <div className="detail-group">
               <label>Sent At</label>
               <p className="detail-value">{formatDate(message.createdAt)}</p>

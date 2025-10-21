@@ -1,9 +1,7 @@
 import { useState } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
-
-// ✅ NEW IMPORTS
 import { useDispatch } from "react-redux";
-import { createMessage } from "../../redux/slices/messageSlice"; // adjust path if needed
+import { createMessage } from "../../redux/slices/messageSlice";
 
 const ContactUsPage = () => {
   const dispatch = useDispatch();
@@ -11,134 +9,110 @@ const ContactUsPage = () => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    phoneNumber: "",
-    countryCode: "",
     message: "",
   });
 
   const [captchaValue, setCaptchaValue] = useState(null);
-  const [statusMessage, setStatusMessage] = useState({ type: "", text: "" }); // ✅ new
-
-  const onChangeCaptcha = (value) => {
-    setCaptchaValue(value);
-  };
-
-  const isFormValid =
-    formData.name.trim() !== "" &&
-    formData.email.trim() !== "" &&
-    formData.phoneNumber.trim() !== "" &&
-    formData.message.trim() !== "" &&
-    captchaValue !== null;
+  const [statusMessage, setStatusMessage] = useState({ type: "", text: "" });
+  const [fieldErrors, setFieldErrors] = useState({});
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
-    setStatusMessage({ type: "", text: "" }); // Clear status on input
+    setStatusMessage({ type: "", text: "" });
+    setFieldErrors({ ...fieldErrors, [e.target.name]: "" });
   };
 
-  const handleCountryChange = (e) => {
-    const selected = JSON.parse(e.target.value);
-    setFormData({ ...formData, countryCode: selected.code });
-    setStatusMessage({ type: "", text: "" }); // Clear status on input
-  };
+  const onChangeCaptcha = (value) => setCaptchaValue(value);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // ✅ Show error if form is not valid
-    if (!isFormValid) {
-      setStatusMessage({
-        type: "error",
-        text: "Please fill in all fields and complete the captcha.",
-      });
+    if (!captchaValue) {
+      setFieldErrors((prev) => ({
+        ...prev,
+        captcha: "Please verify that you're not a robot.",
+      }));
       return;
     }
 
+    setLoading(true);
+    setFieldErrors({});
     try {
-      // ✅ Dispatch Redux action to save message in backend and send email
       await dispatch(createMessage(formData)).unwrap();
-
-      // Reset form after success
       setFormData({
         name: "",
         email: "",
-        phoneNumber: "",
-        countryCode: "",
         message: "",
       });
       setCaptchaValue(null);
       setStatusMessage({ type: "success", text: "Message sent successfully!" });
     } catch (error) {
-      console.error("Failed to send message:", error);
+      console.error(error);
       setStatusMessage({
         type: "error",
         text: "Failed to send message. Please try again later.",
       });
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className="contact-container">
+      {/* ✅ Short intro / top text */}
+      <p className="contact-short-intro">
+        We love <span className="highlight-orange">collaboration.</span> Reach
+        out to the team
+      </p>
+
+      {/* Title */}
       <p className="contact-title text-display-one">
         Contact <span className="contact-title tcp-1">Us</span>
       </p>
 
+      {/* FORM */}
       <form className="contact-form" onSubmit={handleSubmit}>
         <div className="form-group">
           <input
             type="text"
             placeholder="Your Name"
             name="name"
+            required
             value={formData.name}
             onChange={handleChange}
           />
+          {fieldErrors.name && (
+            <p className="field-error">{fieldErrors.name}</p>
+          )}
         </div>
 
         <div className="form-group">
           <input
             type="email"
+            required
             placeholder="Email"
             name="email"
             value={formData.email}
             onChange={handleChange}
           />
-        </div>
-
-        <div className="form-group">
-          <div className="phone-input-group">
-            <select
-              className="country-code-dropdown"
-              onChange={handleCountryChange}
-              value={JSON.stringify({ code: formData.countryCode || "+213" })}
-            >
-              <option value='{"code":"+213","flag":"🇩🇿","name":"Algeria"}'>
-                🇩🇿 (Algeria) (+213)
-              </option>
-              <option value='{"code":"+244","flag":"🇦🇴","name":"Angola"}'>
-                🇦🇴 (Angola) (+244)
-              </option>
-              <option value='{"code":"+229","flag":"🇧🇯","name":"Benin"}'>
-                🇧🇯 (Benin) (+229)
-              </option>
-            </select>
-
-            <input
-              type="tel"
-              placeholder="Phone Number"
-              name="phoneNumber"
-              value={formData.phoneNumber}
-              onChange={handleChange}
-            />
-          </div>
+          {fieldErrors.email && (
+            <p className="field-error">{fieldErrors.email}</p>
+          )}
         </div>
 
         <div className="form-group">
           <textarea
+            required
             placeholder="Message"
             rows="8"
             name="message"
             value={formData.message}
             onChange={handleChange}
           ></textarea>
+          {fieldErrors.message && (
+            <p className="field-error">{fieldErrors.message}</p>
+          )}
         </div>
 
         <div className="form-group">
@@ -146,9 +120,11 @@ const ContactUsPage = () => {
             sitekey="6LcJdu8rAAAAAEjTqnTH70mKhvjDQ-Z_Zc2sGBbU"
             onChange={onChangeCaptcha}
           />
+          {fieldErrors.captcha && (
+            <p className="field-error">{fieldErrors.captcha}</p>
+          )}
         </div>
 
-        {/* ✅ Status message */}
         {statusMessage.text && (
           <p
             className={`form-status ${
@@ -161,15 +137,32 @@ const ContactUsPage = () => {
 
         <button
           type="submit"
-          disabled={!isFormValid}
+          disabled={loading}
           className="bttn-1 bttn-filled alt-position"
         >
-          <span className="text-nowrap fw-semibold">Submit</span>
+          <span className="text-nowrap fw-semibold">
+            {loading ? "Submitting..." : "Submit"}
+          </span>
           <span className="icon icon-right">
             <i className="ti ti-arrow-right"></i>
           </span>
         </button>
       </form>
+
+      {/* ✅ Social Icons */}
+      <div className="contact-socials">
+        <i className="ti ti-brand-spotify"></i>
+        <i className="ti ti-brand-youtube"></i>
+        <i className="ti ti-brand-instagram"></i>
+        <i className="ti ti-brand-x"></i>
+        <i className="ti ti-brand-linkedin"></i>
+      </div>
+
+      {/* ✅ Business Address */}
+      <p className="contact-address">
+        Physical / Business Address:{" "}
+        <span className="highlight-orange">Kurudy Inc., Delaware, USA</span>
+      </p>
     </div>
   );
 };

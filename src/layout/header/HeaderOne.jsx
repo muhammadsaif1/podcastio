@@ -1,11 +1,16 @@
+import { useState } from "react";
 import { NavLink } from "react-router-dom";
+import { Menu, X } from "lucide-react"; // ✅ lucide icons
 import logo from "../../images/logo2-6556cbb2.png";
 
 const HeaderOne = () => {
+  const [menuOpen, setMenuOpen] = useState(false);
+
   return (
     <header className="header-section position-fixed top-0 start-50 translate-middle-x w-100 py-4">
       <div className="container-fluid">
-        <nav className="nav-wrapper d-between">
+        <nav className="nav-wrapper d-between align-items-center">
+          {/* Logo */}
           <div className="logo">
             <NavLink to="/">
               <div style={{ maxWidth: "150px", maxHeight: "150px" }}>
@@ -18,14 +23,24 @@ const HeaderOne = () => {
             </NavLink>
           </div>
 
-          <div className="menu-toggler d-flex align-items-center justify-content-lg-between flex-lg-row flex-column gap-xl-4 gap-2 w-100">
+          {/* Hamburger (visible on mobile) */}
+          <button
+            className="hamburger-btn d-lg-none"
+            onClick={() => setMenuOpen(!menuOpen)}
+            aria-label="Toggle menu"
+          >
+            {menuOpen ? <X size={26} strokeWidth={2.2} /> : <Menu size={26} strokeWidth={2.2} />}
+          </button>
+
+          {/* Navigation + Theme Toggle */}
+          <div className={`menu-toggler d-flex align-items-center justify-content-lg-between flex-lg-row flex-column gap-xl-4 gap-2 w-100 ${menuOpen ? "active" : ""}`}>
             <div className="category-nav-menu d-between flex-lg-row flex-column gap-xl-4 gap-2 me-lg-2 w-100">
               <div className="nav-menu-wrapper w-100 justify-content-lg-end">
-                {/* Desktop Menu */}
-                <ul className="nav-menu d-lg-flex gap-xl-4 gap-3 d-none">
+                <ul className="nav-menu d-lg-flex gap-xl-4 gap-3 flex-column flex-lg-row text-center">
                   <li className="menu-item">
                     <NavLink
                       to="/"
+                      onClick={() => setMenuOpen(false)}
                       className={({ isActive }) =>
                         isActive ? "menu-link-active" : "menu-link"
                       }
@@ -36,6 +51,7 @@ const HeaderOne = () => {
                   <li className="menu-item">
                     <NavLink
                       to="/latest-episode"
+                      onClick={() => setMenuOpen(false)}
                       className={({ isActive }) =>
                         isActive ? "menu-link-active" : "menu-link"
                       }
@@ -46,6 +62,7 @@ const HeaderOne = () => {
                   <li className="menu-item">
                     <NavLink
                       to="/contact"
+                      onClick={() => setMenuOpen(false)}
                       className={({ isActive }) =>
                         isActive ? "menu-link-active" : "menu-link"
                       }
@@ -58,7 +75,7 @@ const HeaderOne = () => {
             </div>
 
             {/* Theme Toggle Button */}
-            <button className="theme-mode-btn">
+            <button className="theme-mode-btn mt-4 mt-lg-0 mx-auto mx-lg-0">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="18"
