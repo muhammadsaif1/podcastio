@@ -1,7 +1,8 @@
 import logo from "@/images/logo2-6556cbb2.png";
 import SlideTrack from "@/components/Shared/SlideTrack";
 import trackImg from "@/images/record.base64?raw";
-import SocialIcons from "@/components/Shared/Social/SocialIcons"
+import SocialIcons from "@/components/Shared/Social/SocialIcons";
+import { NavLink } from "react-router-dom";
 // import ListenOnBtns from "@/components/Shared/ListenOnBtns";
 
 // import { Youtube, Instagram, Linkedin, Twitter } from "lucide-react";
@@ -31,11 +32,10 @@ const FooterTwo = () => {
           <div className="footer-pages">
             <span className="styling pages">Pages</span>
             <div className="pages-links styling">
-              <a href="/">Home</a>
-              <a href="/latest-episode">Episodes</a>
-              <a href="/pitch-contest">Pitch</a>
-              <a href="/about">About</a>
-              <a href="/contact">Contact</a>
+              <NavLink to={"/"}>Home</NavLink>
+              <NavLink to={"/latest-episode"}>Episodes</NavLink>
+              <NavLink to={"/about-us"}>About</NavLink>
+              <NavLink to={"/contact"}>Contact</NavLink>
             </div>
           </div>
 
