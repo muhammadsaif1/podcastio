@@ -6,10 +6,11 @@ import { Menu, X } from "lucide-react";
 import "./admin-dashboard.scss";
 import { EpisodesList } from "@/components/admin/episodes-list";
 import { MessagesList } from "@/components/admin/messages-list";
-
 import { useDispatch, useSelector } from "react-redux";
 import { createEpisode as createEpisodeAction } from "@/redux/slices/episodeSlice"; // adjust path if needed
+import { logout } from "@/redux/slices/authSlice";
 import PitchList from "@/components/admin/pitch-list";
+import { useNavigate } from "react-router-dom";
 
 const EpisodeModal = ({ isOpen, onClose }) => {
   const dispatch = useDispatch();
@@ -252,6 +253,9 @@ const EpisodeModal = ({ isOpen, onClose }) => {
 };
 
 const AdminDashboard = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const [activeTab, setActiveTab] = useState("episodes");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -278,6 +282,11 @@ const AdminDashboard = () => {
   const handleTabClick = (tab) => {
     setActiveTab(tab);
     setIsMobileMenuOpen(false);
+  };
+
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate('/admin/login');
   };
 
   return (
@@ -330,8 +339,6 @@ const AdminDashboard = () => {
           >
             Messages
           </motion.button>
-
-          {/* NEW: Pitch sidebar button (you will add list later) */}
           <motion.button
             className={activeTab === "pitch" ? "active" : ""}
             onClick={() => handleTabClick("pitch")}
@@ -340,7 +347,20 @@ const AdminDashboard = () => {
           >
             Pitch
           </motion.button>
+        <div className="logout-section">
+          <motion.button
+            className="logout-btn"
+            onClick={handleLogout}
+            whileHover={{ x: 4 }}
+            whileTap={{ scale: 0.98 }}
+          >
+            <i className="ti ti-logout"></i> Logout
+          </motion.button>
+        </div>
         </nav>
+
+        {/* --- Logout Button --- */}
+
       </motion.aside>
 
       <main>

@@ -103,6 +103,7 @@ $success-green: #52c41a;
       display: flex;
       flex-direction: column;
       gap: 0.75rem;
+      flex-grow: 1;
 
       button {
         width: 100%;
@@ -126,6 +127,35 @@ $success-green: #52c41a;
           color: #000;
           border-color: $primary-orange;
           box-shadow: 0 4px 15px rgba($primary-orange, 0.3);
+        }
+      }
+
+      // --- Logout button section ---
+      .logout-section {
+        margin-top: auto;
+        padding-top: 1rem;
+        border-top: 1px solid rgba($text-gray, 0.2);
+
+        .logout-btn {
+          display: flex; // 👈 aligns icon & text horizontally
+          align-items: center; // 👈 vertically center them
+          justify-content: start; // 👈 optional, centers content horizontally
+          gap: 0.5rem;
+          background: rgba($error-red, 0.08);
+          color: $error-red;
+          border: 2px solid rgba($error-red, 0.3);
+          font-weight: 500;
+
+          &:hover {
+            background: linear-gradient(135deg, $error-red, darken($error-red, 10%));
+            color: #000;
+            box-shadow: 0 4px 15px rgba($error-red, 0.3);
+          }
+
+          i {
+            margin-right: 0.5rem;
+            vertical-align: middle;
+          }
         }
       }
     }
@@ -404,6 +434,7 @@ $success-green: #52c41a;
     opacity: 0;
     transform: translateY(20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -414,6 +445,7 @@ $success-green: #52c41a;
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
@@ -451,10 +483,12 @@ $success-green: #52c41a;
   font-weight: 500;
   text-decoration: none;
   transition: 0.2s ease-in-out;
+
   svg {
     width: 16px;
     height: 16px;
   }
+
   &:hover {
     transform: translateY(-1px);
     opacity: 0.9;
@@ -468,14 +502,12 @@ $success-green: #52c41a;
 }
 
 .social-tag.instagram {
-  background: linear-gradient(
-    45deg,
-    #f58529,
-    #feda77,
-    #dd2a7b,
-    #8134af,
-    #515bd4
-  );
+  background: linear-gradient(45deg,
+      #f58529,
+      #feda77,
+      #dd2a7b,
+      #8134af,
+      #515bd4);
   color: #ffffff;
 }
 
