@@ -9,7 +9,6 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { login } from "@/redux/slices/authSlice";
 
-
 const AdminLogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -18,8 +17,8 @@ const AdminLogin = () => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const ADMIN_EMAIL = "admin@example.com";
-  const ADMIN_PASSWORD = "admin123";
+  const ADMIN_EMAIL = "william12@admin.com";
+  const ADMIN_PASSWORD = "William98";
 
   const handleSubmit = (e) => {
     e.preventDefault();
