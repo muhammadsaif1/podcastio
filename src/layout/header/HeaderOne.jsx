@@ -29,11 +29,19 @@ const HeaderOne = () => {
             onClick={() => setMenuOpen(!menuOpen)}
             aria-label="Toggle menu"
           >
-            {menuOpen ? <X size={26} strokeWidth={2.2} /> : <Menu size={26} strokeWidth={2.2} />}
+            {menuOpen ? (
+              <X size={26} strokeWidth={2.2} />
+            ) : (
+              <Menu size={26} strokeWidth={2.2} />
+            )}
           </button>
 
           {/* Navigation + Theme Toggle */}
-          <div className={`menu-toggler d-flex align-items-center justify-content-lg-between flex-lg-row flex-column gap-xl-4 gap-2 w-100 ${menuOpen ? "active" : ""}`}>
+          <div
+            className={`menu-toggler d-flex align-items-center justify-content-lg-between flex-lg-row flex-column gap-xl-4 gap-2 w-100 ${
+              menuOpen ? "active" : ""
+            }`}
+          >
             <div className="category-nav-menu d-between flex-lg-row flex-column gap-xl-4 gap-2 me-lg-2 w-100">
               <div className="nav-menu-wrapper w-100 justify-content-lg-end">
                 <ul className="nav-menu d-lg-flex gap-xl-4 gap-3 flex-column flex-lg-row text-center">
@@ -57,6 +65,17 @@ const HeaderOne = () => {
                       }
                     >
                       Episodes
+                    </NavLink>
+                  </li>
+                  <li className="menu-item">
+                    <NavLink
+                      to="/pitch"
+                      onClick={() => setMenuOpen(false)}
+                      className={({ isActive }) =>
+                        isActive ? "menu-link-active" : "menu-link"
+                      }
+                    >
+                      Pitch
                     </NavLink>
                   </li>
                   <li className="menu-item">

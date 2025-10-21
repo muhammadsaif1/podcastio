@@ -12,6 +12,7 @@ import ContactUsPage from "@/pages/contact-us/ContactUsPage";
 import AdminLogin from "@/pages/admin/AdminLogin";
 import AdminDashboard from "@/pages/admin-dashboard/AdminDashboard";
 import ProtectedAdminRoute from "@/components/ProtectedAdminRoute";
+import PitchContest from "@/components/pitch/pitchContest";
 
 const router = createBrowserRouter([
   {
@@ -35,6 +36,10 @@ const router = createBrowserRouter([
         path: "/contact",
         element: <ContactUsPage />,
       },
+      {
+        path: "/pitch",
+        element: <PitchContest />,
+      },
     ],
   },
   {
@@ -43,12 +48,12 @@ const router = createBrowserRouter([
   },
   {
     path: "/admin/dashboard",
-     element: (
+    element: (
       <ProtectedAdminRoute>
         <AdminDashboard />
       </ProtectedAdminRoute>
     ),
-  }
+  },
 ]);
 
 export default router;
