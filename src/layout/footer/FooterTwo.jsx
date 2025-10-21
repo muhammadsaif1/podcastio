@@ -35,7 +35,9 @@ const FooterTwo = () => {
               <NavLink to={"/"}>Home</NavLink>
               <NavLink to={"/latest-episode"}>Episodes</NavLink>
               <NavLink to={"/about-us"}>About</NavLink>
+              <NavLink to={"/pitch"}>Pitch</NavLink>
               <NavLink to={"/contact"}>Contact</NavLink>
+              <a href="https://www.kurudy.com/"> Kurudy</a>
             </div>
           </div>
 
