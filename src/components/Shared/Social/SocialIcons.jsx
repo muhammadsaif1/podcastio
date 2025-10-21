@@ -1,4 +1,4 @@
-import "./SocialIcons.scss";
+import "./socialIcons.scss";
 
 export default function SocialIcons() {
   return (
