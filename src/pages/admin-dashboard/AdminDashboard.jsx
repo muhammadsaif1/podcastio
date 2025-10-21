@@ -7,13 +7,21 @@ import "./admin-dashboard.scss";
 import { EpisodesList } from "@/components/admin/episodes-list";
 import { MessagesList } from "@/components/admin/messages-list";
 
-const EpisodeModal = ({ isOpen, onClose, onSubmit }) => {
+import { useDispatch, useSelector } from "react-redux";
+import { createEpisode as createEpisodeAction } from "@/redux/slices/episodeSlice"; // adjust path if needed
+
+const EpisodeModal = ({ isOpen, onClose }) => {
+  const dispatch = useDispatch();
+  const creating = useSelector((state) => state.episodes.creating);
+
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [youtubeUrl, setYoutubeUrl] = useState("");
   const [authorName, setAuthorName] = useState("");
   const [spotifyUrl, setSpotifyUrl] = useState("");
+  const [tag, setTag] = useState("");
   const [errors, setErrors] = useState({});
+  const [submitError, setSubmitError] = useState("");
 
   const validateForm = () => {
     const newErrors = {};
@@ -21,6 +29,7 @@ const EpisodeModal = ({ isOpen, onClose, onSubmit }) => {
     if (!description.trim()) newErrors.description = "Description is required";
     if (!youtubeUrl.trim()) newErrors.youtubeUrl = "YouTube URL is required";
     if (!authorName.trim()) newErrors.authorName = "Author name is required";
+    if (!tag.trim()) newErrors.tag = "Tag is required";
     return newErrors;
   };
 
@@ -28,10 +37,23 @@ const EpisodeModal = ({ isOpen, onClose, onSubmit }) => {
     title.trim() &&
     description.trim() &&
     youtubeUrl.trim() &&
-    authorName.trim();
+    authorName.trim() &&
+    tag.trim();
 
-  const handleSubmit = (e) => {
+  const resetForm = () => {
+    setTitle("");
+    setDescription("");
+    setYoutubeUrl("");
+    setAuthorName("");
+    setSpotifyUrl("");
+    setTag("");
+    setErrors({});
+    setSubmitError("");
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setSubmitError("");
     const newErrors = validateForm();
 
     if (Object.keys(newErrors).length > 0) {
@@ -39,14 +61,25 @@ const EpisodeModal = ({ isOpen, onClose, onSubmit }) => {
       return;
     }
 
-    onSubmit({ title, description, youtubeUrl, authorName, spotifyUrl });
-    setTitle("");
-    setDescription("");
-    setYoutubeUrl("");
-    setAuthorName("");
-    setSpotifyUrl("");
-    setErrors({});
-    onClose();
+    const payload = {
+      title: title.trim(),
+      youtubeLink: youtubeUrl.trim(),
+      author: authorName.trim(),
+      spotifyLink: spotifyUrl ? spotifyUrl.trim() : "",
+      description: description.trim(),
+      tag: tag.trim(), // single string sent to backend
+    };
+
+    try {
+      // dispatch redux create action and wait for completion
+      await dispatch(createEpisodeAction(payload)).unwrap();
+      // success - reset and close
+      resetForm();
+      onClose();
+    } catch (err) {
+      // show server error
+      setSubmitError(err || "Failed to create episode");
+    }
   };
 
   const handleFieldChange = (field, value) => {
@@ -55,10 +88,12 @@ const EpisodeModal = ({ isOpen, onClose, onSubmit }) => {
     if (field === "youtubeUrl") setYoutubeUrl(value);
     if (field === "authorName") setAuthorName(value);
     if (field === "spotifyUrl") setSpotifyUrl(value);
+    if (field === "tag") setTag(value);
 
     if (errors[field]) {
       setErrors({ ...errors, [field]: "" });
     }
+    if (submitError) setSubmitError("");
   };
 
   if (!isOpen) return null;
@@ -168,12 +203,44 @@ const EpisodeModal = ({ isOpen, onClose, onSubmit }) => {
               />
             </div>
 
+            {/* NEW: Tag dropdown (required) */}
+            <div className="form-group">
+              <label>
+                Tag
+                <span className="required">*</span>
+              </label>
+              <select
+                value={tag}
+                onChange={(e) => handleFieldChange("tag", e.target.value)}
+                className={errors.tag ? "error" : ""}
+              >
+                <option value="">Select a tag</option>
+                <option value="investor-education">Investor-Education</option>
+                <option value="pitch">Pitch</option>
+                <option value="founder">Founder</option>
+              </select>
+              {errors.tag && (
+                <span className="error-message">{errors.tag}</span>
+              )}
+            </div>
+
+            {submitError && <div className="submit-error">{submitError}</div>}
+
             <div className="form-actions">
-              <button type="button" className="cancel" onClick={onClose}>
+              <button
+                type="button"
+                className="cancel"
+                onClick={onClose}
+                disabled={creating}
+              >
                 Cancel
               </button>
-              <button type="submit" className="save" disabled={!isFormValid}>
-                Save Episode
+              <button
+                type="submit"
+                className="save"
+                disabled={!isFormValid || creating}
+              >
+                {creating ? "Creating..." : "Save Episode"}
               </button>
             </div>
           </form>
@@ -206,10 +273,7 @@ const AdminDashboard = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const handleAddEpisode = (episode) => {
-    // handleAddEpisode logic
-  };
-
+  // NOTE: create happens in EpisodeModal via redux dispatch + unwrap
   const handleTabClick = (tab) => {
     setActiveTab(tab);
     setIsMobileMenuOpen(false);
@@ -265,6 +329,16 @@ const AdminDashboard = () => {
           >
             Messages
           </motion.button>
+
+          {/* NEW: Pitch sidebar button (you will add list later) */}
+          <motion.button
+            className={activeTab === "pitch" ? "active" : ""}
+            onClick={() => handleTabClick("pitch")}
+            whileHover={{ x: 4 }}
+            whileTap={{ scale: 0.98 }}
+          >
+            Pitch
+          </motion.button>
         </nav>
       </motion.aside>
 
@@ -305,13 +379,26 @@ const AdminDashboard = () => {
               <MessagesList />
             </motion.div>
           )}
+
+          {activeTab === "pitch" && (
+            <motion.div
+              key="pitch"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.2 }}
+            >
+              <h3>Pitch</h3>
+              {/* You said you'll add the list later — placeholder */}
+              <div className="pitch-placeholder">Pitch list coming soon.</div>
+            </motion.div>
+          )}
         </AnimatePresence>
       </main>
 
       <EpisodeModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        onSubmit={handleAddEpisode}
       />
     </div>
   );

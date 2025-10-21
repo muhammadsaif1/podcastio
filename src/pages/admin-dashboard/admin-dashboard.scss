@@ -426,3 +426,107 @@ $success-green: #52c41a;
 .modal-enter {
   animation: fadeIn 0.3s ease-out;
 }
+
+//
+.social-tags-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.social-dash {
+  font-weight: 600;
+  opacity: 0.6;
+}
+
+/* ✅ Base Tag Style */
+.social-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: 0.2s ease-in-out;
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+  &:hover {
+    transform: translateY(-1px);
+    opacity: 0.9;
+  }
+}
+
+/* ✅ Platform Colors */
+.social-tag.facebook {
+  background-color: #1877f2;
+  color: #ffffff;
+}
+
+.social-tag.instagram {
+  background: linear-gradient(
+    45deg,
+    #f58529,
+    #feda77,
+    #dd2a7b,
+    #8134af,
+    #515bd4
+  );
+  color: #ffffff;
+}
+
+.social-tag.linkedin {
+  background-color: #0077b5;
+  color: #ffffff;
+}
+
+.social-tag.twitter {
+  background-color: #1da1f2;
+  color: #ffffff;
+}
+
+.social-tag.youtube {
+  background-color: #ff0000;
+  color: #ffffff;
+}
+
+.social-tag.spotify {
+  background-color: #1db954;
+  color: #ffffff;
+}
+
+.form-group {
+  select {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background: $bg-input;
+    border: 2px solid rgba($primary-orange, 0.2);
+    border-radius: 0.5rem;
+    color: $text-white;
+    font-family: inherit;
+    font-size: 1rem;
+    cursor: pointer;
+    appearance: none; // removes default dropdown arrow
+    transition: all 0.3s ease;
+
+    &:focus {
+      outline: none;
+      border-color: $primary-orange;
+      box-shadow: 0 0 0 3px rgba($primary-orange, 0.1);
+      background: rgba($bg-input, 0.9);
+    }
+
+    &:hover {
+      background: rgba($bg-input, 0.85);
+    }
+
+    &.error {
+      border-color: $error-red;
+      box-shadow: 0 0 0 3px rgba($error-red, 0.1);
+    }
+  }
+}
