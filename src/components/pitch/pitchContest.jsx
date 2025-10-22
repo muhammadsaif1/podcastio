@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Loader2, CheckCircle, XCircle, ArrowRight } from "lucide-react";
-import "./PitchContest.scss";
+import "./pitchContest.scss";
 
 const PitchContest = () => {
   const [form, setForm] = useState({
