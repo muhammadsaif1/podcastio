@@ -184,11 +184,7 @@ $green-pill: #00c58b;
     .partner-logo {
       width: 150px;
       height: 150px;
-      background: linear-gradient(
-        180deg,
-        rgba(255, 255, 255, 0.02),
-        rgba(0, 0, 0, 0.2)
-      );
+      background: #ffffff; /* White background for empty space */
       border-radius: 10px;
       display: flex;
       align-items: center;
@@ -198,7 +194,9 @@ $green-pill: #00c58b;
       img {
         max-width: 100%;
         max-height: 100%;
-        object-fit: contain;
+        object-fit: contain; /* Ensures the image scales to fit while maintaining aspect ratio */
+        width: auto; /* Allows dynamic scaling */
+        height: auto; /* Allows dynamic scaling */
       }
     }
   }

@@ -6,6 +6,10 @@ import "./about-page.scss";
 import waveLine from "@/images/wave-line.png";
 import william from "@/images/william.png";
 import marvin from "@/images/marvin.png";
+import kurudy from "@/images/kurudy-logo.png";
+import kingscrowd from "@/images/kingscrowd-logo.png";
+import finra from "@/images/finra-logo.png";
+import crunchbase from "@/images/crunchbase-logo.png";
 
 const AboutPage = () => {
   const hostsRef = useRef(null);
@@ -155,16 +159,37 @@ const AboutPage = () => {
       >
         <h2>Partners</h2>
         <div className="partners-grid">
-          {partners.map((partner, i) => (
-            <motion.div
-              key={i}
-              className="partner-logo"
-              whileHover={{ scale: 1.05, rotate: 3 }}
-              transition={{ duration: 0.2 }}
-            >
-              <img src={partner.logo} alt={partner.name} />
-            </motion.div>
-          ))}
+          <motion.div
+            className="partner-logo"
+            whileHover={{ scale: 1.05, rotate: 3 }}
+            transition={{ duration: 0.2 }}
+          >
+            <img src={kurudy} alt="Kurudy" />
+          </motion.div>
+
+          <motion.div
+            className="partner-logo"
+            whileHover={{ scale: 1.05, rotate: 3 }}
+            transition={{ duration: 0.2 }}
+          >
+            <img src={crunchbase} alt="Crunchbase" />
+          </motion.div>
+
+          <motion.div
+            className="partner-logo"
+            whileHover={{ scale: 1.05, rotate: 3 }}
+            transition={{ duration: 0.2 }}
+          >
+            <img src={kingscrowd} alt="Kingscrowd" />
+          </motion.div>
+
+          <motion.div
+            className="partner-logo"
+            whileHover={{ scale: 1.05, rotate: 3 }}
+            transition={{ duration: 0.2 }}
+          >
+            <img src={finra} alt="FINRA" />
+          </motion.div>
         </div>
       </motion.div>
     </section>
