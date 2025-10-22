@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Play, Clock, User, X } from "lucide-react";
+import { Play, Clock, User, X, Search } from "lucide-react";
 import "./episodes-list.scss";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -149,6 +149,26 @@ const EpisodeDetailModal = ({ isOpen, episode, onClose }) => {
   );
 };
 
+const HighlightText = ({ text, searchQuery }) => {
+  if (!searchQuery || !text) return <>{text}</>;
+
+  const parts = String(text).split(new RegExp(`(${searchQuery})`, "gi"));
+
+  return (
+    <>
+      {parts.map((part, index) =>
+        part.toLowerCase() === searchQuery.toLowerCase() ? (
+          <span key={index} className="highlight">
+            {part}
+          </span>
+        ) : (
+          part
+        )
+      )}
+    </>
+  );
+};
+
 const EpisodesList = () => {
   const dispatch = useDispatch();
   const reduxState = useSelector((state) => state.episodes || {});
@@ -157,8 +177,10 @@ const EpisodesList = () => {
   const errorFromStore = reduxState.error || null;
 
   const [episodes, setEpisodes] = useState([]);
+  const [filteredEpisodes, setFilteredEpisodes] = useState([]);
   const [loading, setLoading] = useState(loadingList);
   const [error, setError] = useState(errorFromStore);
+  const [searchQuery, setSearchQuery] = useState("");
   const [youtubeModalOpen, setYoutubeModalOpen] = useState(false);
   const [selectedVideoUrl, setSelectedVideoUrl] = useState("");
   const [selectedEpisode, setSelectedEpisode] = useState(null);
@@ -179,10 +201,36 @@ const EpisodesList = () => {
   useEffect(() => {
     if (Array.isArray(listFromStore) && listFromStore.length > 0) {
       setEpisodes(listFromStore);
+      setFilteredEpisodes(listFromStore);
     } else {
       setEpisodes([]);
+      setFilteredEpisodes([]);
     }
   }, [listFromStore]);
+
+  useEffect(() => {
+    if (!searchQuery.trim()) {
+      setFilteredEpisodes(episodes);
+      return;
+    }
+
+    const query = searchQuery.toLowerCase();
+    const filtered = episodes.filter((episode) => {
+      const title = episode.title?.toLowerCase() || "";
+      const author = episode.author?.toLowerCase() || "";
+      const description = episode.description?.toLowerCase() || "";
+      const tag = episode.tag?.toLowerCase() || "";
+
+      return (
+        title.includes(query) ||
+        author.includes(query) ||
+        description.includes(query) ||
+        tag.includes(query)
+      );
+    });
+
+    setFilteredEpisodes(filtered);
+  }, [searchQuery, episodes]);
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -223,6 +271,10 @@ const EpisodesList = () => {
     setIsDetailModalOpen(true);
   };
 
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
   if (loading) {
     return (
       <div className="episodes-container">
@@ -244,6 +296,27 @@ const EpisodesList = () => {
 
   return (
     <div className="episodes-container">
+      <div className="search-section">
+        <div className="search-bar">
+          <Search className="search-icon" size={20} />
+          <input
+            type="text"
+            placeholder="Search episodes..."
+            value={searchQuery}
+            onChange={handleSearchChange}
+            className="search-input"
+          />
+        </div>
+      </div>
+      <h3
+        className="mb-4"
+        style={{
+          textAlign: window.innerWidth <= 768 ? "center" : "left",
+        }}
+      >
+        Episodes
+      </h3>
+
       {error && (
         <motion.div
           className="error-state"
@@ -254,15 +327,15 @@ const EpisodesList = () => {
         </motion.div>
       )}
 
-      {episodes.length === 0 && !error ? (
+      {filteredEpisodes.length === 0 && !error ? (
         <div className="empty-state">
           <Play size={48} />
-          <p>You have no episodes</p>
+          <p>{searchQuery ? "No episodes found" : "You have no episodes"}</p>
         </div>
       ) : (
         <div className="episodes-grid">
           <AnimatePresence>
-            {episodes.map((episode, idx) => (
+            {filteredEpisodes.map((episode, idx) => (
               <motion.div
                 key={episode._id || idx}
                 className="episode-card"
@@ -293,25 +366,41 @@ const EpisodesList = () => {
                       className="episode-title"
                       onClick={() => handleEpisodeClick(episode)}
                     >
-                      {episode.title}
+                      <HighlightText
+                        text={episode.title}
+                        searchQuery={searchQuery}
+                      />
                     </h3>
                     {episode.tag && (
                       <div className="episode-tag">
-                        {String(episode.tag).replace(/-/g, " ")}
+                        <HighlightText
+                          text={String(episode.tag).replace(/-/g, " ")}
+                          searchQuery={searchQuery}
+                        />
                       </div>
                     )}
                   </div>
                   <div className="episode-meta">
                     <div className="meta-item">
                       <User size={14} />
-                      <span>{episode.author}</span>
+                      <span>
+                        <HighlightText
+                          text={episode.author}
+                          searchQuery={searchQuery}
+                        />
+                      </span>
                     </div>
                     <div className="meta-item">
                       <Clock size={14} />
                       <span>{formatDate(episode.createdAt)}</span>
                     </div>
                   </div>
-                  <p className="episode-description">{episode.description}</p>
+                  <p className="episode-description">
+                    <HighlightText
+                      text={episode.description}
+                      searchQuery={searchQuery}
+                    />
+                  </p>
                   <div className="episode-actions">
                     <button
                       className="watch-btn"
