@@ -1,4 +1,4 @@
-import logo from "@/images/logo2-6556cbb2.png";
+import logo from "../../images/navbar-logo.png";
 import SlideTrack from "@/components/Shared/SlideTrack";
 import trackImg from "@/images/record.base64?raw";
 import SocialIcons from "@/components/Shared/Social/SocialIcons";
