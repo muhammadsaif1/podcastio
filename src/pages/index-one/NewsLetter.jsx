@@ -33,8 +33,10 @@ const NewsLetter = ({ bg = "", pb = "" }) => {
             <div className="col-xxl-6 col-xl-7 col-lg-8 col-12">
               <div className="newsletter-content newsletter-padding">
                 <h4 className="newsletter-title">
-                  Join 10,000+ founders and investors building the future of{" "}
-                  <span className="tcn-0">community capital</span>
+                  Join
+                  <span className="tcn-0">10,000+</span>
+                  founders and investors building the future of community
+                  capital
                 </h4>
 
                 <form

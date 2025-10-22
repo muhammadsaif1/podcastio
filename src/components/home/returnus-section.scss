@@ -1,94 +1,181 @@
-$bg-dark: #0f0f0f; // same as podcast highlights
+$bg-dark: #0f0f0f;
 $bg-card: #1a1a1a;
 $accent: #f24f1d;
 $accent-2: #ff8c42;
 $text-white: #ffffff;
 $text-muted: #bbbbbb;
+$gold: #fbbf24;
 
 .returnus-section {
-  padding: 4rem 1.5rem;
+  padding: 5rem 1.5rem;
   display: flex;
   justify-content: center;
-  //   background: $bg-dark; // ensures same dark background
+  position: relative;
 
   .returnus-content {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: space-between;
     gap: 3rem;
-    max-width: 1200px;
+    max-width: 1300px;
     width: 100%;
-    flex-wrap: wrap;
 
-    .text-block {
-      flex: 1 1 450px;
+    .about-title {
+      align-self: flex-start;
+      font-size: 2rem;
+      font-weight: 700;
+      color: $text-white;
+    }
+
+    .about-button-container {
+      width: 100%;
       display: flex;
-      flex-direction: column;
-      gap: 1.25rem;
+      justify-content: flex-start;
 
-      h2 {
-        font-size: 2rem;
-        font-weight: 700;
-        color: $text-white;
-      }
-
-      .description {
-        font-size: 1.05rem;
-        line-height: 1.7;
-        color: $text-muted;
-        max-width: 600px;
-      }
-
-      .cta-btn {
-        display: inline-block;
-        background: linear-gradient(135deg, $accent, $accent-2);
-        padding: 0.75rem 1.4rem;
-        border-radius: 10px;
-        color: #000;
-        font-weight: 700;
+      .about-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.65rem 1.5rem;
+        border: 2px solid $gold;
+        border-radius: 50px;
+        color: $gold;
+        font-weight: 600;
+        font-size: 0.95rem;
         text-decoration: none;
-        font-size: 1rem;
-        max-width: fit-content;
-        transition: box-shadow 0.2s ease;
+        transition: all 0.3s ease;
+        background: transparent;
+
+        .icon {
+          font-size: 1.1rem;
+        }
 
         &:hover {
-          box-shadow: 0 8px 22px rgba($accent, 0.2);
+          background: $gold;
+          color: #000;
+          transform: translateY(-2px);
+          box-shadow: 0 4px 12px rgba($gold, 0.3);
         }
       }
     }
 
-    .image-block {
-      flex: 1 1 400px;
-      display: flex;
-      justify-content: center;
+    .hosts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+      gap: 2.5rem;
+      width: 100%;
+      margin-top: 1rem;
 
-      .portrait-wrapper {
+      .host-card {
         position: relative;
-        width: 100%;
-        max-width: 420px;
-        aspect-ratio: 4/5;
-        border-radius: 14px;
         overflow: hidden;
+        border-radius: 16px;
         background: $bg-card;
+        transition: transform 0.3s ease;
 
-        .portrait {
+        &:hover {
+          transform: translateY(-4px);
+
+          .host-image {
+            transform: scale(1.05);
+          }
+
+          .host-overlay {
+            background: linear-gradient(
+              to top,
+              rgba(0, 0, 0, 0.9) 0%,
+              rgba(0, 0, 0, 0.7) 50%,
+              transparent 100%
+            );
+          }
+        }
+
+        .description {
+          font-size: 1.6rem;
+          line-height: 1.7;
+          color: $text-muted;
+          max-width: 600px;
+        }
+
+        .host-image-wrapper {
+          position: relative;
           width: 100%;
-          height: 100%;
-          object-fit: cover;
-          filter: brightness(0.75);
-          transition: transform 0.4s ease;
+          aspect-ratio: 16/11;
+          overflow: hidden;
+
+          .host-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+            filter: grayscale(20%);
+          }
+
+          .host-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 2rem 2.5rem;
+            background: linear-gradient(
+              to top,
+              rgba(0, 0, 0, 0.85) 0%,
+              rgba(0, 0, 0, 0.6) 50%,
+              transparent 100%
+            );
+            transition: background 0.3s ease;
+
+            .host-name {
+              font-size: 1.75rem;
+              font-weight: 700;
+              color: $text-white;
+              margin-bottom: 0.5rem;
+            }
+
+            .host-title {
+              font-size: 1rem;
+              line-height: 1.5;
+              color: $text-muted;
+              max-width: 90%;
+            }
+          }
+        }
+      }
+    }
+
+    .cta-container {
+      margin-top: 1rem;
+
+      .cta-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.75rem;
+        background: linear-gradient(135deg, $accent, $accent-2);
+        padding: 0.9rem 2rem;
+        border-radius: 50px;
+        color: #fff;
+        font-weight: 700;
+        text-decoration: none;
+        font-size: 1.05rem;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba($accent, 0.3);
+
+        .arrow {
+          font-size: 1.3rem;
+          transition: transform 0.3s ease;
         }
 
-        &:hover .portrait {
-          transform: scale(1.04);
+        &:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 8px 25px rgba($accent, 0.4);
+
+          .arrow {
+            transform: translateX(4px);
+          }
         }
 
-        .logo-overlay {
-          position: absolute;
-          bottom: 1rem;
-          right: 1rem;
-          width: 95px;
-          opacity: 0.9;
+        &:active {
+          transform: translateY(0);
         }
       }
     }
@@ -96,16 +183,51 @@ $text-muted: #bbbbbb;
 }
 
 /* Responsive */
-@media (max-width: 860px) {
-  .returnus-section .returnus-content {
-    flex-direction: column-reverse;
-    text-align: center;
+@media (max-width: 1000px) {
+  .returnus-section .returnus-content .hosts-grid {
+    grid-template-columns: 1fr;
+    max-width: 600px;
+    margin: 1rem auto 0;
+  }
+}
 
-    .text-block {
-      align-items: center;
+@media (max-width: 560px) {
+  .returnus-section {
+    padding: 3rem 1rem;
 
-      .cta-btn {
-        margin: 0 auto;
+    .returnus-content {
+      .about-title {
+        font-size: 1.6rem;
+      }
+
+      .about-button-container {
+        justify-content: center;
+      }
+
+      .hosts-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+
+        .host-card .host-image-wrapper {
+          aspect-ratio: 4/5;
+
+          .host-overlay {
+            padding: 1.5rem;
+
+            .host-name {
+              font-size: 1.4rem;
+            }
+
+            .host-title {
+              font-size: 0.9rem;
+            }
+          }
+        }
+      }
+
+      .cta-container .cta-btn {
+        padding: 0.8rem 1.7rem;
+        font-size: 0.95rem;
       }
     }
   }
