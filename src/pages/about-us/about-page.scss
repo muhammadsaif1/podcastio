@@ -4,119 +4,393 @@ $bg-card-2: #2a2a2a;
 $accent: #f24f1d;
 $accent-2: #ff8c42;
 $text-white: #ffffff;
-$text-muted: #999999;
+$text-muted: #bdbdbd;
+$green-pill: #00c58b;
 
 .about-page {
-  margin-top: 18px;
+  padding: 4rem 2rem;
   color: $text-white;
-  padding: 4rem 1rem;
   width: 100%;
-  margin: 0 auto;
+  box-sizing: border-box;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  position: relative;
+  background-color: $bg-dark;
 
   .section {
-    margin-bottom: 4rem;
+    margin-bottom: 3.5rem;
     text-align: center;
+    position: relative;
 
     h1,
     h2 {
-      font-size: 2.5rem;
+      color: $text-white;
       margin-bottom: 1rem;
-      color: $accent;
     }
 
     p {
-      font-size: 1.2rem;
-      max-width: 800px;
-      margin: 0 auto;
       color: $text-muted;
+      max-width: 900px;
+      margin: 0 auto;
     }
   }
 
   .mission {
-    h1 {
+    .mission-phrase {
       font-style: italic;
+      font-size: 1.6rem;
+      color: lighten($text-white, 2%);
+      margin-bottom: 1rem;
+    }
+
+    p {
+      margin-top: 0.5rem;
+      font-size: 1.05rem;
+      line-height: 1.6;
     }
   }
 
-  .hosts {
+  /* EPISODES */
+  .episodes {
     h2 {
       font-size: 2rem;
+      color: $text-white;
+      margin-bottom: 1.25rem;
+    }
+
+    .episodes-grid {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      align-items: stretch;
+      flex-wrap: wrap;
+      margin-bottom: 1.5rem;
+    }
+
+    .large-card {
+      width: calc(50% - 2rem);
+      min-width: 300px;
+      max-width: 800px;
+      background: linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0.02),
+        rgba(0, 0, 0, 0.25)
+      );
+      border: 4px solid #ffffff; /* white border like screenshot */
+      border-radius: 6px;
+      overflow: hidden;
+      cursor: pointer;
+      display: flex;
+      align-items: stretch;
+      justify-content: flex-start;
+      padding: 0;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+
+      .card-inner {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .image-area {
+        position: relative;
+        width: 100%;
+        height: 340px;
+        overflow: hidden;
+        background: #000;
+      }
+
+      .thumbnail-wrapper {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+
+        img.episode-photo {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          display: block;
+          filter: brightness(0.6);
+        }
+
+        .image-overlay {
+          position: absolute;
+          inset: 0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          pointer-events: none;
+        }
+
+        .overlay-center {
+          text-align: center;
+        }
+
+        .overlay-title {
+          background: rgba(0, 0, 0, 0.5);
+          color: $text-white;
+          padding: 0.6rem 1.2rem;
+          border-radius: 28px;
+          font-weight: 700;
+          font-size: 1.05rem;
+          letter-spacing: 0.2px;
+          border: 3px solid rgba(255, 255, 255, 0.07);
+        }
+      }
+
+      .video-wrapper {
+        position: relative;
+        width: 100%;
+        height: 340px;
+        iframe {
+          width: 100%;
+          height: 100%;
+          display: block;
+          border: none;
+        }
+      }
+
+      .tag-pill {
+        position: absolute;
+        left: 18px;
+        top: 18px;
+        z-index: 4;
+        background: $green-pill;
+        color: #00210f;
+        padding: 0.45rem 0.9rem;
+        border-radius: 999px;
+        font-weight: 700;
+        font-size: 0.9rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+      }
+
+      .card-content {
+        padding: 1.25rem 1.5rem 1.8rem;
+        text-align: left;
+
+        .episode-title {
+          color: $text-white;
+          font-size: 1.5rem;
+          margin-bottom: 0.5rem;
+          font-weight: 700;
+        }
+
+        .episode-date {
+          color: $accent;
+          margin-bottom: 0.6rem;
+          font-weight: 700;
+        }
+
+        .episode-description {
+          color: $text-muted;
+          margin-bottom: 1rem;
+          font-size: 0.95rem;
+          max-height: 3.6rem;
+          overflow: hidden;
+        }
+
+        .episode-ctas {
+          display: flex;
+          gap: 0.9rem;
+          align-items: center;
+        }
+
+        .btn {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.6rem;
+          padding: 0.6rem 1rem;
+          border-radius: 30px;
+          font-weight: 700;
+          text-decoration: none;
+          cursor: pointer;
+          font-size: 0.95rem;
+        }
+
+        .btn-primary {
+          background: linear-gradient(90deg, $accent, $accent-2);
+          color: $text-white;
+          border: none;
+        }
+
+        .btn-outline {
+          background: transparent;
+          color: $text-white;
+          border: 2px solid rgba(255, 255, 255, 0.12);
+        }
+      }
+    }
+
+    .meet-hosts-wrap {
+      margin-top: 2rem;
+      display: flex;
+      justify-content: center;
+    }
+
+    .meet-hosts-btn {
+      background: linear-gradient(90deg, $accent, $accent-2);
+      color: white;
+      border: none;
+      padding: 0.8rem 2rem;
+      border-radius: 40px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 8px 28px rgba(242, 79, 29, 0.12);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      transform: translateY(0);
+    }
+
+    .arrow {
+      font-size: 1rem;
+      background: rgba(255, 255, 255, 0.06);
+      padding: 0.25rem 0.6rem;
+      border-radius: 999px;
+    }
+  }
+
+  /* HOSTS */
+  .hosts {
+    h2 {
+      font-size: 1.9rem;
+      margin-bottom: 1.25rem;
     }
 
     .hosts-grid {
       display: flex;
+      gap: 1.5rem;
       justify-content: center;
-      gap: 2rem;
       flex-wrap: wrap;
+    }
 
-      @media (max-width: 768px) {
-        flex-direction: column;
-        align-items: center;
+    .host-profile {
+      width: 300px;
+      background: linear-gradient(180deg, $bg-card 0%, $bg-card-2 100%);
+      border-radius: 12px;
+      padding: 1rem;
+      text-align: left;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.6);
+
+      .host-photo {
+        width: 100%;
+        height: 240px;
+        object-fit: cover;
+        border-radius: 8px;
+        margin-bottom: 0.9rem;
       }
 
-      .host-profile {
-        background: linear-gradient(135deg, $bg-card 0%, $bg-card-2 100%);
-        border-radius: 12px;
-        padding: 1.5rem;
-        width: 300px;
-        text-align: left;
-        cursor: pointer;
+      h3 {
+        margin-bottom: 0.4rem;
+      }
 
-        .host-photo {
-          width: 100%;
-          height: 200px;
-          object-fit: cover;
-          border-radius: 8px;
-          margin-bottom: 1rem;
-        }
+      .host-title {
+        color: $accent;
+        font-weight: 700;
+        margin-bottom: 0.6rem;
+      }
 
-        h3 {
-          font-size: 1.5rem;
-          margin-bottom: 0.5rem;
-        }
-
-        .host-title {
-          font-size: 1rem;
-          color: $accent;
-          margin-bottom: 0.75rem;
-        }
-
-        .host-bio {
-          font-size: 0.95rem;
-          color: $text-muted;
-        }
+      .host-bio {
+        color: $text-muted;
+        font-size: 0.95rem;
       }
     }
   }
 
+  /* PARTNERS */
   .partners {
     h2 {
-      font-size: 2rem;
+      margin-bottom: 1rem;
     }
 
     .partners-grid {
       display: flex;
+      gap: 1rem;
       justify-content: center;
-      gap: 2rem;
       flex-wrap: wrap;
+      margin-top: 1rem;
+    }
 
-      .partner-logo {
-        background: linear-gradient(135deg, $bg-card 0%, $bg-card-2 100%);
-        border-radius: 8px;
-        padding: 1rem;
-        width: 150px;
-        height: 150px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+    .partner-logo {
+      width: 150px;
+      height: 150px;
+      background: linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0.02),
+        rgba(0, 0, 0, 0.2)
+      );
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
 
-        img {
-          max-width: 100%;
-          max-height: 100%;
-          object-fit: contain;
-        }
+      img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
       }
     }
   }
+
+  .vector-line {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    margin-top: 20px;
+
+    img {
+      width: 100%;
+      height: auto;
+      opacity: 0.06;
+    }
+  }
+
+  /* Responsive */
+  @media (max-width: 1100px) {
+    .large-card {
+      width: 100%;
+    }
+    .image-area {
+      height: 300px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    padding: 2.5rem 1rem;
+
+    .episodes {
+      .image-area {
+        height: 220px;
+      }
+
+      .large-card {
+        width: 100%;
+      }
+
+      .card-content {
+        padding: 1rem;
+      }
+    }
+
+    .hosts-grid,
+    .partners-grid {
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+}
+
+.orange {
+  color: $accent;
+}
+
+.blue-gradient {
+  background: linear-gradient(90deg, #00f6ff, #00bfff, #007bff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
