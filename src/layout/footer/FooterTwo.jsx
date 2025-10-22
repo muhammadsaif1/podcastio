@@ -8,7 +8,7 @@ import "./footer-two-custom.scss";
 
 const FooterTwo = () => {
   return (
-    <footer className="footer-two-section footer-two-bg">
+    <footer className="footer-two-section footer-two-bg texture-bg-2">
       <NewsLetter />
       <div className="footer-two-container">
         <div className="footer-two-top">
