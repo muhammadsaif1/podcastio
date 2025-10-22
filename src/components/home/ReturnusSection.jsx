@@ -1,9 +1,7 @@
-"use client";
-
-import React from "react";
+import { ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
 import "./returnus-section.scss";
-
+import { Link } from "react-router-dom";
 const ReturnusSection = () => {
   const hosts = [
     {
@@ -34,7 +32,7 @@ const ReturnusSection = () => {
             <span className="icon">🚀</span> About Us
           </a>
         </motion.div>
-        
+
         <motion.h2
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -86,12 +84,15 @@ const ReturnusSection = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.3 }}
         >
-          <a href="/about-us" className="cta-btn">
-            Meet the Hosts <span className="arrow">→</span>
-          </a>
-        </motion.div>
-      </div>
-    </section>
+          <Link href="/about-us" className="cta-btn">
+            Meet the Hosts
+            <span className="pitch-contest-arrow-circle">
+              <ArrowRight size={16} />
+            </span>
+        </Link>
+      </motion.div>
+    </div>
+    </section >
   );
 };
 

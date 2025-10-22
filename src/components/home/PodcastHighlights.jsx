@@ -1,6 +1,5 @@
-"use client";
-
-import React, { useEffect, useState, useRef } from "react";
+import { ArrowRight } from "lucide-react";
+import { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchEpisodes } from "@/redux/slices/episodeSlice";
 import { motion, AnimatePresence } from "framer-motion";
@@ -137,10 +136,10 @@ const PodcastHighlights = () => {
   return (
     <section className="podcast-highlights-section texture-bg-2">
       <div className="section-container">
-        
+
 
         {/* new  */}
-         <motion.div
+        <motion.div
           className="podcast-button-container"
           initial={{ opacity: 0, y: -10 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -151,7 +150,7 @@ const PodcastHighlights = () => {
             <span className="icon">🚀</span> Podcast
           </a>
         </motion.div>
-        
+
         <motion.h2
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -281,6 +280,14 @@ const PodcastHighlights = () => {
             ))}
           </div>
         )}
+        <div className="cta-container">
+        <Link to="/latest-episodes" className="cta-btn">
+          View All Episodes
+          <span className="pitch-contest-arrow-circle">
+            <ArrowRight size={16} />
+          </span>
+        </Link>
+      </div>
       </div>
 
       {/* Modal */}
@@ -294,9 +301,8 @@ const PodcastHighlights = () => {
             onClick={handleClose}
           >
             <motion.div
-              className={`modal-content ${
-                modalType === "details" ? "details-modal" : ""
-              }`}
+              className={`modal-content ${modalType === "details" ? "details-modal" : ""
+                }`}
               onClick={(e) => e.stopPropagation()}
               initial={{ scale: 0.9, y: 20, opacity: 0 }}
               animate={{ scale: 1, y: 0, opacity: 1 }}
@@ -383,20 +389,7 @@ const PodcastHighlights = () => {
           </motion.div>
         )}
       </AnimatePresence>
-      <div className="cta-container">
-        <Link to="/latest-episodes" className="cta-btn">
-          View All Episodes
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-            <path
-              d="M7.5 15l5-5-5-5"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        </Link>
-      </div>
+      
     </section>
   );
 };

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Loader2, CheckCircle, XCircle, ArrowRight } from "lucide-react";
 import "./pitchContest.scss";
@@ -108,7 +108,7 @@ const PitchContest = () => {
   };
 
   return (
-    <div className="pitch-contest-main-container texture-bg-2">
+    <section className="pitch-contest-main-container texture-bg-2">
       <motion.div
         className="pitch-contest-hero-section"
         initial={{ opacity: 0 }}
@@ -519,7 +519,7 @@ const PitchContest = () => {
           </AnimatePresence>
         </div>
       </motion.div>
-    </div>
+    </section>
   );
 };
 
