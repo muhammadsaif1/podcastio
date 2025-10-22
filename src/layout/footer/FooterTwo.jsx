@@ -28,9 +28,9 @@ const FooterTwo = () => {
         <div className="footer-two-nav-border"></div> {/* New border div */}
         <div className="footer-two-nav">
           <NavLink to="/">Home</NavLink>
-          <NavLink to="/episode">Episode</NavLink>
-          <NavLink to="/pitch-contest">Pitch Contest</NavLink>
-          <NavLink to="/about">About</NavLink>
+          <NavLink to="/latest-episode">Episode</NavLink>
+          <NavLink to="/pitch">Pitch Contest</NavLink>
+          <NavLink to="/about-us">About</NavLink>
           <NavLink to="/contact">Contact</NavLink>
         </div>
         <div className="footer-two-kurudy">
