@@ -4,27 +4,14 @@ import React, { useRef } from "react";
 import { motion } from "framer-motion";
 import "./about-page.scss";
 import waveLine from "@/images/wave-line.png";
+import william from "@/images/william.png";
+import marvin from "@/images/marvin.png";
 
 const AboutPage = () => {
   const hostsRef = useRef(null);
 
   const missionText =
     "Returnus exists to bridge the divide between underfunded founders and underinformed investors, empowering startups with the capital they need to thrive. Backed by Kurudy’s ambitious mission to create 1,000 Black Unicorns by 2030, we are committed to fostering diversity and innovation in the entrepreneurial ecosystem.";
-
-  const hosts = [
-    {
-      name: "William McCoy",
-      title: "Founder of Kurudy, Investor Advocate, Serial Entrepreneur",
-      bio: "William McCoy is the visionary founder of Kurudy, a passionate advocate for investors, and a serial entrepreneur dedicated to supporting underrepresented founders in their journey to success.",
-      photo: "https://via.placeholder.com/600x600?text=William+McCoy",
-    },
-    {
-      name: "Marvin Clement",
-      title: "Investor Strategist, Co-founder, Media Producer",
-      bio: "Marvin Clement is a strategic investor, co-founder, and skilled media producer, specializing in crafting investment strategies and producing content that drives business growth and innovation.",
-      photo: "https://via.placeholder.com/600x600?text=Marvin+Clement",
-    },
-  ];
 
   const partners = [
     { name: "Kurudy", logo: "https://via.placeholder.com/150x150?text=Kurudy" },
@@ -128,23 +115,33 @@ const AboutPage = () => {
         viewport={{ once: true }}
       >
         <h2>
-          The
-          <span className="blue-gradient">Hosts</span>
+          The <span className="blue-gradient">Hosts</span>
         </h2>
+
         <div className="hosts-grid">
-          {hosts.map((host, i) => (
-            <motion.div
-              key={i}
-              className="host-profile"
-              whileHover={{ scale: 1.03 }}
-              transition={{ duration: 0.2 }}
-            >
-              <img src={host.photo} alt={host.name} className="host-photo" />
-              <h3>{host.name}</h3>
-              <p className="host-title">{host.title}</p>
-              <p className="host-bio">{host.bio}</p>
-            </motion.div>
-          ))}
+          <motion.div
+            className="host-card"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+          >
+            <div className="host-image-wrapper">
+              <img src={william} alt="William" className="host-image" />
+            </div>
+          </motion.div>
+
+          <motion.div
+            className="host-card"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+          >
+            <div className="host-image-wrapper">
+              <img src={marvin} alt="Marvin" className="host-image" />
+            </div>
+          </motion.div>
         </div>
       </motion.div>
 
