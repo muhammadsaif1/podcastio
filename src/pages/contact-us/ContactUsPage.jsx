@@ -3,6 +3,8 @@ import ReCAPTCHA from "react-google-recaptcha";
 import { useDispatch } from "react-redux";
 import { createMessage } from "../../redux/slices/messageSlice";
 import SocialIcons from "@/components/Shared/Social/SocialIcons";
+import waveLine from "@/images/wave-line.png";
+import "./new-contact-page.scss";
 
 const ContactUsPage = () => {
   const dispatch = useDispatch();
@@ -60,102 +62,136 @@ const ContactUsPage = () => {
   };
 
   return (
-    <section className="contact-container pt-120 pb-60">
-      <p className="contact-short-intro">
-        We love <span>collaboration.</span> Reach
-        out to the team
-      </p>
+    <section className="modern-contact-container texture-bg-2">
+      <div className="vector-line position-absolute top-50 start-50 translate-middle w-100 h-100 z-n1 mt-n5">
+        <img className="w-100" src={waveLine} alt="line" />
+      </div>
+      <div className="vector-line vector-line-secondary position-absolute top-50 start-50 translate-middle w-100 h-100 z-n2 mt-n10">
+        <img className="w-100" src={waveLine} alt="line-secondary" />
+      </div>
 
-      {/* Title */}
-      <p className="contact-title text-display-one">
-        Contact <span className="contact-title tcp-1">Us</span>
-      </p>
+      <div className="modern-contact-content">
+        {/* Left Section - Form */}
+        <div className="modern-contact-left">
+          <div className="modern-contact-header">
+            <h1 className="modern-contact-title">
+              GET IN <span className="highlight">TOUCH</span>
+            </h1>
+            <p className="modern-contact-subtitle">
+              We love collaboration. Reach out to the team.
+            </p>
+          </div>
 
-      {/* FORM */}
-      <form className="contact-form" onSubmit={handleSubmit}>
-        <div className="form-group">
-          <input
-            type="text"
-            placeholder="Your Name"
-            name="name"
-            required
-            value={formData.name}
-            onChange={handleChange}
-          />
-          {fieldErrors.name && (
-            <p className="field-error">{fieldErrors.name}</p>
-          )}
+          <form className="modern-contact-form" onSubmit={handleSubmit}>
+            <div className="modern-form-row">
+              <div className="modern-form-group">
+                <input
+                  type="text"
+                  placeholder="Your Name"
+                  name="name"
+                  required
+                  value={formData.name}
+                  onChange={handleChange}
+                />
+                {fieldErrors.name && (
+                  <p className="modern-field-error">{fieldErrors.name}</p>
+                )}
+              </div>
+
+              <div className="modern-form-group">
+                <input
+                  type="email"
+                  required
+                  placeholder="Email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                />
+                {fieldErrors.email && (
+                  <p className="modern-field-error">{fieldErrors.email}</p>
+                )}
+              </div>
+            </div>
+
+            <div className="modern-form-group message-group">
+              <div className="textarea-wrapper">
+                <textarea
+                  required
+                  placeholder="Message"
+                  rows="6"
+                  name="message"
+                  value={formData.message}
+                  onChange={handleChange}
+                ></textarea>
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="modern-submit-btn"
+                >
+                  {loading ? (
+                    <span className="loader"></span>
+                  ) : (
+                    <span className="btn-icon">
+                      <i className="ti ti-send"></i>
+                    </span>
+                  )}
+                </button>
+              </div>
+              {fieldErrors.message && (
+                <p className="modern-field-error">{fieldErrors.message}</p>
+              )}
+            </div>
+
+            <div className="modern-form-group">
+              <ReCAPTCHA
+                sitekey="6LfxV_IrAAAAAD1J2Sk5IJ5XgIIsH3vPPEdxBN1X"
+                onChange={onChangeCaptcha}
+                theme="dark"
+              />
+              {fieldErrors.captcha && (
+                <p className="modern-field-error">{fieldErrors.captcha}</p>
+              )}
+            </div>
+
+            {statusMessage.text && (
+              <p
+                className={`modern-form-status ${
+                  statusMessage.type === "error"
+                    ? "status-error"
+                    : "status-success"
+                }`}
+              >
+                {statusMessage.text}
+              </p>
+            )}
+          </form>
         </div>
 
-        <div className="form-group">
-          <input
-            type="email"
-            required
-            placeholder="Email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-          />
-          {fieldErrors.email && (
-            <p className="field-error">{fieldErrors.email}</p>
-          )}
+        {/* Right Section - Info */}
+        <div className="modern-contact-right">
+          <div className="modern-contact-info">
+            <div className="info-block">
+              <h3 className="info-title">Address</h3>
+              <p className="info-text">Kurudy Inc., Delaware, USA</p>
+            </div>
+
+            <div className="info-block">
+              <h3 className="info-title">Contact</h3>
+              <p className="info-text">
+                <i className="ti ti-mail"></i> return@kurudy.com
+              </p>
+              <p className="info-text">
+                <i className="ti ti-phone"></i> 0123456789
+              </p>
+            </div>
+
+            <div className="info-block">
+              <h3 className="info-title">Stay Connected</h3>
+              <SocialIcons />
+            </div>
+          </div>
         </div>
-
-        <div className="form-group">
-          <textarea
-            required
-            placeholder="Message"
-            rows="8"
-            name="message"
-            value={formData.message}
-            onChange={handleChange}
-          ></textarea>
-          {fieldErrors.message && (
-            <p className="field-error">{fieldErrors.message}</p>
-          )}
-        </div>
-
-        <div className="form-group">
-          <ReCAPTCHA
-            sitekey="6LcJdu8rAAAAAEjTqnTH70mKhvjDQ-Z_Zc2sGBbU"
-            onChange={onChangeCaptcha}
-          />
-          {fieldErrors.captcha && (
-            <p className="field-error">{fieldErrors.captcha}</p>
-          )}
-        </div>
-
-        {statusMessage.text && (
-          <p
-            className={`form-status ${
-              statusMessage.type === "error" ? "status-error" : "status-success"
-            }`}
-          >
-            {statusMessage.text}
-          </p>
-        )}
-
-        <button
-          type="submit"
-          disabled={loading}
-          className="bttn-1 bttn-filled alt-position"
-        >
-          <span className="text-nowrap fw-semibold">
-            {loading ? "Submitting..." : "Submit"}
-          </span>
-          <span className="icon icon-right">
-            <i className="ti ti-arrow-right"></i>
-          </span>
-        </button>
-      </form>
-
-      <SocialIcons />
-
-      {/* ✅ Business Address */}
-      <p className="contact-address">
-        Physical / Business Address:{" "}
-        <span>Kurudy Inc., Delaware, USA</span>
-      </p>
+      </div>
     </section>
   );
 };
