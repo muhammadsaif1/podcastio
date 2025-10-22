@@ -137,15 +137,30 @@ const PodcastHighlights = () => {
   return (
     <section className="podcast-highlights-section texture-bg-2">
       <div className="section-container">
-        <div className="header">
-          <div className="header-left">
-            <span className="podcast-badge">
-              <Play size={12} />
-              Podcast
-            </span>
-            <h2>Podcast Highlight</h2>
-          </div>
-        </div>
+        
+
+        {/* new  */}
+         <motion.div
+          className="podcast-button-container"
+          initial={{ opacity: 0, y: -10 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.4 }}
+        >
+          <a href="/about-us" className="podcast-btn">
+            <span className="icon">🚀</span> Podcast
+          </a>
+        </motion.div>
+        
+        <motion.h2
+          initial={{ opacity: 0, y: 10 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+          className="podcast-title"
+        >
+          Podcast Highlight
+        </motion.h2>
 
         {loading ? (
           <div className="loading-row">

@@ -75,6 +75,17 @@ const PitchContestSection = () => {
   return (
     <section className="pitch-contest-section texture-bg-2">
       <div className="container">
+          <motion.div
+            className="contest-button-container"
+            initial={{ opacity: 0, y: -10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.4 }}
+          >
+            <a href="/about-us" className="contest-btn">
+              <span className="icon">🚀</span> Pitch Contest
+            </a>
+          </motion.div>
         <motion.div
           className="content-wrapper"
           initial={{ opacity: 0, y: 10 }}
@@ -82,29 +93,6 @@ const PitchContestSection = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.4 }}
         >
-          {/* Pitch Contest Badge */}
-          <div className="flash-badge">
-            <motion.div
-              className="about-button-container"
-              initial={{ opacity: 0, y: -10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4 }}
-            >
-              <a href="/pitch" className="about-btn">
-                <span className="icon">
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                    <path
-                      d="M8.5 2L6 8h4l-2.5 6L11 8H7l1.5-6z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                </span>{" "}
-                Pitch Contest
-              </a>
-            </motion.div>
-            {/* Pitch Contest */}
-          </div>
 
           <h2 className="headline">
             Got 5 Minutes? Win $100 + a Shot to Pitch on Kurudy!

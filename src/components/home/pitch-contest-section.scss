@@ -1,7 +1,8 @@
 $bg-dark: #1a1a1a;
-$accent-orange: #ff5722;
+$accent-blue: #ff5722;
 $text-white: #ffffff;
 $text-muted: #9ca3af;
+$blue: #41b4ea;
 
 .pitch-contest-section {
   background: $bg-dark;
@@ -13,6 +14,12 @@ $text-muted: #9ca3af;
 
   .container {
     max-width: 1100px;
+    width: 100%;
+
+     display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3rem;
     width: 100%;
   }
 
@@ -29,7 +36,7 @@ $text-muted: #9ca3af;
       align-items: center;
       gap: 0.5rem;
       background: rgba(255, 87, 34, 0.15);
-      color: $accent-orange;
+      color: $accent-blue;
       padding: 0.5rem 1rem;
       border-radius: 20px;
       font-size: 0.875rem;
@@ -155,7 +162,7 @@ $text-muted: #9ca3af;
       display: inline-flex;
       align-items: center;
       gap: 0.5rem;
-      background: $accent-orange;
+      background: $accent-blue;
       color: white;
       font-weight: 600;
       font-size: 1rem;
@@ -166,7 +173,7 @@ $text-muted: #9ca3af;
       margin-top: 1rem;
 
       &:hover {
-        background: darken($accent-orange, 5%);
+        background: darken($accent-blue, 5%);
         transform: translateY(-2px);
         box-shadow: 0 8px 20px rgba(255, 87, 34, 0.3);
       }
@@ -180,4 +187,49 @@ $text-muted: #9ca3af;
       }
     }
   }
+}
+
+
+.podcast-button-container {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  
+  
+  @media (max-width: 768px) {
+    justify-content: center;
+  }
+
+  .podcast-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.65rem 1.5rem;
+    border: 2px solid $blue;
+    border-radius: 50px;
+    color: $blue;
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    background: transparent;
+
+    .icon {
+      font-size: 1.1rem;
+    }
+
+    &:hover {
+      background: $blue;
+      color: #000;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba($blue, 0.3);
+    }
+  }
+}
+
+.podcast-title {
+  align-self: flex-start;
+  font-size: 2rem;
+  font-weight: 700;
+  color: $text-white;
 }

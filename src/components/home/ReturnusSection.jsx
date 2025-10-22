@@ -34,6 +34,7 @@ const ReturnusSection = () => {
             <span className="icon">🚀</span> About Us
           </a>
         </motion.div>
+        
         <motion.h2
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
