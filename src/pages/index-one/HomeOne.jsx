@@ -15,7 +15,7 @@ const HomeOne = () => {
       <PitchContestSection />
       {/* <JoinMovementSection /> */}
       {/* <Testimonial /> */}
-      <NewsLetter bg={"texture-bg-1"} pb={"pb-120"} />
+      {/* <NewsLetter bg={"texture-bg-1"} pb={"pb-120"} /> */}
     </>
   );
 };

@@ -3,84 +3,48 @@ import SlideTrack from "@/components/Shared/SlideTrack";
 import trackImg from "@/images/record.base64?raw";
 import SocialIcons from "@/components/Shared/Social/SocialIcons";
 import { NavLink } from "react-router-dom";
-// import ListenOnBtns from "@/components/Shared/ListenOnBtns";
-
-// import { Youtube, Instagram, Linkedin, Twitter } from "lucide-react";
+import NewsLetter from "@/pages/index-one/NewsLetter";
+import "./footer-two-custom.scss";
 
 const FooterTwo = () => {
   return (
-    <footer className="footer-section footer-bg pt-120">
-      <div className="container">
-        <div className="footer-top d-between-2 gap-lg-6 gap-4 flex-wrap flex-lg-nowrap">
-          {/* LOGO */}
-          <div className="footer-logo">
+    <footer className="footer-two-section footer-two-bg">
+      <NewsLetter />
+      <div className="footer-two-container">
+        <div className="footer-two-top">
+          <div className="footer-two-logo">
             <a href="/">
-              <div style={{ maxWidth: 200, maxHeight: 200 }}>
-                <img
-                  src={logo}
-                  alt="Return Logo"
-                  style={{ width: "100%", height: "100%" }}
-                />
-              </div>
+              <img src={logo} alt="Return Logo" />
             </a>
           </div>
-
-          {/* SLIDE TRACK */}
-          <SlideTrack trackImg={trackImg} isFooter={true} />
-
-          {/* FOOTER PAGES */}
-          <div className="footer-pages">
-            <span className="styling pages">Pages</span>
-            <div className="pages-links styling">
-              <NavLink to={"/"}>Home</NavLink>
-              <NavLink to={"/latest-episode"}>Episodes</NavLink>
-              <NavLink to={"/about-us"}>About</NavLink>
-              <NavLink to={"/pitch"}>Pitch</NavLink>
-              <NavLink to={"/contact"}>Contact</NavLink>
-              <a href="https://www.kurudy.com/"> Kurudy</a>
-            </div>
-          </div>
-
-          {/* SOCIAL ICONS */}
-          <div className="footer-podcast-icons d-flex align-items-center gap-xl-6  gap-4">
-            <p className="fs-lg fw-medium text-nowrap text-display-one">
-              Follow Us:
-            </p>
-
+          <SlideTrack trackImg={trackImg} />
+          <div className="footer-two-listen">
+            <span className="footer-two-listen-text">
+              Listen to Returnthrough:
+            </span>
             <SocialIcons />
           </div>
         </div>
-
-        {/* FOOTER BOTTOM */}
-        <div className="footer-bottom d-between flex-wrap-reverse gap-2 mt-lg-15 mt-sm-10 mt-6 py-lg-8 py-sm-6 py-4 bt-2">
-          <span className="text-display-one">
-            © Returnus 2025 — powered by
-            <a
-              href="https://www.kurudy.com/"
-              className="kurudy-link"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {" "}
-              Kurudy
-            </a>
-            . Equity crowdfunding for Generational Impact
+        <div className="footer-two-nav-border"></div> {/* New border div */}
+        <div className="footer-two-nav">
+          <NavLink to="/">Home</NavLink>
+          <NavLink to="/episode">Episode</NavLink>
+          <NavLink to="/pitch-contest">Pitch Contest</NavLink>
+          <NavLink to="/about">About</NavLink>
+          <NavLink to="/contact">Contact</NavLink>
+        </div>
+        <div className="footer-two-kurudy">
+          <a href="https://www.kurudy.com/">Kurudy.com</a>
+        </div>
+        <div className="footer-two-bottom">
+          <span className="footer-two-copyright">
+            © Returnus 2025 – Powered by Kurudy. Equity Crowdfunding for
+            Generational Impact.
           </span>
-          <ul className="footer-menu d-flex gap-lg-6 gap-sm-4 gap-2">
-            <li>
-              <a
-                href="/terms-and-conditions"
-                className="link-text text-display-one"
-              >
-                Terms &amp; Conditions
-              </a>
-            </li>
-            <li>
-              <a href="/privacy-policy" className="link-text text-display-one">
-                Privacy Policy
-              </a>
-            </li>
-          </ul>
+          <div className="footer-two-links">
+            <a href="/terms-and-conditions">Terms & Conditions</a>
+            <a href="/privacy-policy">Privacy Policy</a>
+          </div>
         </div>
       </div>
     </footer>
