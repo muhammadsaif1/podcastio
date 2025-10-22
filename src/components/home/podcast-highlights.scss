@@ -1,37 +1,106 @@
-$bg-dark: #0f0f0f;
+$bg-dark: #0a0a0a;
 $bg-card: #1a1a1a;
-$bg-card-2: #2a2a2a;
-$accent: #f24f1d;
-$accent-2: #ff8c42;
+$bg-card-hover: #252525;
+$accent-orange: #ff6b35;
+$accent-green: #00e676;
 $text-white: #ffffff;
-$text-muted: #999999;
+$text-gray: #999999;
+$text-light-gray: #cccccc;
 
 .podcast-highlights-section {
+  background: $bg-dark;
   color: $text-white;
-  padding: 2rem 0; // Remove left/right padding to avoid gaps
-  width: 100%; // Ensure full width
-  margin: 0; // Remove centering margin
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  padding: 4rem 0;
+  width: 100%;
+  min-height: 500px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+
+  .section-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 2rem;
+
+    @media (max-width: 768px) {
+      padding: 0 1rem;
+    }
+  }
 
   .header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1.5rem;
-    padding: 0 1rem; // Keep padding for header content if needed
+    margin-bottom: 2.5rem;
 
-    h2 {
-      font-size: 1.75rem;
-      margin: 0;
+    @media (max-width: 768px) {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
     }
 
-    .view-all {
-      color: $accent;
-      text-decoration: none;
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+
+      .podcast-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        background: rgba($accent-orange, 0.15);
+        color: $accent-orange;
+        padding: 0.4rem 0.9rem;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+
+        svg {
+          width: 12px;
+          height: 12px;
+        }
+      }
+
+      h2 {
+        font-size: 2rem;
+        font-weight: 700;
+        margin: 0;
+        color: $text-white;
+
+        @media (max-width: 768px) {
+          font-size: 1.5rem;
+        }
+      }
+    }
+
+    .view-all-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: transparent;
+      border: 2px solid rgba($accent-orange, 0.3);
+      color: $accent-orange;
+      padding: 0.7rem 1.5rem;
+      border-radius: 25px;
+      font-size: 0.9rem;
       font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+
       &:hover {
-        color: $accent-2;
-        text-decoration: underline;
+        background: $accent-orange;
+        color: white;
+        border-color: $accent-orange;
+        transform: translateY(-2px);
+      }
+
+      svg {
+        transition: transform 0.3s ease;
+      }
+
+      &:hover svg {
+        transform: translateX(3px);
       }
     }
   }
@@ -40,17 +109,19 @@ $text-muted: #999999;
     position: relative;
     display: flex;
     align-items: center;
-    width: 100%; // Ensure full width
-    overflow: hidden; // Prevent overflow issues
+    gap: 1.5rem;
+
+    @media (max-width: 768px) {
+      gap: 0.75rem;
+    }
 
     .carousel-nav {
-      // Keep existing styles but ensure they don't restrict width
       flex-shrink: 0;
       width: 48px;
       height: 48px;
       border-radius: 50%;
-      border: none;
-      background: linear-gradient(135deg, $bg-card 0%, $bg-card-2 100%);
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.05);
       color: $text-white;
       cursor: pointer;
       display: flex;
@@ -58,14 +129,16 @@ $text-muted: #999999;
       justify-content: center;
       transition: all 0.3s ease;
       z-index: 10;
+      backdrop-filter: blur(10px);
 
       &:hover:not(:disabled) {
-        background: linear-gradient(135deg, $accent 0%, $accent-2 100%);
+        background: rgba($accent-orange, 0.2);
+        border-color: $accent-orange;
         transform: scale(1.1);
       }
 
       &:disabled {
-        opacity: 0.3;
+        opacity: 0.2;
         cursor: not-allowed;
       }
 
@@ -74,52 +147,55 @@ $text-muted: #999999;
         height: 36px;
 
         svg {
-          width: 18px;
-          height: 18px;
+          width: 16px;
+          height: 16px;
         }
       }
     }
 
     .carousel-wrapper {
       flex: 1;
-      width: 100%; // Ensure full width
       overflow: hidden;
+      width: 100%;
     }
 
     .carousel {
       display: flex;
-      gap: 1rem;
+      gap: 1.5rem;
       will-change: transform;
-      width: 100%; // Ensure full width of wrapper
 
       @media (max-width: 1024px) {
-        gap: 0.75rem;
+        gap: 1rem;
       }
 
       @media (max-width: 768px) {
-        gap: 0.5rem;
+        gap: 0.75rem;
       }
 
       .episode-card {
-        flex: 0 0 calc((100% - 2rem) / 3); // Adjust based on itemsPerView
+        flex: 0 0 calc((100% - 3rem) / 3);
         min-width: 0;
-        max-width: calc((100% - 2rem) / 3);
-        background: linear-gradient(135deg, $bg-card 0%, $bg-card-2 100%);
-        border-radius: 12px;
+        background: $bg-card;
+        border-radius: 16px;
         overflow: hidden;
-        cursor: pointer;
         display: flex;
         flex-direction: column;
-        transition: transform 0.2s ease;
+        transition: all 0.3s ease;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+
+        &:hover {
+          transform: translateY(-8px);
+          background: $bg-card-hover;
+          border-color: rgba($accent-orange, 0.3);
+          box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+        }
 
         @media (max-width: 1024px) {
-          flex: 0 0 calc((100% - 0.75rem) / 2);
-          max-width: calc((100% - 0.75rem) / 2);
+          flex: 0 0 calc((100% - 1rem) / 2);
         }
 
         @media (max-width: 768px) {
           flex: 0 0 100%;
-          max-width: 100%;
         }
 
         .thumbnail-wrap {
@@ -127,51 +203,251 @@ $text-muted: #999999;
           width: 100%;
           aspect-ratio: 16/9;
           overflow: hidden;
+          cursor: pointer;
 
           img {
             width: 100%;
             height: 100%;
             object-fit: cover;
             display: block;
-            filter: brightness(0.7);
-            transition: transform 0.3s ease;
+            transition: all 0.4s ease;
           }
 
           &:hover img {
-            transform: scale(1.05);
+            transform: scale(1.1);
+            filter: brightness(0.7);
           }
 
           .play-overlay {
             position: absolute;
             inset: 0;
-            display: grid;
-            place-items: center;
-            color: $text-white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+
+            .play-icon-circle {
+              width: 60px;
+              height: 60px;
+              border-radius: 50%;
+              background: rgba(255, 255, 255, 0.95);
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              transform: scale(0.8);
+              transition: transform 0.3s ease;
+
+              svg {
+                color: $bg-dark;
+                margin-left: 3px;
+              }
+            }
+          }
+
+          &:hover .play-overlay {
+            opacity: 1;
+
+            .play-icon-circle {
+              transform: scale(1);
+            }
+          }
+
+          .spotify-play-btn {
+            position: absolute;
+            bottom: 12px;
+            right: 12px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: $accent-green;
+            border: none;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 5;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 230, 118, 0.4);
+
+            &:hover {
+              transform: scale(1.1);
+              box-shadow: 0 6px 20px rgba(0, 230, 118, 0.6);
+            }
+
             svg {
-              background: rgba($accent, 0.14);
-              border-radius: 999px;
-              padding: 8px;
+              margin-left: 2px;
             }
           }
         }
 
         .episode-info {
-          padding: 0.75rem 1rem;
+          padding: 1.25rem;
+          display: flex;
+          flex-direction: column;
+          gap: 0.75rem;
+          flex: 1;
+
+          .episode-meta {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+
+            .episode-badge {
+              display: inline-block;
+              background: rgba($accent-orange, 0.15);
+              color: $accent-orange;
+              padding: 0.3rem 0.7rem;
+              border-radius: 12px;
+              font-size: 0.7rem;
+              font-weight: 600;
+              text-transform: uppercase;
+              letter-spacing: 0.5px;
+            }
+
+            .episode-guest {
+              display: flex;
+              align-items: center;
+              gap: 0.35rem;
+              color: $text-gray;
+              font-size: 0.75rem;
+
+              svg {
+                opacity: 0.7;
+              }
+            }
+          }
+
           h3 {
             margin: 0;
-            font-size: 1rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            line-height: 1.4;
+            color: $text-white;
+            cursor: pointer;
+            transition: color 0.2s ease;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+
+            &:hover {
+              color: $accent-orange;
+            }
           }
+
           .tagline {
-            margin-top: 0.25rem;
+            margin: 0;
             font-size: 0.875rem;
-            color: $text-muted;
+            color: $text-gray;
+            line-height: 1.5;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+          }
+
+          .episode-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+            padding-top: 0.75rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+
+            .episode-date {
+              display: flex;
+              align-items: center;
+              gap: 0.4rem;
+              font-size: 0.75rem;
+              color: $text-gray;
+
+              svg {
+                opacity: 0.7;
+              }
+            }
+
+            .listen-now {
+              background: transparent;
+              border: 1px solid rgba($accent-orange, 0.4);
+              color: $accent-orange;
+              padding: 0.5rem 1rem;
+              border-radius: 20px;
+              font-size: 0.75rem;
+              font-weight: 600;
+              cursor: pointer;
+              transition: all 0.3s ease;
+
+              &:hover {
+                background: $accent-orange;
+                color: white;
+                transform: translateY(-2px);
+              }
+            }
           }
         }
       }
     }
   }
 
-  // Keep other styles like .episode-modal, .loading-row, etc. as they are
+  .carousel-indicators {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 2rem;
+
+    .indicator {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(255, 255, 255, 0.2);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      padding: 0;
+
+      &.active {
+        background: $accent-orange;
+        width: 24px;
+        border-radius: 4px;
+      }
+
+      &:hover:not(.active) {
+        background: rgba(255, 255, 255, 0.4);
+      }
+    }
+  }
+
+  .loading-row,
+  .error-row,
+  .empty-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem 2rem;
+    text-align: center;
+
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid rgba($accent-orange, 0.3);
+      border-top-color: $accent-orange;
+      border-radius: 50%;
+      margin-right: 1rem;
+    }
+
+    p {
+      font-size: 1rem;
+      color: $text-gray;
+    }
+  }
+
+  .error-row p {
+    color: #ff6b6b;
+  }
 
   .episode-modal {
     position: fixed;
@@ -179,52 +455,193 @@ $text-muted: #999999;
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.85);
+    background: rgba(0, 0, 0, 0.92);
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 9999;
     padding: 1rem;
-    backdrop-filter: blur(4px);
+    backdrop-filter: blur(8px);
 
     .modal-content {
-      background: linear-gradient(135deg, $bg-card 0%, $bg-card-2 100%);
-      border-radius: 16px;
-      max-width: 900px;
+      background: $bg-card;
+      border-radius: 20px;
+      max-width: 700px;
       width: 100%;
-      overflow: hidden;
+      max-height: 80vh;
+      overflow-y: auto;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
+      margin-top: 5vh;
+
+      &.details-modal {
+        max-width: 500px;
+      }
+
+      @media (max-width: 768px) {
+        max-width: 90vw;
+        max-height: 90vh;
+        margin-top: 0;
+      }
 
       .modal-header {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 1rem;
-        border-bottom: 1px solid rgba($accent, 0.18);
+        padding: 1.5rem 2rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 
         h2 {
           margin: 0;
-          font-size: 1.25rem;
+          font-size: 1.5rem;
+          font-weight: 600;
+          color: $text-white;
+          flex: 1;
+          padding-right: 1rem;
+
+          @media (max-width: 768px) {
+            font-size: 1.25rem;
+          }
         }
 
         .close-btn {
-          background: none;
+          background: rgba(255, 255, 255, 0.05);
           border: none;
-          color: $accent;
+          color: $text-white;
           cursor: pointer;
-          padding: 0.5rem;
-          border-radius: 8px;
-          transition: all 0.2s;
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: all 0.2s ease;
+          flex-shrink: 0;
+
           &:hover {
-            background: rgba($accent, 0.06);
+            background: rgba($accent-orange, 0.2);
+            color: $accent-orange;
+            transform: rotate(90deg);
+          }
+
+          @media (max-width: 768px) {
+            width: 36px;
+            height: 36px;
           }
         }
       }
 
       .modal-body {
-        iframe {
-          width: 100%;
-          aspect-ratio: 16/9;
-          border: none;
+        .video-container {
+          iframe {
+            width: 100%;
+            aspect-ratio: 16/9;
+            border: none;
+            display: block;
+          }
+        }
+
+        .details-container {
+          padding: 2rem;
+
+          @media (max-width: 768px) {
+            padding: 1.5rem;
+          }
+
+          .details-image {
+            width: 100%;
+            aspect-ratio: 16/9;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 2rem;
+
+            img {
+              width: 100%;
+              height: 100%;
+              object-fit: cover;
+            }
+          }
+
+          .details-content {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+
+            .detail-item {
+              display: flex;
+              gap: 1rem;
+
+              &.full-width {
+                flex-direction: column;
+                gap: 0.5rem;
+              }
+
+              .detail-label {
+                font-weight: 600;
+                color: $text-light-gray;
+                min-width: 100px;
+              }
+
+              .detail-value {
+                color: $text-white;
+              }
+
+              .detail-description {
+                color: $text-gray;
+                line-height: 1.7;
+                margin: 0;
+              }
+            }
+
+            .modal-actions {
+              display: flex;
+              gap: 1rem;
+              margin-top: 1rem;
+              flex-wrap: wrap;
+
+              button {
+                flex: 1;
+                min-width: 150px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 0.5rem;
+                padding: 0.9rem 1.5rem;
+                border-radius: 25px;
+                font-weight: 600;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                border: none;
+
+                @media (max-width: 768px) {
+                  padding: 0.75rem 1.25rem;
+                  min-width: 120px;
+                }
+
+                &.watch-btn {
+                  background: $accent-orange;
+                  color: white;
+
+                  &:hover {
+                    background: darken($accent-orange, 10%);
+                    transform: translateY(-2px);
+                    box-shadow: 0 8px 20px rgba($accent-orange, 0.4);
+                  }
+                }
+
+                &.spotify-btn {
+                  background: $accent-green;
+                  color: white;
+
+                  &:hover {
+                    background: darken($accent-green, 10%);
+                    transform: translateY(-2px);
+                    box-shadow: 0 8px 20px rgba($accent-green, 0.4);
+                  }
+                }
+              }
+            }
+          }
         }
       }
     }
