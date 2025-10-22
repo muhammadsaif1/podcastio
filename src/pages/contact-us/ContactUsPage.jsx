@@ -1,5 +1,6 @@
+// ✅ Clean version
+
 import { useState } from "react";
-import ReCAPTCHA from "react-google-recaptcha";
 import { useDispatch } from "react-redux";
 import { createMessage } from "../../redux/slices/messageSlice";
 import SocialIcons from "@/components/Shared/Social/SocialIcons";
@@ -15,7 +16,6 @@ const ContactUsPage = () => {
     message: "",
   });
 
-  const [captchaValue, setCaptchaValue] = useState(null);
   const [statusMessage, setStatusMessage] = useState({ type: "", text: "" });
   const [fieldErrors, setFieldErrors] = useState({});
   const [loading, setLoading] = useState(false);
@@ -26,29 +26,14 @@ const ContactUsPage = () => {
     setFieldErrors({ ...fieldErrors, [e.target.name]: "" });
   };
 
-  const onChangeCaptcha = (value) => setCaptchaValue(value);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (!captchaValue) {
-      setFieldErrors((prev) => ({
-        ...prev,
-        captcha: "Please verify that you're not a robot.",
-      }));
-      return;
-    }
 
     setLoading(true);
     setFieldErrors({});
     try {
       await dispatch(createMessage(formData)).unwrap();
-      setFormData({
-        name: "",
-        email: "",
-        message: "",
-      });
-      setCaptchaValue(null);
+      setFormData({ name: "", email: "", message: "" });
       setStatusMessage({ type: "success", text: "Message sent successfully!" });
     } catch (error) {
       console.error(error);
@@ -139,17 +124,6 @@ const ContactUsPage = () => {
               </div>
               {fieldErrors.message && (
                 <p className="modern-field-error">{fieldErrors.message}</p>
-              )}
-            </div>
-
-            <div className="modern-form-group">
-              <ReCAPTCHA
-                sitekey="6LfxV_IrAAAAAD1J2Sk5IJ5XgIIsH3vPPEdxBN1X"
-                onChange={onChangeCaptcha}
-                theme="dark"
-              />
-              {fieldErrors.captcha && (
-                <p className="modern-field-error">{fieldErrors.captcha}</p>
               )}
             </div>
 

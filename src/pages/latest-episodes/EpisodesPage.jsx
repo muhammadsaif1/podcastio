@@ -5,7 +5,7 @@ import EpisodesList from "@/components/EpisodesCard/Episode-list";
 
 const EpisodesPage = () => {
   return (
-    <div className="episode-page">
+    <div className="episode-page texture-bg-2">
       <PageHero
         pageTitle="Latest"
         highlightWord="Episodes"
