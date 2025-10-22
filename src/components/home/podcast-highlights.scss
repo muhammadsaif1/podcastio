@@ -646,4 +646,38 @@ $text-light-gray: #cccccc;
       }
     }
   }
+
+  .cta-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem; // Adjust spacing as needed
+  }
+}
+.cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: $accent-orange;
+  color: white;
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 0.875rem 1.75rem;
+  border-radius: 25px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  margin-top: 1rem;
+
+  &:hover {
+    background: darken($accent-orange, 5%);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(255, 87, 34, 0.3);
+  }
+
+  svg {
+    transition: transform 0.3s ease;
+  }
+
+  &:hover svg {
+    transform: translateX(3px);
+  }
 }

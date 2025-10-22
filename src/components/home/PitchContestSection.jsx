@@ -26,8 +26,6 @@ const PitchContestSection = () => {
   const dispatch = useDispatch();
   const reduxState = useSelector((state) => state.pitches || {});
   const pitches = reduxState.list || [];
-  const loading = reduxState.loadingList || false;
-  const error = reduxState.error || null;
 
   const [timeLeft, setTimeLeft] = useState(
     calculateTimeLeft("2025-10-28T23:59:59")
@@ -46,6 +44,34 @@ const PitchContestSection = () => {
 
   const formatTimeUnit = (unit) => (unit < 10 ? `0${unit}` : unit);
 
+  // Video data with names
+  const founders = [
+    {
+      name: "Courtney Henry",
+      video:
+        "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+      bgColor: "#10b981",
+    },
+    {
+      name: "Ashould Islem",
+      video:
+        "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
+      bgColor: "#ef4444",
+    },
+    {
+      name: "Kathryn Murphy",
+      video:
+        "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4",
+      bgColor: "#fbbf24",
+    },
+    {
+      name: "Wendah Shafi",
+      video:
+        "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4",
+      bgColor: "#3b82f6",
+    },
+  ];
+
   return (
     <section className="pitch-contest-section texture-bg-2">
       <div className="container">
@@ -56,58 +82,122 @@ const PitchContestSection = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.4 }}
         >
+          {/* Pitch Contest Badge */}
+          <div className="flash-badge">
+            <motion.div
+              className="about-button-container"
+              initial={{ opacity: 0, y: -10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4 }}
+            >
+              <a href="/pitch" className="about-btn">
+                <span className="icon">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path
+                      d="M8.5 2L6 8h4l-2.5 6L11 8H7l1.5-6z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </span>{" "}
+                Pitch Contest
+              </a>
+            </motion.div>
+            {/* Pitch Contest */}
+          </div>
+
           <h2 className="headline">
             Got 5 Minutes? Win $100 + a Shot to Pitch on Kurudy!
           </h2>
+
           <p className="description">
             Every week, we select 3 founders to pitch live on Returnus. The
             audience votes. The winner gets $100, exposure, and a fast-track to
             launch their Reg CF raise.
           </p>
 
-          <div className="visuals">
-            {/* Placeholder looping clip reel */}
-            <div className="clip-reel">
-              <video
-                src="https://www.w3schools.com/html/mov_bbb.mp4"
-                loop
-                autoPlay
-                muted
-              />
+          {/* Countdown Timer */}
+          <div className="countdown">
+            <div className="time-unit">
+              <motion.span
+                key={timeLeft.days}
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, ease: "easeOut" }}
+                className="time-value"
+              >
+                {formatTimeUnit(timeLeft.days || 0)}
+              </motion.span>
+              <span className="time-label">days</span>
             </div>
-
-            {/* Countdown */}
-            <div className="countdown">
-              <span>{formatTimeUnit(timeLeft.days || 0)}d</span> :
-              <span>{formatTimeUnit(timeLeft.hours || 0)}h</span> :
-              <span>{formatTimeUnit(timeLeft.minutes || 0)}m</span> :
-              <span>{formatTimeUnit(timeLeft.seconds || 0)}s</span>
+            <span className="separator">:</span>
+            <div className="time-unit">
+              <motion.span
+                key={timeLeft.hours}
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, ease: "easeOut" }}
+                className="time-value"
+              >
+                {formatTimeUnit(timeLeft.hours || 0)}
+              </motion.span>
+              <span className="time-label">hours</span>
+            </div>
+            <span className="separator">:</span>
+            <div className="time-unit">
+              <motion.span
+                key={timeLeft.minutes}
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, ease: "easeOut" }}
+                className="time-value"
+              >
+                {formatTimeUnit(timeLeft.minutes || 0)}
+              </motion.span>
+              <span className="time-label">mins</span>
+            </div>
+            <span className="separator">:</span>
+            <div className="time-unit">
+              <motion.span
+                key={timeLeft.seconds}
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, ease: "easeOut" }}
+                className="time-value"
+              >
+                {formatTimeUnit(timeLeft.seconds || 0)}
+              </motion.span>
+              <span className="time-label">secs</span>
             </div>
           </div>
 
+          {/* Video Grid */}
+          <div className="video-grid">
+            {founders.map((founder, index) => (
+              <div
+                key={index}
+                className="video-card"
+                style={{ backgroundColor: founder.bgColor }}
+              >
+                <video src={founder.video} loop autoPlay muted playsInline />
+                <div className="founder-name">{founder.name}</div>
+              </div>
+            ))}
+          </div>
+
+          {/* CTA Button */}
           <Link to="/pitch" className="cta-btn">
             Submit Your Pitch
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path
+                d="M7.5 15l5-5-5-5"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
           </Link>
-
-          {/* Pitches preview */}
-          <div className="pitches-preview">
-            {loading ? (
-              <p className="loading">Loading pitches…</p>
-            ) : error ? (
-              <p className="error">Error loading pitches: {String(error)}</p>
-            ) : pitches.length === 0 ? (
-              <p className="empty">No pitches submitted yet.</p>
-            ) : (
-              <ul>
-                {pitches.slice(0, 3).map((p) => (
-                  <li key={p._id}>
-                    <strong>{p.fullName}</strong> –{" "}
-                    {p.companyName || "Independent"}
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
         </motion.div>
       </div>
     </section>

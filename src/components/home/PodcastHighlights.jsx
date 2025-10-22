@@ -13,7 +13,7 @@ import {
   User,
 } from "lucide-react";
 import "./podcast-highlights.scss";
-import { Navigate } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 
 // helpers
 const getYoutubeVideoId = (url) => {
@@ -145,10 +145,6 @@ const PodcastHighlights = () => {
             </span>
             <h2>Podcast Highlight</h2>
           </div>
-          <button className="view-all-btn" onClick={handleViewAllClick}>
-            View All Episodes
-            <ChevronRight size={16} />
-          </button>
         </div>
 
         {loading ? (
@@ -372,6 +368,20 @@ const PodcastHighlights = () => {
           </motion.div>
         )}
       </AnimatePresence>
+      <div className="cta-container">
+        <Link to="/latest-episodes" className="cta-btn">
+          View All Episodes
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path
+              d="M7.5 15l5-5-5-5"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </Link>
+      </div>
     </section>
   );
 };
