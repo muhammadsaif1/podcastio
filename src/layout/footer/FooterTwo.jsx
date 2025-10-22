@@ -42,7 +42,7 @@ const FooterTwo = () => {
           </div>
 
           {/* SOCIAL ICONS */}
-          <div className="footer-podcast-icons d-flex align-items-center gap-xl-6 flex-sm-nowrap flex-wrap gap-4">
+          <div className="footer-podcast-icons d-flex align-items-center gap-xl-6  gap-4">
             <p className="fs-lg fw-medium text-nowrap text-display-one">
               Follow Us:
             </p>

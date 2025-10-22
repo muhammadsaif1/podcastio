@@ -145,8 +145,9 @@ const PitchContest = () => {
   };
 
   return (
-    <section className="pitch-contest-main-container">
-      <div className="pitch-contest-hero-section">
+    <>
+    <section className="pitch-contest-main-container pt-120">
+      <div className="pitch-contest-hero-section ">
         <video
           className="pitch-contest-hero-video"
           autoPlay
@@ -156,7 +157,7 @@ const PitchContest = () => {
           aria-hidden
           src="/assets/pitch-hero-loop.mp4"
         />
-        <div className="pitch-contest-hero-overlay" />
+        {/* <div className="pitch-contest-hero-overlay" /> */}
         <motion.div
           className="pitch-contest-hero-content"
           initial={{ opacity: 0, y: 12 }}
@@ -183,7 +184,23 @@ const PitchContest = () => {
         </motion.div>
       </div>
 
-      <div className="pitch-contest-how-it-works-section">
+     
+
+      {/* <div className="pitch-contest-call-to-action-strip">
+        <p>Ready to take the stage?</p>
+        <motion.button
+          className="pitch-contest-outline-button"
+          onClick={() => setIsModalOpen(true)}
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+        >
+          Create Pitch
+        </motion.button>
+      </div> */}
+
+    </section>
+
+     <section className="pitch-contest-how-it-works-section ">
         <motion.h2
           className="pitch-contest-how-it-works-title"
           initial={{ opacity: 0, y: 8 }}
@@ -234,20 +251,8 @@ const PitchContest = () => {
             <p>$100 + mentorship + exposure for the winner.</p>
           </motion.div>
         </div>
-      </div>
-
-      {/* <div className="pitch-contest-call-to-action-strip">
-        <p>Ready to take the stage?</p>
-        <motion.button
-          className="pitch-contest-outline-button"
-          onClick={() => setIsModalOpen(true)}
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-        >
-          Create Pitch
-        </motion.button>
-      </div> */}
-
+      </section>
+      
       <AnimatePresence>
         {isModalOpen && (
           <motion.div
@@ -578,7 +583,7 @@ const PitchContest = () => {
           </motion.div>
         )}
       </AnimatePresence>
-    </section>
+      </>
   );
 };
 
