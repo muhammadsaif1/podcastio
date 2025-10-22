@@ -1,20 +1,12 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef } from "react";
 import { motion } from "framer-motion";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchEpisodes } from "@/redux/slices/episodeSlice";
 import "./about-page.scss";
 import waveLine from "@/images/wave-line.png";
 
 const AboutPage = () => {
-  const dispatch = useDispatch();
   const hostsRef = useRef(null);
-  const [playingEpisodeId, setPlayingEpisodeId] = useState(null);
-
-  useEffect(() => {
-    dispatch(fetchEpisodes());
-  }, [dispatch]);
 
   const missionText =
     "Returnus exists to bridge the divide between underfunded founders and underinformed investors, empowering startups with the capital they need to thrive. Backed by Kurudy’s ambitious mission to create 1,000 Black Unicorns by 2030, we are committed to fostering diversity and innovation in the entrepreneurial ecosystem.";
@@ -48,35 +40,6 @@ const AboutPage = () => {
     { name: "FINRA", logo: "https://via.placeholder.com/150x150?text=FINRA" },
   ];
 
-  // Select latest 2 episodes from state (sorted by date)
-  const episodes = useSelector((state) => {
-    const all = (state.episodes?.list || []).slice();
-    return all.sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 2);
-  });
-
-  // Utility: get YouTube video id from URL
-  const getYouTubeId = (url = "") => {
-    try {
-      const reg =
-        /(?:youtube\.com.*(?:v=|\/embed\/|\/watch\?v=)|youtu\.be\/)([a-zA-Z0-9_-]{6,11})/;
-      const m = url.match(reg);
-      return m ? m[1] : null;
-    } catch (e) {
-      return null;
-    }
-  };
-
-  const getThumb = (youtubeLink) => {
-    const id = getYouTubeId(youtubeLink);
-    if (!id) return "https://via.placeholder.com/1280x720?text=Episode";
-    // prefer maxres but fallback to hqdefault
-    return `https://img.youtube.com/vi/${id}/maxresdefault.jpg`;
-  };
-
-  const onPlayEpisode = (episode) => {
-    setPlayingEpisodeId(episode._id || episode.id || episode.youtubeLink);
-  };
-
   const handleMeetHosts = () => {
     if (hostsRef.current) {
       hostsRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -105,123 +68,49 @@ const AboutPage = () => {
         <p>{missionText}</p>
       </motion.div>
 
-      {/* Episodes - placed after Mission */}
+      {/* Mission Blocks - replacing Featured Pitches */}
       <motion.div
-        className="section episodes"
+        className="section mission-blocks"
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
         viewport={{ once: true }}
       >
-        <h2>Latest Episodes</h2>
-
-        <div className="episodes-grid">
-          {episodes.length === 0 && (
-            <div className="no-episodes">No episodes available</div>
-          )}
-
-          {episodes.map((episode, idx) => {
-            const keyId = episode._id || episode.id || episode.youtubeLink;
-            const isPlaying = playingEpisodeId === keyId;
-            const thumb = getThumb(episode.youtubeLink);
-            const youtubeId = getYouTubeId(episode.youtubeLink);
-
-            return (
-              <motion.article
-                key={keyId || idx}
-                className="episode-profile large-card"
-                whileHover={{ scale: 1.02 }}
-                transition={{ duration: 0.2 }}
-                onClick={() => {
-                  // if clicking the card but not a link, play video
-                  if (!isPlaying) onPlayEpisode(episode);
-                }}
-              >
-                <div className="card-inner">
-                  <div className="image-area">
-                    {/* Tag pill */}
-                    <span className="tag-pill">
-                      {episode.tag || "Latest Episode"}
-                    </span>
-
-                    {/* If playing -> iframe */}
-                    {isPlaying && youtubeId ? (
-                      <div className="video-wrapper">
-                        <iframe
-                          src={`https://www.youtube.com/embed/${youtubeId}?autoplay=1&rel=0`}
-                          title={episode.title}
-                          frameBorder="0"
-                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                          allowFullScreen
-                        />
-                      </div>
-                    ) : (
-                      <div
-                        className="thumbnail-wrapper"
-                        role="button"
-                        aria-label={`Play ${episode.title}`}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          onPlayEpisode(episode);
-                        }}
-                      >
-                        <img
-                          src={episode.image || thumb}
-                          alt={episode.title}
-                          className="episode-photo"
-                          onError={(e) => {
-                            // fallback to hqdefault if maxresmissing
-                            const id = getYouTubeId(episode.youtubeLink);
-                            if (id)
-                              e.currentTarget.src = `https://img.youtube.com/vi/${id}/hqdefault.jpg`;
-                          }}
-                        />
-                        <div className="image-overlay">
-                          <div className="overlay-center">
-                            <div className="overlay-title">Latest Episode</div>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-
-                  <div className="card-content">
-                    <h3 className="episode-title">{episode.title}</h3>
-                    <p className="episode-date">
-                      {episode.date
-                        ? new Date(episode.date).toLocaleDateString()
-                        : ""}
-                    </p>
-                    <p className="episode-description">{episode.description}</p>
-
-                    <div className="episode-ctas">
-                      <a
-                        className="btn btn-primary"
-                        href={episode.spotifyUrl || "#"}
-                        target="_blank"
-                        rel="noreferrer"
-                        onClick={(e) => e.stopPropagation()}
-                      >
-                        Listen on Spotify
-                      </a>
-                      <a
-                        className="btn btn-outline"
-                        href={episode.youtubeLink || "#"}
-                        target="_blank"
-                        rel="noreferrer"
-                        onClick={(e) => e.stopPropagation()}
-                      >
-                        Watch on YouTube
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </motion.article>
-            );
-          })}
+        <div className="mission-blocks-grid">
+          {[
+            {
+              num: "01",
+              title: "Empowering Underfunded Founders",
+              body: "Too many brilliant founders with transformative ideas lack access to traditional funding networks. We provide a platform where diverse entrepreneurs can share their stories, showcase their vision, and connect directly with investors who believe in their mission.",
+            },
+            {
+              num: "02",
+              title: "Educating Everyday Investors",
+              body: "The investment landscape has changed, but many potential investors don't know how to participate. We demystify equity crowdfunding, Regulation CF, and community capital, giving everyday people the knowledge to make smart investment decisions and build generational wealth.",
+            },
+            {
+              num: "03",
+              title: "Building Transparent Communities",
+              body: "We believe in radical transparency. Every pitch, every question, every success and failure becomes a learning opportunity for our community. By fostering open dialogue between founders and investors, we're creating a new model for capital deployment that works for everyone.",
+            },
+          ].map((block, index) => (
+            <motion.div
+              key={index}
+              className="mission-block"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: index * 0.2 }}
+              whileHover={{ scale: 1.02 }}
+            >
+              <div className="block-num">{block.num}</div>
+              <h3 className="block-title">{block.title}</h3>
+              <p className="block-body">{block.body}</p>
+            </motion.div>
+          ))}
         </div>
 
-        {/* Meet the Hosts CTA (centered like screenshot) */}
+        {/* Meet the Hosts CTA */}
         <div className="meet-hosts-wrap">
           <button className="meet-hosts-btn" onClick={handleMeetHosts}>
             Meet the Hosts <span className="arrow">➜</span>
