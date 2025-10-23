@@ -21,13 +21,6 @@ const ContactUsPage = () => {
   const [fieldErrors, setFieldErrors] = useState({});
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    const script = document.createElement("script");
-    script.src = `https://www.google.com/recaptcha/api.js?render=${siteKey}`;
-    script.async = true;
-    document.body.appendChild(script);
-    return () => document.body.removeChild(script);
-  }, []);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -146,7 +139,7 @@ const ContactUsPage = () => {
 
                   <button
                     type="submit"
-                    disabled={loading || !captchaToken}
+                    disabled={loading}
                     className={`newsletter-cta ${
                       !captchaToken ? "disabled" : ""
                     }`}
