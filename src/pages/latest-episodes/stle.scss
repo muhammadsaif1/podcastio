@@ -1,0 +1,26 @@
+.podcast-heading {
+  margin-top: 8rem;
+  text-align: center;
+}
+
+.podcast-heading h1 {
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.podcast-heading h1 span {
+  color: #f24f1d; /* your orange brand color */
+}
+
+/* ✅ Responsive (tablet + mobile) */
+@media (max-width: 768px) {
+  .podcast-heading h1 {
+    font-size: 1.6rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .podcast-heading h1 {
+    font-size: 1.4rem;
+  }
+}
