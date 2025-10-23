@@ -27,7 +27,7 @@ const NewsLetter = ({ bg = "", pb = "" }) => {
     <section className={`news-letter-section ${bg} ${pb}`} id="newsletter">
       <div className="container news-letter-wrapper rounded-4">
         <FadeUp>
-          <div className="row justify-content-between align-items-center newsletter-row">
+          <div className="divider">
             {/* Left content */}
             <div className="col-xxl-6 col-xl-7 col-lg-8 col-12">
               <div className="newsletter-content newsletter-padding">

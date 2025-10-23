@@ -16,11 +16,11 @@ $radius: 28px;
   background: transparent;
   overflow: visible;
 
+
   .news-letter-wrapper {
     background: $container-bg;
     border-radius: $radius;
     padding: 32px 40px;
-    /* Reduced from 48px 56px */
     position: relative;
     overflow: visible;
     display: flex;
@@ -28,12 +28,10 @@ $radius: 28px;
 
     @media (max-width: 980px) {
       padding: 24px 20px;
-      /* Adjusted for smaller screens */
     }
 
     @media (max-width: 560px) {
       padding: 16px 12px;
-      /* Further reduced for mobile */
     }
   }
 }
@@ -115,7 +113,7 @@ $radius: 28px;
   .newsletter-field--email {
     input {
       padding-right: 120px;
-      
+
     }
 
     .newsletter-cta {
@@ -135,14 +133,15 @@ $radius: 28px;
       align-items: center;
       gap: 8px;
       box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
-      
+
       @media (max-width: 900px) {
         padding: 6px 10px 6px 15px;
         right: 5px;
+
         .newsletter-cta__text {
           font-size: 12px;
         }
-        
+
       }
 
       &:hover {
@@ -163,7 +162,7 @@ $radius: 28px;
         place-items: center;
         box-shadow: 0 6px 18px rgba(#fff, 0.18);
         border: 2px solid rgba(255, 255, 255, 0.06);
-        
+
         @media (max-width: 900px) {
           width: 22px;
           height: 22px;
@@ -190,6 +189,17 @@ $radius: 28px;
   }
 }
 
+.divider {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
+  gap: 1rem;
+
+  @media (max-width: 980px) {
+    flex-direction: column-reverse;
+  }
+}
 
 
 .newsletter-banner-wrapper {
@@ -200,12 +210,17 @@ $radius: 28px;
 
   .newsletter-banner {
     position: absolute; // large screen
-    bottom: -163px;
-    right: -215px;
+    bottom: -164px;
+    left: 0;
     z-index: 3;
 
+    @media (max-width: 1350px) {
+      bottom: -150px;
+      left: -18%;
+    }
+
     img.banner-img {
-      width: 595px;
+      width: 560px;
       height: auto;
       display: block;
     }
@@ -216,18 +231,27 @@ $radius: 28px;
     z-index: 1;
 
     &.top-end {
-      top: -165px;
-      right: -170px;
+      top: -145px;
+      right: -20%;
+
+      @media (max-width: 1350px) {
+        top: -150px;
+        right: -4%;
+      }
     }
 
     &.bottom-start {
+      right: 20%;
       top: 90px;
-      right: 20px;
+
+      @media (max-width: 1350px) {
+        right: 30%;
+        top: 70px;
+      }
     }
   }
 
-  // -----------------------------
-  // Small devices: reset layout
+
   @media (max-width: 980px) {
     display: flex;
     flex-direction: column;
@@ -235,39 +259,44 @@ $radius: 28px;
     align-items: center;
     justify-content: center;
 
+
     .newsletter-banner {
-      position: relative; // reset
+      position: relative;
       bottom: auto;
       right: auto;
       transform: translateX(8px);
       max-width: 320px;
+      overflow: visible;
+      height: 200px;
 
       img.banner-img {
-        width: 100%;
+        position: absolute;
+        bottom: 0%;
+        left: 40px;
+        transform: translateX(-50%);
+        width: 400px;
+        z-index: 2;
       }
     }
 
     .slide-track {
-      position: relative; // reset
+      position: absolute;
+      width: 180px;
+      z-index: 1;
 
       &.top-end {
-        top: 0px;
-        right: 0px;
+        top: -1rem;
+        right: 5%;
       }
 
       &.bottom-start {
-        top: 0px;
-        right: 0px;
+        top: 10rem;
+        left: 5%;
       }
     }
   }
 
-  @media (max-width: 560px) {
-    .newsletter-banner {
-      transform: translateX(6px);
-      max-width: 260px;
-    }
-  }
+
 }
 
 
