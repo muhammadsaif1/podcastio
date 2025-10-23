@@ -2,6 +2,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Loader2, CheckCircle, XCircle, ArrowRight } from "lucide-react";
 import "./pitchContest.scss";
+import pitchHero from "@/images/pitch-hero.png";
 
 const PitchContest = () => {
   const [form, setForm] = useState({
@@ -25,13 +26,11 @@ const PitchContest = () => {
   const [submitMsg, setSubmitMsg] = useState("");
 
   const categoryOptions = [
+    "Residential",
+    "Commercial",
+    "Industrial",
+    "Mixed-Use",
     "Agriculture",
-    "Real Estate",
-    "Tech",
-    "Healthcare",
-    "Education",
-    "Fintech",
-    "Other",
   ];
 
   const stageOptions = ["Idea", "MVP", "Traction", "Raising"];
@@ -115,7 +114,15 @@ const PitchContest = () => {
         animate={{ opacity: 1 }}
         transition={{ duration: 0.8 }}
       >
-        <div className="pitch-contest-hero-content">
+        <div className="pitch-contest-hero-image-wrapper">
+          <img
+            src={pitchHero}
+            alt="Pitch Contest Hero"
+            className="pitch-contest-hero-image"
+          />
+          <div className="pitch-contest-hero-overlay"></div>
+        </div>
+        {/* <div className="pitch-contest-hero-content">
           <motion.h1
             initial={{ y: 30, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
@@ -131,7 +138,7 @@ const PitchContest = () => {
           >
             Launch on Kurudy.
           </motion.h2>
-        </div>
+        </div> */}
       </motion.div>
 
       <motion.div
@@ -191,14 +198,12 @@ const PitchContest = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.1 }}
             >
-              <label>
-                Full Name <span className="pitch-contest-required-mark">*</span>
-              </label>
               <input
                 type="text"
                 value={form.fullName}
                 onChange={(e) => handleField("fullName", e.target.value)}
                 className={errors.fullName ? "pitch-contest-input-error" : ""}
+                placeholder="Enter your full name"
                 disabled={isSubmitting}
               />
               {errors.fullName && (
@@ -215,11 +220,11 @@ const PitchContest = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.15 }}
             >
-              <label>Company Name</label>
               <input
                 type="text"
                 value={form.companyName}
                 onChange={(e) => handleField("companyName", e.target.value)}
+                placeholder="Enter your company's name"
                 disabled={isSubmitting}
               />
             </motion.div>
@@ -231,15 +236,12 @@ const PitchContest = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.2 }}
             >
-              <label>
-                Email Address{" "}
-                <span className="pitch-contest-required-mark">*</span>
-              </label>
               <input
                 type="email"
                 value={form.email}
                 onChange={(e) => handleField("email", e.target.value)}
                 className={errors.email ? "pitch-contest-input-error" : ""}
+                placeholder="Enter your email address"
                 disabled={isSubmitting}
               />
               {errors.email && (
@@ -256,11 +258,11 @@ const PitchContest = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.25 }}
             >
-              <label>Phone (optional)</label>
               <input
                 type="text"
                 value={form.phone}
                 onChange={(e) => handleField("phone", e.target.value)}
+                placeholder="Enter your phone number (optional)"
                 disabled={isSubmitting}
               />
             </motion.div>
@@ -272,10 +274,6 @@ const PitchContest = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.3 }}
             >
-              <label>
-                Pitch Category{" "}
-                <span className="pitch-contest-required-mark">*</span>
-              </label>
               <select
                 value={form.pitchCategory}
                 onChange={(e) => handleField("pitchCategory", e.target.value)}
@@ -284,7 +282,7 @@ const PitchContest = () => {
                 }
                 disabled={isSubmitting}
               >
-                <option value="">Select category</option>
+                <option value="">Select Pitch Category</option>
                 {categoryOptions.map((c) => (
                   <option key={c} value={c}>
                     {c}
@@ -305,10 +303,6 @@ const PitchContest = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.35 }}
             >
-              <label>
-                1-Sentence Summary{" "}
-                <span className="pitch-contest-required-mark">*</span>
-              </label>
               <input
                 type="text"
                 value={form.oneSentenceSummary}
@@ -318,6 +312,7 @@ const PitchContest = () => {
                 className={
                   errors.oneSentenceSummary ? "pitch-contest-input-error" : ""
                 }
+                placeholder="1-Sentence Summary (Quick overview of your idea)"
                 disabled={isSubmitting}
               />
               {errors.oneSentenceSummary && (
@@ -334,16 +329,12 @@ const PitchContest = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.4 }}
             >
-              <label>
-                Pitch Video Link{" "}
-                <span className="pitch-contest-required-mark">*</span>
-              </label>
               <input
                 type="text"
                 value={form.pitchVideo}
                 onChange={(e) => handleField("pitchVideo", e.target.value)}
                 className={errors.pitchVideo ? "pitch-contest-input-error" : ""}
-                placeholder="YouTube / Loom / Vimeo link"
+                placeholder="Pitch Video Link (YouTube, Loom, or Vimeo link - max 5 minutes)"
                 disabled={isSubmitting}
               />
               {errors.pitchVideo && (
@@ -360,16 +351,15 @@ const PitchContest = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.45 }}
             >
-              <label>
-                Stage <span className="pitch-contest-required-mark">*</span>
-              </label>
               <select
                 value={form.stage}
                 onChange={(e) => handleField("stage", e.target.value)}
                 className={errors.stage ? "pitch-contest-input-error" : ""}
                 disabled={isSubmitting}
               >
-                <option value="">Select stage</option>
+                <option value="">
+                  Company Stage (Idea / MVP / Traction / Raising)
+                </option>
                 {stageOptions.map((s) => (
                   <option key={s} value={s}>
                     {s}
@@ -390,12 +380,11 @@ const PitchContest = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.5 }}
             >
-              <label>Funding Goal (optional)</label>
               <input
                 type="text"
                 value={form.fundingGoal}
                 onChange={(e) => handleField("fundingGoal", e.target.value)}
-                placeholder="e.g. 50000"
+                placeholder="Funding Goal - (optional) How much you plan to raise"
                 disabled={isSubmitting}
               />
             </motion.div>
@@ -407,31 +396,11 @@ const PitchContest = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.55 }}
             >
-              <label>Logo or Deck Link (optional)</label>
-              <input
-                type="text"
-                value={form.logoOrDeck}
-                onChange={(e) => handleField("logoOrDeck", e.target.value)}
-                placeholder="Link to logo or pitch deck"
-                disabled={isSubmitting}
-              />
-            </motion.div>
-
-            <motion.div
-              className="pitch-contest-form-group"
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.6 }}
-            >
-              <label>
-                Why You? (100 words){" "}
-                <span className="pitch-contest-required-mark">*</span>
-              </label>
               <textarea
                 value={form.whyYou}
                 onChange={(e) => handleField("whyYou", e.target.value)}
                 className={errors.whyYou ? "pitch-contest-input-error" : ""}
+                placeholder="Why You? (100 words)"
                 disabled={isSubmitting}
               />
               {errors.whyYou && (
@@ -442,11 +411,59 @@ const PitchContest = () => {
             </motion.div>
 
             <motion.div
-              className="pitch-contest-consent-row"
+              className="pitch-contest-form-group pitch-contest-upload-group"
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.6 }}
+            >
+              <div className="pitch-contest-upload-box">
+                <input
+                  type="text"
+                  value={form.logoOrDeck}
+                  onChange={(e) => handleField("logoOrDeck", e.target.value)}
+                  placeholder="Upload Logo / Deck (optional)"
+                  disabled={isSubmitting}
+                />
+                <div className="pitch-contest-upload-icon">
+                  {/* <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  >
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                    <polyline points="17 8 12 3 7 8" />
+                    <line x1="12" y1="3" x2="12" y2="15" />
+                  </svg> */}
+                </div>
+              </div>
+            </motion.div>
+
+            <motion.div
+              className="pitch-contest-form-group"
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.65 }}
+            >
+              <input
+                type="text"
+                value=""
+                placeholder="Consent Checkbox (Your name or founder's name)"
+                disabled
+                readOnly
+              />
+            </motion.div>
+
+            <motion.div
+              className="pitch-contest-consent-row"
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.7 }}
             >
               <label className="pitch-contest-consent-label">
                 <input
@@ -455,8 +472,8 @@ const PitchContest = () => {
                   onChange={(e) => handleField("consent", e.target.checked)}
                   disabled={isSubmitting}
                 />
-                I agree to share my pitch publicly and to Returnus' terms.{" "}
-                <span className="pitch-contest-required-mark">*</span>
+                By submitting your information and pitch, you agree to Returnus'
+                Contest Rules, Terms, and Privacy Policy.
               </label>
               {errors.consent && (
                 <span className="pitch-contest-field-error">
@@ -478,13 +495,13 @@ const PitchContest = () => {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.7 }}
+              transition={{ duration: 0.5, delay: 0.75 }}
             >
               {isSubmitting ? (
                 <Loader2 size={20} className="pitch-contest-spinner" />
               ) : (
                 <>
-                  Submit My Pitch
+                  Submit
                   <div className="pitch-contest-arrow-circle">
                     <ArrowRight size={16} />
                   </div>
