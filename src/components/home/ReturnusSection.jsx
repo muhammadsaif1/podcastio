@@ -1,6 +1,6 @@
 import { ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
-import "./Returnus-section.scss";
+import "./returnus-section.scss";
 import { Link } from "react-router-dom";
 import william from "@/images/william.png";
 import marvin from "@/images/marvin.png";
