@@ -4,13 +4,13 @@ export default function SocialIcons() {
   return (
     <div className="contact-socials">
       <a
-        href="http://creators.spotify.com/pod/show/returnus"
+        href="http://creators.spotify.com/pod/show/Returnus"
         style={{ fontSize: "28px", marginLeft: "15px" }}
       >
         <i className="ti ti-brand-spotify"></i>
       </a>
       <a
-        href="https://www.youtube.com/@ReturnUs"
+        href="https://www.youtube.com/@Returnus"
         style={{ fontSize: "28px", marginLeft: "15px" }}
       >
         <i className="ti ti-brand-youtube"></i>

@@ -92,7 +92,6 @@ const PitchContestSection = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.4 }}
         >
-
           <h2 className="headline">
             Got 5 Minutes? Win $100 + a Shot to Pitch on Kurudy!
           </h2>
@@ -171,7 +170,6 @@ const PitchContestSection = () => {
               </div>
             ))}
           </div>
-
 
           {/* CTA Button */}
           <div className="cta-container">

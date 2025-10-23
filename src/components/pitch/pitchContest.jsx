@@ -188,7 +188,7 @@ const PitchContest = () => {
       >
         <div className="pitch-contest-form-container-wrapper">
           <h2 className="pitch-contest-form-title">
-            SUBMIT YOUR PITCH TO <span>RETURNUS</span>
+            SUBMIT YOUR PITCH TO <span>Returnus</span>
           </h2>
           <form onSubmit={handleSubmit}>
             <motion.div

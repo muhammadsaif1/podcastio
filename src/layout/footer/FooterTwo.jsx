@@ -20,7 +20,7 @@ const FooterTwo = () => {
           {/* <SlideTrack trackImg={trackImg} /> */}
           <div className="footer-two-listen">
             {/* <span className="footer-two-listen-text">
-              Listen to ReturnUs through:
+              Listen to Returnus through:
             </span> */}
           </div>
         </div>

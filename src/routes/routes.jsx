@@ -14,6 +14,8 @@ import AdminDashboard from "@/pages/admin-dashboard/AdminDashboard";
 import ProtectedAdminRoute from "@/components/ProtectedAdminRoute";
 import PitchContest from "@/components/pitch/pitchContest";
 import AboutPage from "@/pages/about-us/AboutPage";
+import TermsOfService from "@/pages/common/terms";
+import PrivacyPolicy from "@/pages/common/PrivacyPolicy";
 
 const router = createBrowserRouter([
   {
@@ -44,6 +46,14 @@ const router = createBrowserRouter([
       {
         path: "/about-us",
         element: <AboutPage />,
+      },
+      {
+        path: "/terms-and-conditions",
+        element: <TermsOfService />,
+      },
+      {
+        path: "/privacy-policy",
+        element: <PrivacyPolicy />,
       },
     ],
   },

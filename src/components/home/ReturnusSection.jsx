@@ -1,14 +1,14 @@
 import { ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
-import "./returnus-section.scss";
+import "./Returnus-section.scss";
 import { Link } from "react-router-dom";
 import william from "@/images/william.png";
 import marvin from "@/images/marvin.png";
 import Hosts from "./Hosts";
 const ReturnusSection = () => {
   return (
-    <section className="returnus-section texture-bg-2">
-      <div className="returnus-content">
+    <section className="Returnus-section texture-bg-2">
+      <div className="Returnus-content">
         <motion.div
           className="about-button-container"
           initial={{ opacity: 0, y: -10 }}
@@ -28,7 +28,7 @@ const ReturnusSection = () => {
           transition={{ duration: 0.5, delay: 0.1 }}
           className="about-title"
         >
-          About ReturnUs
+          About Returnus
         </motion.h2>
 
         <motion.p

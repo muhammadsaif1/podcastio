@@ -107,7 +107,7 @@ const ModernHero = () => {
           </div> */}
           <div className="hero-cta-group d-flex align-items-center justify-content-lg-start justify-content-center flex-wrap gap-sm-6 gap-3 mt-xxl-10 mt-lg-8 mt-6 mb-xxl-17 mb-lg-10 mb-8">
             <a
-              href="https://creators.spotify.com/pod/show/returnus"
+              href="https://creators.spotify.com/pod/show/Returnus"
               target="_blank"
               rel="noopener noreferrer"
               className="bttn-1"
@@ -116,7 +116,7 @@ const ModernHero = () => {
             </a>
 
             <a
-              href="https://www.youtube.com/@ReturnUs"
+              href="https://www.youtube.com/@Returnus"
               target="_blank"
               rel="noopener noreferrer"
               className="bttn-1 bttn-outline"
