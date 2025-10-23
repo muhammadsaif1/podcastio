@@ -6,7 +6,7 @@ import "./stle.scss";
 
 const EpisodesPage = () => {
   return (
-    <div className="episode-page texture-bg-2">
+    <div className="episode-page pt-120 texture-bg-2">
       {/* <PageHero
         pageTitle="Podcast"
         highlightWord="Episodes"
