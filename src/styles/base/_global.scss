@@ -798,3 +798,13 @@
         @include box(30);
     }
 }
+
+button:focus,
+button:active,
+a:focus,
+a:active,
+input:focus,
+input:active {
+  outline: none !important;
+  box-shadow: none !important;
+}
