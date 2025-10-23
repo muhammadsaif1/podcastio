@@ -3,6 +3,9 @@ $accent-blue: #ff5722;
 $text-white: #ffffff;
 $text-muted: #9ca3af;
 $blue: #41b4ea;
+$accent: #f24f1d;
+$accent-2: #ff8c42;
+$orange: orange;
 
 .pitch-contest-section {
   background: $bg-dark;
@@ -158,32 +161,69 @@ $blue: #41b4ea;
       }
     }
 
-    .cta-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      background: $accent-blue;
-      color: white;
-      font-weight: 600;
-      font-size: 1rem;
-      padding: 0.875rem 1.75rem;
-      border-radius: 25px;
-      text-decoration: none;
-      transition: all 0.3s ease;
+  .cta-container {
       margin-top: 1rem;
+      margin-left: auto;
+      margin-right: auto;
 
-      &:hover {
-        background: darken($accent-blue, 5%);
-        transform: translateY(-2px);
-        box-shadow: 0 8px 20px rgba(255, 87, 34, 0.3);
+      .cta-btn {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, $accent, $accent-2);
+        padding: 0.8rem 3.2rem 0.8rem 1.7rem;
+        border-radius: 50px;
+        color: #fff;
+        font-weight: 700;
+        text-decoration: none;
+        font-size: 1.05rem;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba($accent, 0.3);
+        overflow: hidden;
+
+        &:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 8px 25px rgba($accent, 0.4);
+        }
+
+        &:active {
+          transform: translateY(0);
+        }
+
+        .pitch-contest-arrow-circle {
+          width: 30px;
+          height: 30px;
+          border-radius: 50%;
+          background: $text-white;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: $orange;
+          position: absolute;
+          right: 8px;
+          top: 50%;
+          transform: translateY(-50%);
+          transition: transform 0.3s ease;
+        }
+
+        &:hover .pitch-contest-arrow-circle {
+          transform: translateY(-50%) scale(1.1);
+        }
       }
 
-      svg {
-        transition: transform 0.3s ease;
-      }
+      @media screen and (max-width: 575px) {
+        .cta-btn {
+          font-size: 0.9rem;
+          padding: 0.7rem 2.8rem 0.7rem 1.5rem;
+          border-radius: 40px;
 
-      &:hover svg {
-        transform: translateX(3px);
+          .pitch-contest-arrow-circle {
+            width: 26px;
+            height: 26px;
+            right: 6px;
+          }
+        }
       }
     }
   }

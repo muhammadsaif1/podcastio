@@ -7,7 +7,7 @@ const EpisodesPage = () => {
   return (
     <div className="episode-page texture-bg-2">
       <PageHero
-        pageTitle="Latest"
+        pageTitle="Podcast"
         highlightWord="Episodes"
         highlightColor="tcp-1"
         pb={"pb-lg-15"}

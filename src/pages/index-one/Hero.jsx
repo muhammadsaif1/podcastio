@@ -9,7 +9,7 @@ const ModernHero = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   // Real YouTube video ID - extracted from URL
-  const youtubeVideoId = "dQw4w9WgXcQ"; // Example: Rick Astley - Never Gonna Give You Up
+  const youtubeVideoId = "Q-2noFT_69s"; // Example: Rick Astley - Never Gonna Give You Up
   const youtubeThumbnail = `https://img.youtube.com/vi/${youtubeVideoId}/maxresdefault.jpg`;
 
   const openModal = () => {
@@ -35,7 +35,7 @@ const ModernHero = () => {
               <div className="modern-hero-video-card" onClick={openModal}>
                 <img
                   src={youtubeThumbnail}
-                  alt="AI + IMPACT Latest Episode"
+                  alt="Podcast Latest Episode"
                   className="modern-hero-video-thumbnail"
                 />
                 <div className="modern-hero-play-overlay">
@@ -45,13 +45,14 @@ const ModernHero = () => {
                 </div>
                 <div className="modern-hero-video-info">
                   <div className="modern-hero-badge">
-                    <span className="modern-hero-badge-icon">AI</span>
-                    <span className="modern-hero-badge-text">+IMPACT</span>
+                    <span className="modern-hero-badge-icon">Podcast</span>
+                    <span className="modern-hero-badge-text">+</span>
                   </div>
                   <div className="modern-hero-episode-tag">Latest Episode</div>
                   <h3 className="modern-hero-video-title">
-                    Investing in Impact + AI: Why Backing Black-Owned EdTech Is
-                    a Strategic Edge
+                    To educate, inspire, and onboard entrepreneurs and investors
+                    into the Returnus ecosystem — blending storytelling, live
+                    pitches, and community-driven investing education.
                   </h3>
                   <div className="modern-hero-cta-buttons">
                     <button className="modern-hero-btn modern-hero-btn-spotify">

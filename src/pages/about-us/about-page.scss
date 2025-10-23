@@ -12,7 +12,6 @@ $green-pill: #00c58b;
   color: $text-white;
   width: 100%;
   box-sizing: border-box;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   position: relative;
   background-color: $bg-dark;
 
@@ -185,11 +184,7 @@ $green-pill: #00c58b;
     .partner-logo {
       width: 150px;
       height: 150px;
-      background: linear-gradient(
-        180deg,
-        rgba(255, 255, 255, 0.02),
-        rgba(0, 0, 0, 0.2)
-      );
+      background: #ffffff; /* White background for empty space */
       border-radius: 10px;
       display: flex;
       align-items: center;
@@ -199,7 +194,9 @@ $green-pill: #00c58b;
       img {
         max-width: 100%;
         max-height: 100%;
-        object-fit: contain;
+        object-fit: contain; /* Ensures the image scales to fit while maintaining aspect ratio */
+        width: auto; /* Allows dynamic scaling */
+        height: auto; /* Allows dynamic scaling */
       }
     }
   }
@@ -264,4 +261,106 @@ $green-pill: #00c58b;
   background: linear-gradient(90deg, #00f6ff, #00bfff, #007bff);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+
+.hosts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+  gap: 2.5rem;
+  width: 100%;
+  margin-top: 1rem;
+
+  .host-card {
+    position: relative;
+    overflow: hidden;
+    border-radius: 16px;
+    background: $bg-card;
+    transition: transform 0.3s ease;
+
+    &:hover {
+      transform: translateY(-4px);
+
+      .host-image {
+        transform: scale(1.05);
+      }
+
+      .host-overlay {
+        background: linear-gradient(
+          to top,
+          rgba(0, 0, 0, 0.9) 0%,
+          rgba(0, 0, 0, 0.7) 50%,
+          transparent 100%
+        );
+      }
+    }
+
+    .description {
+      font-size: 1.6rem;
+      line-height: 1.7;
+      color: $text-muted;
+      max-width: 600px;
+    }
+
+    .host-image-wrapper {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16/11;
+      overflow: hidden;
+
+      .host-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.4s ease;
+        filter: grayscale(20%);
+      }
+
+      .host-overlay {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 2rem 2.5rem;
+        background: linear-gradient(
+          to top,
+          rgba(0, 0, 0, 0.85) 0%,
+          rgba(0, 0, 0, 0.6) 50%,
+          transparent 100%
+        );
+        transition: background 0.3s ease;
+
+        .host-name {
+          font-size: 1.75rem;
+          font-weight: 700;
+          color: $text-white;
+          margin-bottom: 0.5rem;
+        }
+
+        .host-title {
+          font-size: 1rem;
+          line-height: 1.5;
+          color: $text-muted;
+          max-width: 90%;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 1000px) {
+  .returnus-section .returnus-content .hosts-grid {
+    grid-template-columns: 1fr;
+    max-width: 600px;
+    margin: 1rem auto 0;
+  }
+  @media (max-width: 560px) {
+    .hosts-grid {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+
+      .host-card .host-image-wrapper {
+        aspect-ratio: 4/5;
+      }
+    }
+  }
 }

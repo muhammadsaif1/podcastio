@@ -1,6 +1,5 @@
-"use client";
-
-import React, { useEffect, useState } from "react";
+import { ArrowRight } from "lucide-react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchPitches } from "@/redux/slices/pitchSlice";
 import { motion } from "framer-motion";
@@ -75,17 +74,17 @@ const PitchContestSection = () => {
   return (
     <section className="pitch-contest-section texture-bg-2">
       <div className="container">
-          <motion.div
-            className="contest-button-container"
-            initial={{ opacity: 0, y: -10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.4 }}
-          >
-            <a href="/about-us" className="contest-btn">
-              <span className="icon">🚀</span> Pitch Contest
-            </a>
-          </motion.div>
+        <motion.div
+          className="contest-button-container"
+          initial={{ opacity: 0, y: -10 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.4 }}
+        >
+          <a href="/about-us" className="contest-btn">
+            <span className="icon">🚀</span> Pitch Contest
+          </a>
+        </motion.div>
         <motion.div
           className="content-wrapper"
           initial={{ opacity: 0, y: 10 }}
@@ -173,19 +172,16 @@ const PitchContestSection = () => {
             ))}
           </div>
 
+
           {/* CTA Button */}
-          <Link to="/pitch" className="cta-btn">
-            Submit Your Pitch
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-              <path
-                d="M7.5 15l5-5-5-5"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </Link>
+          <div className="cta-container">
+            <Link to="/pitch" className="cta-btn">
+              Submit Your Pitch
+              <span className="pitch-contest-arrow-circle">
+                <ArrowRight size={16} />
+              </span>
+            </Link>
+          </div>
         </motion.div>
       </div>
     </section>

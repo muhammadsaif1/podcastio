@@ -1,25 +1,10 @@
-"use client";
-
-import React from "react";
+import { ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
 import "./returnus-section.scss";
-
+import { Link } from "react-router-dom";
+import william from "@/images/william.png";
+import marvin from "@/images/marvin.png";
 const ReturnusSection = () => {
-  const hosts = [
-    {
-      name: "William McCoy",
-      title: "Founder of Kurucy, investor advocate, serial entrepreneur.",
-      image:
-        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=700&fit=crop",
-    },
-    {
-      name: "Marvin Clement",
-      title: "Investor strategist, co-founder, media producer.",
-      image:
-        "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=600&h=700&fit=crop",
-    },
-  ];
-
   return (
     <section className="returnus-section texture-bg-2">
       <div className="returnus-content">
@@ -34,7 +19,7 @@ const ReturnusSection = () => {
             <span className="icon">🚀</span> About Us
           </a>
         </motion.div>
-        
+
         <motion.h2
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -59,24 +44,29 @@ const ReturnusSection = () => {
         </motion.p>
 
         <div className="hosts-grid">
-          {hosts.map((host, index) => (
-            <motion.div
-              key={index}
-              className="host-card"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-            >
-              <div className="host-image-wrapper">
-                <img src={host.image} alt={host.name} className="host-image" />
-                <div className="host-overlay">
-                  <h3 className="host-name">{host.name}</h3>
-                  <p className="host-title">{host.title}</p>
-                </div>
-              </div>
-            </motion.div>
-          ))}
+          <motion.div
+            className="host-card"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+          >
+            <div className="host-image-wrapper">
+              <img src={william} alt="William" className="host-image" />
+            </div>
+          </motion.div>
+
+          <motion.div
+            className="host-card"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+          >
+            <div className="host-image-wrapper">
+              <img src={marvin} alt="Marvin" className="host-image" />
+            </div>
+          </motion.div>
         </div>
 
         <motion.div
@@ -86,9 +76,12 @@ const ReturnusSection = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.3 }}
         >
-          <a href="/about-us" className="cta-btn">
-            Meet the Hosts <span className="arrow">→</span>
-          </a>
+          <Link href="/about-us" className="cta-btn">
+            Meet the Hosts
+            <span className="pitch-contest-arrow-circle">
+              <ArrowRight size={16} />
+            </span>
+          </Link>
         </motion.div>
       </div>
     </section>
