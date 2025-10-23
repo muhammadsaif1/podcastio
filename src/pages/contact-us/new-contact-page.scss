@@ -84,6 +84,13 @@ $border-color: #2a2a2a;
       }
     }
 
+    .modern-contact-form-wrapper {
+      background-color: $bg-card;
+      border-radius: 16px;
+      padding: 40px 35px;
+      border: 1px solid $border-color;
+    }
+
     .modern-contact-form {
       display: flex;
       flex-direction: column;
@@ -241,6 +248,18 @@ $border-color: #2a2a2a;
         }
       }
     }
+
+    .recaptcha-note {
+      font-size: 0.8rem;
+      color: $text-muted;
+      text-align: center;
+      margin-top: 20px;
+
+      a {
+        color: $accent;
+        text-decoration: underline;
+      }
+    }
   }
 
   .modern-contact-right {
@@ -261,7 +280,12 @@ $border-color: #2a2a2a;
           font-size: 1.1rem;
           font-weight: 600;
           margin-bottom: 12px;
+          margin-left: 0;
           color: $text-white;
+        }
+
+        .info-social-icons {
+          margin-left: 0;
         }
 
         .info-text {
@@ -324,6 +348,10 @@ $border-color: #2a2a2a;
         }
       }
 
+      .modern-contact-form-wrapper {
+        padding: 35px 30px;
+      }
+
       .modern-contact-form {
         .modern-form-row {
           grid-template-columns: 1fr;
@@ -350,6 +378,10 @@ $border-color: #2a2a2a;
         .modern-contact-subtitle {
           font-size: 1rem;
         }
+      }
+
+      .modern-contact-form-wrapper {
+        padding: 30px 25px;
       }
 
       .modern-contact-form {
@@ -387,6 +419,11 @@ $border-color: #2a2a2a;
           }
         }
       }
+
+      .recaptcha-note {
+        font-size: 0.75rem;
+        margin-top: 15px;
+      }
     }
 
     .modern-contact-right {
@@ -422,6 +459,10 @@ $border-color: #2a2a2a;
         }
       }
 
+      .modern-contact-form-wrapper {
+        padding: 25px 20px;
+      }
+
       .modern-contact-form {
         .modern-form-group {
           input,
@@ -446,6 +487,11 @@ $border-color: #2a2a2a;
             }
           }
         }
+      }
+
+      .recaptcha-note {
+        font-size: 0.7rem;
+        margin-top: 10px;
       }
     }
 
