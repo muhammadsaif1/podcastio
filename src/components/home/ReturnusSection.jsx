@@ -4,6 +4,7 @@ import "./returnus-section.scss";
 import { Link } from "react-router-dom";
 import william from "@/images/william.png";
 import marvin from "@/images/marvin.png";
+import Hosts from "./Hosts";
 const ReturnusSection = () => {
   return (
     <section className="returnus-section texture-bg-2">
@@ -43,31 +44,8 @@ const ReturnusSection = () => {
           pitches from emerging entrepreneurs changing the world.
         </motion.p>
 
-        <div className="hosts-grid">
-          <motion.div
-            className="host-card"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-          >
-            <div className="host-image-wrapper">
-              <img src={william} alt="William" className="host-image" />
-            </div>
-          </motion.div>
-
-          <motion.div
-            className="host-card"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-          >
-            <div className="host-image-wrapper">
-              <img src={marvin} alt="Marvin" className="host-image" />
-            </div>
-          </motion.div>
-        </div>
+        {/* {Hosts} */}
+        <Hosts />
 
         <motion.div
           className="cta-container"

@@ -18,12 +18,12 @@ export default function SocialIcons() {
       <a style={{ fontSize: "28px", marginLeft: "15px" }}>
         <i className="ti ti-brand-instagram"></i>
       </a>
-      <a style={{ fontSize: "28px", marginLeft: "15px" }}>
+      {/* <a style={{ fontSize: "28px", marginLeft: "15px" }}>
         <i className="ti ti-brand-x"></i>
-      </a>
-      <a style={{ fontSize: "28px", marginLeft: "15px" }}>
+      </a> */}
+      {/* <a style={{ fontSize: "28px", marginLeft: "15px" }}>
         <i className="ti ti-brand-linkedin"></i>
-      </a>
+      </a> */}
     </div>
   );
 }

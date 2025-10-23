@@ -9,6 +9,7 @@ $text-light-gray: #cccccc;
 $orange: orange;
 $accent: #f24f1d;
 $accent-2: #ff8c42;
+$blue: #41b4ea;
 
 .expert-podcast-highlights-section {
   background: $bg-dark;
@@ -41,9 +42,9 @@ $accent-2: #ff8c42;
       align-items: center;
       gap: 0.5rem;
       padding: 0.65rem 1.5rem;
-      border: 2px solid $orange;
+      border: 2px solid $blue;
       border-radius: 50px;
-      color: $orange;
+      color: $blue;
       font-weight: 600;
       font-size: 0.95rem;
       text-decoration: none;
@@ -55,10 +56,10 @@ $accent-2: #ff8c42;
       }
 
       &:hover {
-        background: $orange;
+        background: $blue;
         color: #000;
         transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba($orange, 0.3);
+        box-shadow: 0 4px 12px rgba($blue, 0.3);
       }
     }
   }

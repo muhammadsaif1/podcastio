@@ -9,7 +9,7 @@ import "./footer-two-custom.scss";
 const FooterTwo = () => {
   return (
     <footer className="footer-two-section footer-two-bg pt-60">
-      <NewsLetter  />
+      <NewsLetter />
       <div className="footer-two-container">
         <div className="footer-two-top">
           <div className="footer-two-logo">
@@ -17,25 +17,29 @@ const FooterTwo = () => {
               <img src={logo} alt="Return Logo" />
             </a>
           </div>
-          <SlideTrack trackImg={trackImg} />
+          {/* <SlideTrack trackImg={trackImg} /> */}
           <div className="footer-two-listen">
-            <span className="footer-two-listen-text">
+            {/* <span className="footer-two-listen-text">
               Listen to ReturnUs through:
-            </span>
-            <SocialIcons />
+            </span> */}
           </div>
         </div>
         <div className="footer-two-nav-border"></div> {/* New border div */}
         <div className="footer-two-nav">
           <NavLink to="/">Home</NavLink>
+          <span> | </span>
           <NavLink to="/latest-episode">Episode</NavLink>
+          <span> | </span>
           <NavLink to="/pitch">Pitch Contest</NavLink>
+          <span> | </span>
           <NavLink to="/about-us">About</NavLink>
+          <span> | </span>
           <NavLink to="/contact">Contact</NavLink>
         </div>
         <div className="footer-two-kurudy">
           <a href="https://www.kurudy.com/">Kurudy.com</a>
         </div>
+        <SocialIcons />
         <div className="footer-two-bottom">
           <span className="footer-two-copyright">
             © Returnus 2025 – Powered by Kurudy. Equity Crowdfunding for

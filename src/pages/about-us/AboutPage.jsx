@@ -10,6 +10,7 @@ import kurudy from "@/images/kurudy-logo.png";
 import kingscrowd from "@/images/kingscrowd-logo.png";
 import finra from "@/images/finra-logo.png";
 import crunchbase from "@/images/crunchbase-logo.png";
+import Hosts from "@/components/home/Hosts";
 
 const AboutPage = () => {
   const hostsRef = useRef(null);
@@ -42,6 +43,21 @@ const AboutPage = () => {
       <div className="vector-line position-absolute top-50 start-50 translate-middle w-100 h-100 z-n1 mt-20">
         <img className="w-100" src={waveLine} alt="line" />
       </div>
+
+      <h2 className="host-title-text-modern" id="host-title">
+        The <span className="blue-gradient">Hosts</span>
+      </h2>
+      <div>
+        <h2 className="host-description-title-modern ">Profiles</h2>
+        <p className="host-description-title-modern">
+          {" "}
+          Returnus.com bridges the gap between brilliant founders and investors
+          ready for transparent, community-powered capital. Each week, hosts
+          William McCoy and Marvin Clement bring you stories, lessons, and live
+          pitches from emerging entrepreneurs changing the world.
+        </p>
+      </div>
+      <Hosts />
 
       <motion.div
         className="section mission"
@@ -103,14 +119,18 @@ const AboutPage = () => {
 
         {/* Meet the Hosts CTA */}
         <div className="meet-hosts-wrap">
-          <button className="meet-hosts-btn" onClick={handleMeetHosts}>
+          <button
+            id="host-title"
+            className="meet-hosts-btn"
+            onClick={handleMeetHosts}
+          >
             Meet the Hosts <span className="arrow">➜</span>
           </button>
         </div>
       </motion.div>
 
       {/* Hosts Section */}
-      <motion.div
+      {/* <motion.div
         className="section hosts"
         ref={hostsRef}
         initial={{ opacity: 0, y: 50 }}
@@ -147,7 +167,7 @@ const AboutPage = () => {
             </div>
           </motion.div>
         </div>
-      </motion.div>
+      </motion.div> */}
 
       {/* Partners */}
       <motion.div
@@ -167,29 +187,29 @@ const AboutPage = () => {
             <img src={kurudy} alt="Kurudy" />
           </motion.div>
 
-          <motion.div
+          {/* <motion.div
             className="partner-logo"
             whileHover={{ scale: 1.05, rotate: 3 }}
             transition={{ duration: 0.2 }}
           >
             <img src={crunchbase} alt="Crunchbase" />
-          </motion.div>
+          </motion.div> */}
 
-          <motion.div
+          {/* <motion.div
             className="partner-logo"
             whileHover={{ scale: 1.05, rotate: 3 }}
             transition={{ duration: 0.2 }}
           >
             <img src={kingscrowd} alt="Kingscrowd" />
-          </motion.div>
+          </motion.div> */}
 
-          <motion.div
+          {/* <motion.div
             className="partner-logo"
             whileHover={{ scale: 1.05, rotate: 3 }}
             transition={{ duration: 0.2 }}
           >
             <img src={finra} alt="FINRA" />
-          </motion.div>
+          </motion.div> */}
         </div>
       </motion.div>
     </section>

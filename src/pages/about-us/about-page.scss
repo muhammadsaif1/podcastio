@@ -258,10 +258,27 @@ $green-pill: #00c58b;
 }
 
 .blue-gradient {
-  background: linear-gradient(90deg, #00f6ff, #00bfff, #007bff);
+  background: linear-gradient(90deg, #00ff87, #00d26a, #00a84a);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  // display: flex;
 }
+
+.host-title-text-modern {
+  text-align: center;
+}
+.host-description-title-modern {
+  max-width: 90%;
+  // margin: 0 auto;
+}
+
+// @media (max-width: 768px) {
+//   .host-description-title-modern {
+//     margin: 0 auto;
+//     text-align: center;
+//     margin-top: 2px;
+//   }
+// }
 
 .hosts-grid {
   display: grid;

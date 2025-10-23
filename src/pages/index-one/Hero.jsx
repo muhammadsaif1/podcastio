@@ -85,12 +85,15 @@ const ModernHero = () => {
               </div> */}
               <img className="w-60" src={trackImg} alt="image" />
               <h1 className="modern-hero-main-title">
-                Turning Ideas into Innovation and Investment into Generational
-                Impact.
+                Where Ideas Meet Investment and Culture.
               </h1>
               <p className="modern-hero-description">
-                A podcast and pitch platform connecting diverse founders with
-                everyday investors through Regulation Crowdfunding.
+                Returnus is more than a podcast; it’s a movement. A space where
+                diverse founders meet everyday investors, and where
+                conversations about tech, travel, sneakers, and culture spark
+                ideas that turn into innovation and generational impact. Hosted
+                by long-time friends and family, it’s where passion meets
+                purpose, and where every story could be the next big return.
               </p>
             </div>
           </div>
