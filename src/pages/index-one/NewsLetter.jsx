@@ -1,11 +1,10 @@
-"use client";
-
-import React, { useState } from "react";
+import { ArrowRight } from "lucide-react";
+import { useState } from "react";
 import SlideTrack from "@/components/Shared/SlideTrack";
-import trackImg from "@/images/record-3.png";
 import banner from "@/images/record-mic.png";
 import FadeUp from "@/motion/FadeUp";
 import "./newsletter-custom.scss";
+import trackImg from "@/images/record.base64?raw";
 
 const NewsLetter = ({ bg = "", pb = "" }) => {
   const [submitted, setSubmitted] = useState(false);
@@ -34,7 +33,7 @@ const NewsLetter = ({ bg = "", pb = "" }) => {
               <div className="newsletter-content newsletter-padding">
                 <h4 className="newsletter-title">
                   Join
-                  <span className="tcn-0">10,000+</span>
+                  <span className="tcn-0"> diverse </span>
                   founders and investors building the future of community
                   capital
                 </h4>
@@ -75,21 +74,7 @@ const NewsLetter = ({ bg = "", pb = "" }) => {
                     >
                       <span className="newsletter-cta__text">Subscribe</span>
                       <span className="newsletter-cta__icon" aria-hidden>
-                        <svg
-                          width="12"
-                          height="12"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M5 12h14M13 5l7 7-7 7"
-                            stroke="#fff"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                        </svg>
+                        <ArrowRight size={16} />
                       </span>
                     </button>
                   </div>
@@ -106,11 +91,20 @@ const NewsLetter = ({ bg = "", pb = "" }) => {
             {/* Right visual */}
             <div className="col-xl-5 col-lg-4 col-12">
               <div className="newsletter-banner-wrapper">
-                <SlideTrack trackImg={trackImg} position={"top-img"} />
+                {/* Top-end SlideTrack */}
+                <div className="slide-track top-end">
+                  <SlideTrack trackImg={trackImg} />
+                </div>
+
+                {/* Microphone Banner */}
                 <div className="newsletter-banner">
                   <img src={banner} alt="microphone" className="banner-img" />
                 </div>
-                <SlideTrack trackImg={trackImg} position={"bottom-img"} />
+
+                {/* Bottom-start SlideTrack */}
+                <div className="slide-track bottom-start">
+                  <SlideTrack trackImg={trackImg} />
+                </div>
               </div>
             </div>
           </div>

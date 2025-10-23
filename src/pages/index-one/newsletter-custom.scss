@@ -14,21 +14,26 @@ $radius: 28px;
   width: 100%;
   padding: 2rem 1rem;
   background: transparent;
+  overflow: visible;
 
   .news-letter-wrapper {
     background: $container-bg;
     border-radius: $radius;
-    padding: 32px 40px; /* Reduced from 48px 56px */
+    padding: 32px 40px;
+    /* Reduced from 48px 56px */
     position: relative;
-    overflow: hidden;
+    overflow: visible;
     display: flex;
     align-items: center;
 
     @media (max-width: 980px) {
-      padding: 24px 20px; /* Adjusted for smaller screens */
+      padding: 24px 20px;
+      /* Adjusted for smaller screens */
     }
+
     @media (max-width: 560px) {
-      padding: 16px 12px; /* Further reduced for mobile */
+      padding: 16px 12px;
+      /* Further reduced for mobile */
     }
   }
 }
@@ -36,12 +41,14 @@ $radius: 28px;
 /* Content (left) */
 .newsletter-content {
   color: $text-black;
+
   .newsletter-title {
     font-size: 28px;
     line-height: 1.05;
     margin: 0 0 22px 0;
     font-weight: 800;
   }
+
   .tcn-0 {
     display: inline;
   }
@@ -51,6 +58,7 @@ $radius: 28px;
       font-size: 22px;
     }
   }
+
   @media (max-width: 560px) {
     .newsletter-title {
       font-size: 18px;
@@ -68,27 +76,30 @@ $radius: 28px;
 
   .newsletter-field {
     width: 100%;
-    position: relative; /* Add relative positioning for button placement */
+    position: relative;
+    /* Add relative positioning for button placement */
 
     input {
       width: 100%;
       padding: 16px 20px;
-      background: $input-bg;
-      color: $text-white;
-      border-radius: 999px; // pill shape
-      border: 1px solid $input-border;
+      background: rgba(255, 255, 255, 0.15);
+      color: #fff;
+      border-bottom: 3px solid rgba(255, 255, 255, 0.5);
+      border-radius: 0;
       font-size: 15px;
       outline: none;
       box-sizing: border-box;
-      transition: box-shadow 0.18s ease, transform 0.12s ease;
+      transition: border-color 0.2s ease;
 
       &::placeholder {
         color: rgba(255, 255, 255, 0.55);
       }
 
       &:focus {
-        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
-        border-color: rgba(255, 255, 255, 0.28);
+        border-bottom-color: #f24f1d;
+        background: rgba(255, 255, 255, 0.20);
+        border-bottom: 3px solid rgba(255, 255, 255, 0.5);
+        border-radius: 0;
       }
     }
   }
@@ -103,7 +114,8 @@ $radius: 28px;
   /* email with button */
   .newsletter-field--email {
     input {
-      padding-right: 120px; /* Make space for the button */
+      padding-right: 120px;
+      
     }
 
     .newsletter-cta {
@@ -111,9 +123,9 @@ $radius: 28px;
       right: 10px;
       top: 50%;
       transform: translateY(-50%);
-      padding: 10px 20px;
-      background: #ffffff;
-      color: $text-black;
+      padding: 10px 10px 10px 20px;
+      background: #000;
+      color: $text-white;
       border-radius: 999px;
       border: none;
       font-weight: 700;
@@ -123,6 +135,15 @@ $radius: 28px;
       align-items: center;
       gap: 8px;
       box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+      
+      @media (max-width: 900px) {
+        padding: 6px 10px 6px 15px;
+        right: 5px;
+        .newsletter-cta__text {
+          font-size: 12px;
+        }
+        
+      }
 
       &:hover {
         transform: translateY(-50%) scale(1.03);
@@ -137,15 +158,21 @@ $radius: 28px;
         width: 24px;
         height: 24px;
         border-radius: 50%;
-        background: $accent;
+        background: #fff;
         display: grid;
         place-items: center;
-        box-shadow: 0 6px 18px rgba($accent, 0.18);
+        box-shadow: 0 6px 18px rgba(#fff, 0.18);
         border: 2px solid rgba(255, 255, 255, 0.06);
+        
+        @media (max-width: 900px) {
+          width: 22px;
+          height: 22px;
+        }
 
         svg {
           width: 12px;
           height: 12px;
+          color: #000;
         }
       }
     }
@@ -163,110 +190,92 @@ $radius: 28px;
   }
 }
 
-/* Right visual */
+
+
 .newsletter-banner-wrapper {
   position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  align-items: center;
-  justify-content: center;
+  display: block; // default for large screens
+  overflow: visible;
   padding-left: 8px;
 
   .newsletter-banner {
-    width: 100%;
-    max-width: 360px;
-    transform: translateX(18px); // slight overlap into orange area like figma
+    position: absolute; // large screen
+    bottom: -163px;
+    right: -215px;
+    z-index: 3;
+
     img.banner-img {
-      width: 100%;
+      width: 595px;
       height: auto;
       display: block;
     }
   }
+
+  .slide-track {
+    position: absolute;
+    z-index: 1;
+
+    &.top-end {
+      top: -165px;
+      right: -170px;
+    }
+
+    &.bottom-start {
+      top: 90px;
+      right: 20px;
+    }
+  }
+
+  // -----------------------------
+  // Small devices: reset layout
+  @media (max-width: 980px) {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-items: center;
+    justify-content: center;
+
+    .newsletter-banner {
+      position: relative; // reset
+      bottom: auto;
+      right: auto;
+      transform: translateX(8px);
+      max-width: 320px;
+
+      img.banner-img {
+        width: 100%;
+      }
+    }
+
+    .slide-track {
+      position: relative; // reset
+
+      &.top-end {
+        top: 0px;
+        right: 0px;
+      }
+
+      &.bottom-start {
+        top: 0px;
+        right: 0px;
+      }
+    }
+  }
+
+  @media (max-width: 560px) {
+    .newsletter-banner {
+      transform: translateX(6px);
+      max-width: 260px;
+    }
+  }
 }
 
-/* Responsiveness: stacked on small screens */
-@media (max-width: 980px) {
-  .news-letter-wrapper {
-    padding: 34px 28px;
-  }
-
-  .newsletter-form {
-    .newsletter-field--email {
-      input {
-        padding-right: 100px; /* Adjusted for smaller screens */
-      }
-      .newsletter-cta {
-        right: 8px;
-        padding: 8px 16px;
-        &__icon {
-          width: 20px;
-          height: 20px;
-          svg {
-            width: 10px;
-            height: 10px;
-          }
-        }
-      }
-    }
-
-    .newsletter-banner-wrapper {
-      margin-top: 10px;
-      .newsletter-banner {
-        max-width: 320px;
-        transform: translateX(8px);
-      }
-    }
-  }
-}
-
-@media (max-width: 560px) {
-  .news-letter-wrapper {
-    padding: 18px 14px;
-    border-radius: 20px;
-  }
-
-  .newsletter-content .newsletter-title {
-    font-size: 16px;
-  }
-
-  .newsletter-form {
-    gap: 10px;
-
-    .newsletter-field input {
-      padding: 12px 14px;
-      font-size: 14px;
-    }
-
-    .newsletter-field--email {
-      input {
-        padding-right: 90px; /* Adjusted for mobile */
-      }
-      .newsletter-cta {
-        padding: 6px 12px;
-        font-size: 13px;
-        &__icon {
-          width: 18px;
-          height: 18px;
-          svg {
-            width: 8px;
-            height: 8px;
-          }
-        }
-      }
-    }
-  }
-
-  .newsletter-banner-wrapper .newsletter-banner {
-    max-width: 260px;
-    transform: translateX(6px);
-  }
-}
 
 /* Ensure the orange panel sits above page footer and doesn't allow page scroll bleed */
 .news-letter-section {
   .news-letter-wrapper {
     position: relative;
     z-index: 2;
+    overflow: visible !important;
   }
 }
