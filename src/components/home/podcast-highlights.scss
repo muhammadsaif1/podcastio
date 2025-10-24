@@ -32,9 +32,11 @@ $blue: #41b4ea;
     width: 100%;
     display: flex;
     justify-content: flex-start;
+    margin-left: 4.5rem;
 
     @media (max-width: 768px) {
       justify-content: center;
+      margin-left: 0;
     }
 
     .expert-podcast-btn {
