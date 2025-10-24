@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProducts, clearError } from "@/redux/slices/productSlice";
-import "./ProductsPage.scss";
+import "./productsPage.scss";
 
 const ProductsPage = () => {
   const dispatch = useDispatch();
