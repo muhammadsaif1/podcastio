@@ -16,6 +16,7 @@ import PitchContest from "@/components/pitch/pitchContest";
 import AboutPage from "@/pages/about-us/AboutPage";
 import TermsOfService from "@/pages/common/terms";
 import PrivacyPolicy from "@/pages/common/PrivacyPolicy";
+import ProductsPage from "@/pages/products/Products";
 
 const router = createBrowserRouter([
   {
@@ -54,6 +55,10 @@ const router = createBrowserRouter([
       {
         path: "/privacy-policy",
         element: <PrivacyPolicy />,
+      },
+      {
+        path: "/products",
+        element: <ProductsPage />,
       },
     ],
   },

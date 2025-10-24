@@ -1,244 +1,167 @@
-// TermsOfService.scss
-.terms-of-service {
-  background-color: #0a0a0a;
-  color: #ffffff;
+/* TermsOfService.scss */
+
+/* Page background uses your existing texture class plus overrides */
+.tos-page {
   min-height: 100vh;
-  padding: 80px 20px 60px;
-
-  @media (max-width: 768px) {
-    padding: 60px 16px 40px;
-  }
+  padding: 6rem 1rem 4rem;
+  color: #e7e7e7;
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial;
+  background-color: #0f0f11; /* deep dark base as in screenshot */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-.terms-container {
-  max-width: 900px;
+.tos-container {
+  max-width: 1100px;
   margin: 0 auto;
-  line-height: 1.7;
+  padding: 2.5rem 1.25rem;
+  position: relative;
 }
 
-.terms-title {
-  font-size: clamp(32px, 5vw, 48px);
-  font-weight: 700;
+/* Title */
+.tos-header {
   text-align: center;
-  margin-bottom: 40px;
-  letter-spacing: 1px;
-
-  .highlight {
-    color: #ff4d00;
-  }
-
-  @media (max-width: 768px) {
-    margin-bottom: 30px;
-  }
+  margin-bottom: 1.75rem;
 }
 
-.terms-meta {
-  margin-bottom: 50px;
-  font-size: 14px;
-  line-height: 1.8;
-  color: #b0b0b0;
-
-  p {
-    margin-bottom: 8px;
-
-    &.company-info {
-      margin-top: 16px;
-    }
-  }
-
-  strong {
-    color: #ffffff;
-    font-weight: 600;
-  }
-
-  a {
-    color: #ff4d00;
-    text-decoration: none;
-    transition: color 0.3s ease;
-
-    &:hover {
-      color: #ff6b2c;
-      text-decoration: underline;
-    }
-  }
-
-  @media (max-width: 768px) {
-    font-size: 13px;
-    margin-bottom: 40px;
-  }
+.tos-title {
+  font-size: clamp(1.25rem, 3.5vw, 2.25rem);
+  font-weight: 700;
+  letter-spacing: 0.06rem;
+  color: #ffffff;
+  margin: 0;
+  text-transform: uppercase;
 }
 
-.terms-section {
-  margin-bottom: 48px;
-
-  &:last-child {
-    margin-bottom: 0;
-  }
-
-  h2 {
-    font-size: clamp(22px, 3vw, 28px);
-    font-weight: 700;
-    margin-bottom: 20px;
-    color: #ffffff;
-    letter-spacing: 0.5px;
-
-    @media (max-width: 768px) {
-      margin-bottom: 16px;
-    }
-  }
-
-  h3 {
-    font-size: clamp(18px, 2.5vw, 22px);
-    font-weight: 600;
-    margin: 24px 0 16px;
-    color: #ffffff;
-
-    @media (max-width: 768px) {
-      margin: 20px 0 12px;
-    }
-  }
-
-  p {
-    font-size: clamp(14px, 1.8vw, 16px);
-    line-height: 1.8;
-    margin-bottom: 16px;
-    color: #d0d0d0;
-
-    &:last-child {
-      margin-bottom: 0;
-    }
-
-    @media (max-width: 768px) {
-      line-height: 1.7;
-      margin-bottom: 14px;
-    }
-  }
-
-  ul {
-    list-style: none;
-    padding-left: 0;
-    margin: 20px 0;
-
-    li {
-      position: relative;
-      padding-left: 28px;
-      margin-bottom: 12px;
-      font-size: clamp(14px, 1.8vw, 16px);
-      line-height: 1.7;
-      color: #d0d0d0;
-
-      &:before {
-        content: "";
-        position: absolute;
-        left: 0;
-        top: 10px;
-        width: 6px;
-        height: 6px;
-        background-color: #ff4d00;
-        border-radius: 50%;
-      }
-
-      &:last-child {
-        margin-bottom: 0;
-      }
-
-      @media (max-width: 768px) {
-        padding-left: 24px;
-        margin-bottom: 10px;
-
-        &:before {
-          top: 9px;
-          width: 5px;
-          height: 5px;
-        }
-      }
-    }
-
-    @media (max-width: 768px) {
-      margin: 16px 0;
-    }
-  }
-
-  a {
-    color: #ff4d00;
-    text-decoration: none;
-    transition: all 0.3s ease;
-    font-weight: 500;
-
-    &:hover {
-      color: #ff6b2c;
-      text-decoration: underline;
-    }
-  }
-
-  strong {
-    color: #ffffff;
-    font-weight: 600;
-  }
-
-  @media (max-width: 768px) {
-    margin-bottom: 40px;
-  }
+.tos-title .accent {
+  color: #ff6b35; /* orange used in other parts of your site */
 }
 
-// Smooth scrolling
-html {
-  scroll-behavior: smooth;
+/* Meta block */
+.tos-meta {
+  text-align: left;
+  color: rgba(255, 255, 255, 0.85);
+  margin-bottom: 1.25rem;
+  font-size: clamp(0.775rem, 1.2vw, 0.95rem);
 }
 
-// Selection styling
-::selection {
-  background-color: #ff4d00;
+.tos-meta .meta-line {
+  margin: 0.15rem 0;
+}
+
+/* Content */
+.tos-content {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.03);
+  padding: 1.75rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 0.75rem 2rem rgba(0, 0, 0, 0.6);
+}
+
+/* Ordered list layout */
+.tos-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: section;
+}
+
+.tos-list > li {
+  counter-increment: section;
+  margin-bottom: 1.25rem;
+}
+
+/* Section titles */
+.tos-section-title {
+  display: block;
+  font-size: clamp(0.95rem, 2.2vw, 1.25rem);
+  color: #ffffff;
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+  letter-spacing: 0.02rem;
+}
+
+/* Subtitles inside sections */
+.sub-title {
+  font-size: clamp(0.85rem, 1.8vw, 1rem);
+  color: #ffd7c4;
+  font-weight: 700;
+  margin: 0.6rem 0 0.4rem 0;
+}
+
+/* Section body text */
+.tos-section-body {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: clamp(0.825rem, 1.4vw, 0.95rem);
+  line-height: 1.6;
+}
+
+/* Lists inside body */
+.tos-section-body ul {
+  margin: 0.5rem 0 0.5rem 1.25rem;
+  padding: 0;
+  list-style: disc;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.tos-section-body li {
+  margin: 0.35rem 0;
+}
+
+/* Emphasized lines */
+.tos-section-body p strong {
   color: #ffffff;
 }
 
-::-moz-selection {
-  background-color: #ff4d00;
-  color: #ffffff;
-}
+/* Responsive tweaks */
+@media (max-width: 1024px) {
+  .tos-container {
+    padding: 1.5rem;
+  }
 
-// Scrollbar styling
-::-webkit-scrollbar {
-  width: 10px;
-}
-
-::-webkit-scrollbar-track {
-  background: #1a1a1a;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #ff4d00;
-  border-radius: 5px;
-
-  &:hover {
-    background: #ff6b2c;
+  .tos-content {
+    padding: 1.25rem;
   }
 }
 
-// Focus states for accessibility
-a:focus,
-button:focus {
-  outline: 2px solid #ff4d00;
-  outline-offset: 2px;
+@media (max-width: 768px) {
+  .tos-page {
+    padding: 5rem 0.75rem 3rem;
+  }
+
+  .tos-container {
+    max-width: 95%;
+    padding: 1rem;
+  }
+
+  .tos-title {
+    font-size: 1.25rem;
+  }
+
+  .tos-section-title {
+    font-size: 1rem;
+  }
 }
 
-// Print styles
-@media print {
-  .terms-of-service {
-    background-color: #ffffff;
-    color: #000000;
-    padding: 20px;
+@media (max-width: 420px) {
+  .tos-content {
+    padding: 1rem;
+  }
 
-    .terms-title .highlight {
-      color: #ff4d00;
-    }
+  .tos-title {
+    font-size: 1.05rem;
+  }
 
-    .terms-section {
-      page-break-inside: avoid;
+  .tos-section-body {
+    font-size: 0.85rem;
+  }
+}
 
-      h2 {
-        page-break-after: avoid;
-      }
-    }
+/* A subtle divider below each major section for readability on large screens */
+@media (min-width: 1200px) {
+  .tos-list > li {
+    padding-bottom: 0.9rem;
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.03);
   }
 }

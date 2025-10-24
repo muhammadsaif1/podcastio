@@ -1,36 +1,12 @@
-"use client";
-
 import React, { useRef } from "react";
 import { motion } from "framer-motion";
 import "./about-page.scss";
 import waveLine from "@/images/wave-line.png";
-import william from "@/images/william.png";
-import marvin from "@/images/marvin.png";
 import kurudy from "@/images/kurudy-logo.png";
-import kingscrowd from "@/images/kingscrowd-logo.png";
-import finra from "@/images/finra-logo.png";
-import crunchbase from "@/images/crunchbase-logo.png";
 import Hosts from "@/components/home/Hosts";
 
 const AboutPage = () => {
   const hostsRef = useRef(null);
-
-  const missionText =
-    "Returnus exists to bridge the divide between underfunded founders and underinformed investors, empowering startups with the capital they need to thrive. Backed by Kurudy’s ambitious mission to create 1,000 Black Unicorns by 2030, we are committed to fostering diversity and innovation in the entrepreneurial ecosystem.";
-
-  const partners = [
-    { name: "Kurudy", logo: "https://via.placeholder.com/150x150?text=Kurudy" },
-    {
-      name: "Crunchbase",
-      logo: "https://via.placeholder.com/150x150?text=Crunchbase",
-    },
-    {
-      name: "KingsCrowd",
-      logo: "https://via.placeholder.com/150x150?text=KingsCrowd",
-    },
-    { name: "SEC", logo: "https://via.placeholder.com/150x150?text=SEC" },
-    { name: "FINRA", logo: "https://via.placeholder.com/150x150?text=FINRA" },
-  ];
 
   const handleMeetHosts = () => {
     if (hostsRef.current) {
@@ -72,7 +48,6 @@ const AboutPage = () => {
         <h1 className="mission-phrase">
           “Closing the Capital Gap — One Pitch at a Time.”
         </h1>
-        <p>{missionText}</p>
       </motion.div>
 
       {/* Mission Blocks - replacing Featured Pitches */}

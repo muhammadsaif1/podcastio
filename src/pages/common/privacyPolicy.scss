@@ -1,249 +1,144 @@
-// PrivacyPolicy.scss
-.privacy-policy {
-  background-color: #0a0a0a;
-  color: #ffffff;
+.privacy-page {
+  width: 100%;
   min-height: 100vh;
-  padding: 80px 20px 60px;
-
-  @media (max-width: 768px) {
-    padding: 60px 16px 40px;
-  }
+  background: #000; // same deep black as screenshot
+  padding-top: 120px;
+  display: flex;
+  justify-content: center;
+  color: #ffffff;
 }
 
 .privacy-container {
+  width: 100%;
   max-width: 900px;
-  margin: 0 auto;
-  line-height: 1.7;
+  padding: 0 20px 80px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* HEADER TITLE */
+.privacy-header {
+  text-align: center;
 }
 
 .privacy-title {
-  font-size: clamp(32px, 5vw, 48px);
+  font-size: 1.9rem;
   font-weight: 700;
-  text-align: center;
-  margin-bottom: 40px;
   letter-spacing: 1px;
-
-  .highlight {
-    color: #ff4d00;
-  }
-
-  @media (max-width: 768px) {
-    margin-bottom: 30px;
-  }
 }
 
+.privacy-title .accent {
+  color: #f24f1d; /* orange highlight */
+}
+
+/* META INFO (EFFECTIVE DATE, COMPANY, ETC.) */
 .privacy-meta {
-  margin-bottom: 50px;
-  font-size: 14px;
-  line-height: 1.8;
-  color: #b0b0b0;
-
-  p {
-    margin-bottom: 8px;
-
-    &:first-child {
-      margin-bottom: 12px;
-    }
-  }
-
-  strong {
-    color: #ffffff;
-    font-weight: 600;
-  }
-
-  a {
-    color: #ff4d00;
-    text-decoration: none;
-    transition: color 0.3s ease;
-
-    &:hover {
-      color: #ff6b2c;
-      text-decoration: underline;
-    }
-  }
-
-  @media (max-width: 768px) {
-    font-size: 13px;
-    margin-bottom: 40px;
-  }
+  font-size: 0.9rem;
+  color: #bfbfbf;
+  line-height: 1.5rem;
 }
 
-.privacy-section {
-  margin-bottom: 48px;
-
-  &:last-child {
-    margin-bottom: 0;
-  }
-
-  h2 {
-    font-size: clamp(22px, 3vw, 28px);
-    font-weight: 700;
-    margin-bottom: 20px;
-    color: #ffffff;
-    letter-spacing: 0.5px;
-
-    @media (max-width: 768px) {
-      margin-bottom: 16px;
-    }
-  }
-
-  h3 {
-    font-size: clamp(18px, 2.5vw, 22px);
-    font-weight: 600;
-    margin: 24px 0 16px;
-    color: #ffffff;
-
-    @media (max-width: 768px) {
-      margin: 20px 0 12px;
-    }
-  }
-
-  p {
-    font-size: clamp(14px, 1.8vw, 16px);
-    line-height: 1.8;
-    margin-bottom: 16px;
-    color: #d0d0d0;
-
-    &:last-child {
-      margin-bottom: 0;
-    }
-
-    @media (max-width: 768px) {
-      line-height: 1.7;
-      margin-bottom: 14px;
-    }
-  }
-
-  ul {
-    list-style: none;
-    padding-left: 0;
-    margin: 20px 0;
-
-    li {
-      position: relative;
-      padding-left: 28px;
-      margin-bottom: 12px;
-      font-size: clamp(14px, 1.8vw, 16px);
-      line-height: 1.7;
-      color: #d0d0d0;
-
-      &:before {
-        content: "";
-        position: absolute;
-        left: 0;
-        top: 10px;
-        width: 6px;
-        height: 6px;
-        background-color: #ff4d00;
-        border-radius: 50%;
-      }
-
-      &:last-child {
-        margin-bottom: 0;
-      }
-
-      strong {
-        color: #ffffff;
-        font-weight: 600;
-      }
-
-      @media (max-width: 768px) {
-        padding-left: 24px;
-        margin-bottom: 10px;
-
-        &:before {
-          top: 9px;
-          width: 5px;
-          height: 5px;
-        }
-      }
-    }
-
-    @media (max-width: 768px) {
-      margin: 16px 0;
-    }
-  }
-
-  a {
-    color: #ff4d00;
-    text-decoration: none;
-    transition: all 0.3s ease;
-    font-weight: 500;
-
-    &:hover {
-      color: #ff6b2c;
-      text-decoration: underline;
-    }
-  }
-
-  strong {
-    color: #ffffff;
-    font-weight: 600;
-  }
-
-  @media (max-width: 768px) {
-    margin-bottom: 40px;
-  }
+.meta-line {
+  margin-bottom: 0.25rem;
 }
 
-// Smooth scrolling
-html {
-  scroll-behavior: smooth;
+/* MAIN POLICY CONTENT SECTION */
+.privacy-content {
+  margin-top: 1.5rem;
 }
 
-// Selection styling
-::selection {
-  background-color: #ff4d00;
+.privacy-list {
+  list-style: none;
+  counter-reset: privacy-counter;
+  padding: 0;
+  margin: 0;
+}
+
+.privacy-list > li {
+  margin-bottom: 2.2rem;
+}
+
+/* SECTION TITLES (H2) */
+.privacy-section-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
   color: #ffffff;
 }
 
-::-moz-selection {
-  background-color: #ff4d00;
+/* SUBTITLES (H3 INSIDE 4.x) */
+.sub-title {
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin: 1rem 0 0.4rem 0;
   color: #ffffff;
 }
 
-// Scrollbar styling
-::-webkit-scrollbar {
-  width: 10px;
+/* BODY TEXT */
+.privacy-section-body p,
+.privacy-section-paragraph {
+  font-size: 0.95rem;
+  color: #d6d6d6;
+  line-height: 1.65rem;
+  margin-bottom: 0.75rem;
 }
 
-::-webkit-scrollbar-track {
-  background: #1a1a1a;
+.privacy-section-body ul {
+  margin: 0.3rem 0 1rem 1.2rem;
+  padding: 0;
 }
 
-::-webkit-scrollbar-thumb {
-  background: #ff4d00;
-  border-radius: 5px;
+.privacy-section-body ul li {
+  list-style: disc;
+  color: #d6d6d6;
+  margin-bottom: 0.45rem;
+  font-size: 0.95rem;
+  line-height: 1.5rem;
+}
 
-  &:hover {
-    background: #ff6b2c;
+/* RESPONSIVE DESIGN */
+@media (max-width: 1024px) {
+  .privacy-title {
+    font-size: 1.75rem;
   }
 }
 
-// Focus states for accessibility
-a:focus,
-button:focus {
-  outline: 2px solid #ff4d00;
-  outline-offset: 2px;
+@media (max-width: 768px) {
+  .privacy-page {
+    padding-top: 100px;
+  }
+
+  .privacy-title {
+    font-size: 1.6rem;
+  }
+
+  .privacy-section-title {
+    font-size: 1.05rem;
+  }
+
+  .privacy-section-body p,
+  .privacy-section-paragraph {
+    font-size: 0.9rem;
+  }
+
+  .privacy-container {
+    padding: 0 15px 70px 15px;
+  }
 }
 
-// Print styles
-@media print {
-  .privacy-policy {
-    background-color: #ffffff;
-    color: #000000;
-    padding: 20px;
+@media (max-width: 480px) {
+  .privacy-title {
+    font-size: 1.45rem;
+  }
 
-    .privacy-title .highlight {
-      color: #ff4d00;
-    }
+  .privacy-section-title {
+    font-size: 1rem;
+  }
 
-    .privacy-section {
-      page-break-inside: avoid;
-
-      h2 {
-        page-break-after: avoid;
-      }
-    }
+  .privacy-section-body p,
+  .privacy-section-paragraph {
+    font-size: 0.88rem;
+    line-height: 1.5rem;
   }
 }

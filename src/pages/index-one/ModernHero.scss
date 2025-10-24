@@ -7,6 +7,10 @@
   overflow: hidden;
   margin-top: 3rem;
 
+  @media (min-width: 1400px) {
+    min-height: 55vh; // or 80vh depending how tight you want it
+  }
+
   &::before {
     content: "";
     position: absolute;

@@ -1,5 +1,4 @@
 import logo from "../../images/navbar-logo.png";
-import SocialIcons from "@/components/Shared/Social/SocialIcons";
 import { NavLink } from "react-router-dom";
 import NewsLetter from "@/pages/index-one/NewsLetter";
 import "./footer-two-custom.scss";
@@ -30,14 +29,38 @@ const FooterTwo = () => {
           <span> | </span>
           <NavLink to="/pitch">Pitch Contest</NavLink>
           <span> | </span>
+          <NavLink to="/products">Products</NavLink>
+          <span> | </span>
           <NavLink to="/about-us">About</NavLink>
           <span> | </span>
           <NavLink to="/contact">Contact</NavLink>
         </div>
         <div className="footer-two-kurudy">
-          <a href="https://www.kurudy.com/">Kurudy.com</a>
+          <a target="_blank" href="https://www.kurudy.com/">
+            Kurudy.com
+          </a>
         </div>
-        <SocialIcons />
+        <div
+          className="social-links"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <a
+            target="_blank"
+            href="http://creators.spotify.com/pod/show/returnus"
+          >
+            <i className="ti ti-brand-spotify"></i>
+          </a>
+          <a target="_blank" href="https://www.youtube.com/@ReturnUs">
+            <i className="ti ti-brand-youtube"></i>
+          </a>
+          <a target="_blank" href="https://www.instagram.com/returnus2025/">
+            <i className="ti ti-brand-instagram"></i>
+          </a>
+        </div>
         <div className="footer-two-bottom">
           <span className="footer-two-copyright">
             © Returnus 2025 – Powered by Kurudy. Equity Crowdfunding for

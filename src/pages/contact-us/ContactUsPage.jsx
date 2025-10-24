@@ -21,7 +21,6 @@ const ContactUsPage = () => {
   const [fieldErrors, setFieldErrors] = useState({});
   const [loading, setLoading] = useState(false);
 
-
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
     setStatusMessage({ type: "", text: "" });
@@ -186,7 +185,8 @@ const ContactUsPage = () => {
           <p className="recaptcha-note">
             This site is protected by reCAPTCHA and the Google{" "}
             <a href="https://policies.google.com/privacy">Privacy Policy</a> and{" "}
-            <a href="https://policies.google.com/terms">Terms of Service</a> apply.
+            <a href="https://policies.google.com/terms">Terms of Service</a>{" "}
+            apply.
           </p>
         </div>
 
@@ -201,13 +201,19 @@ const ContactUsPage = () => {
             <div className="info-block">
               <h3 className="info-title">Stay Connected</h3>
               <div className="social-links">
-                <a href="http://creators.spotify.com/pod/show/returnus">
+                <a
+                  target="_blank"
+                  href="http://creators.spotify.com/pod/show/returnus"
+                >
                   <i className="ti ti-brand-spotify"></i>
                 </a>
-                <a href="https://www.youtube.com/@ReturnUs">
+                <a target="_blank" href="https://www.youtube.com/@ReturnUs">
                   <i className="ti ti-brand-youtube"></i>
                 </a>
-                <a href="#">
+                <a
+                  target="_blank"
+                  href="https://www.instagram.com/returnus2025/"
+                >
                   <i className="ti ti-brand-instagram"></i>
                 </a>
               </div>
