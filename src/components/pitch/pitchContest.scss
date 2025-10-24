@@ -197,25 +197,50 @@ $glass: rgba(255, 255, 255, 0.03);
           input,
           select,
           textarea {
-            background: $bg-input;
-            border: 1px solid rgba($text-white, 0.1);
-            border-radius: 8px;
-            padding: clamp(12px, 2.5vw, 14px) clamp(14px, 3.5vw, 18px);
+            background: rgba(255, 255, 255, 0.03);
+            border: none;
+            border-bottom: 2px solid rgba($text-white, 0.2);
+            border-radius: 0;
+            padding: clamp(12px, 2.5vw, 14px) clamp(4px, 1vw, 8px);
             color: $text-white;
             font-size: clamp(0.85rem, 1.9vw, 0.95rem);
             outline: none;
-            transition: all 0.3s ease;
+            transition: all 0.4s ease;
             width: 100%;
             box-sizing: border-box;
+            position: relative;
 
             &::placeholder {
-              color: rgba($text-gray, 0.6);
+              color: rgba($text-gray, 0.5);
               font-size: clamp(0.85rem, 1.9vw, 0.95rem);
             }
 
             &:focus {
-              box-shadow: 0 8px 30px rgba($orange, 0.07);
-              transform: translateY(-1px);
+              background: rgba(255, 255, 255, 0.05);
+              border-bottom-color: #00a8ff;
+              box-shadow: 0 2px 8px rgba(0, 168, 255, 0.4),
+                0 4px 16px rgba(0, 168, 255, 0.2);
+              transform: translateY(0);
+            }
+
+            &:hover:not(:focus) {
+              background: rgba(255, 255, 255, 0.04);
+              border-bottom-color: rgba($text-white, 0.4);
+            }
+          }
+
+          select {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23ffffff' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            padding-right: 40px;
+
+            option {
+              background: #1f1f1f;
+              color: $text-white;
+              padding: 10px;
             }
           }
 
@@ -223,11 +248,16 @@ $glass: rgba(255, 255, 255, 0.03);
             min-height: 120px;
             resize: vertical;
             font-family: inherit;
+            background: rgba(255, 255, 255, 0.03);
+            border-bottom: 2px solid rgba($text-white, 0.2);
+            padding-top: clamp(12px, 2.5vw, 14px);
           }
 
           .pitch-contest-input-error {
-            border-color: $error-red;
-            box-shadow: 0 0 0 3px rgba($error-red, 0.1);
+            background: rgba(255, 77, 79, 0.05);
+            border-bottom-color: $error-red;
+            box-shadow: 0 2px 8px rgba($error-red, 0.4),
+              0 4px 16px rgba($error-red, 0.2);
           }
 
           .pitch-contest-field-error {

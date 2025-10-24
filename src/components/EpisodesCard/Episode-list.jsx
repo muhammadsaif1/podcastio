@@ -2,7 +2,15 @@
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Play, Clock, User, X, Search } from "lucide-react";
+import {
+  Play,
+  Clock,
+  User,
+  X,
+  Search,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
 import "./episodes-list.scss";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -185,6 +193,8 @@ const EpisodesList = () => {
   const [selectedVideoUrl, setSelectedVideoUrl] = useState("");
   const [selectedEpisode, setSelectedEpisode] = useState(null);
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(8);
 
   useEffect(() => {
     dispatch(fetchEpisodes());
@@ -211,6 +221,7 @@ const EpisodesList = () => {
   useEffect(() => {
     if (!searchQuery.trim()) {
       setFilteredEpisodes(episodes);
+      setCurrentPage(1);
       return;
     }
 
@@ -230,7 +241,23 @@ const EpisodesList = () => {
     });
 
     setFilteredEpisodes(filtered);
+    setCurrentPage(1);
   }, [searchQuery, episodes]);
+
+  // Update items per page based on screen size
+  useEffect(() => {
+    const updateItemsPerPage = () => {
+      if (window.innerWidth <= 768) {
+        setItemsPerPage(7); // 6 rows × 1 column on mobile
+      } else {
+        setItemsPerPage(8); // 4 rows × 2 columns on desktop
+      }
+    };
+
+    updateItemsPerPage();
+    window.addEventListener("resize", updateItemsPerPage);
+    return () => window.removeEventListener("resize", updateItemsPerPage);
+  }, []);
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -273,6 +300,29 @@ const EpisodesList = () => {
 
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
+  };
+
+  // Pagination calculations
+  const totalPages = Math.ceil(filteredEpisodes.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentEpisodes = filteredEpisodes.slice(startIndex, endIndex);
+  const showPagination = filteredEpisodes.length > itemsPerPage;
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
+
+  const handlePrevPage = () => {
+    if (currentPage > 1) {
+      handlePageChange(currentPage - 1);
+    }
+  };
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      handlePageChange(currentPage + 1);
+    }
   };
 
   if (loading) {
@@ -333,97 +383,136 @@ const EpisodesList = () => {
           <p>{searchQuery ? "No episodes found" : "You have no episodes"}</p>
         </div>
       ) : (
-        <div className="episodes-grid">
-          <AnimatePresence>
-            {filteredEpisodes.map((episode, idx) => (
-              <motion.div
-                key={episode._id || idx}
-                className="episode-card"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.3, delay: idx * 0.05 }}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                <div className="episode-thumbnail-wrapper">
-                  <img
-                    src={getYouTubeThumbnail(episode.youtubeLink)}
-                    alt={episode.title}
-                    className="episode-thumbnail"
-                  />
-                  <div
-                    className="play-overlay"
-                    onClick={(e) => handleWatchClick(episode.youtubeLink)}
-                  >
-                    <Play size={48} />
-                  </div>
-                </div>
-
-                <div className="episode-content">
-                  <div className="episode-header">
-                    <h3
-                      className="episode-title"
-                      onClick={() => handleEpisodeClick(episode)}
+        <>
+          <div className="episodes-grid">
+            <AnimatePresence mode="wait">
+              {currentEpisodes.map((episode, idx) => (
+                <motion.div
+                  key={episode._id || idx}
+                  className="episode-card"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ duration: 0.3, delay: idx * 0.05 }}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <div className="episode-thumbnail-wrapper">
+                    <img
+                      src={getYouTubeThumbnail(episode.youtubeLink)}
+                      alt={episode.title}
+                      className="episode-thumbnail"
+                    />
+                    <div
+                      className="play-overlay"
+                      onClick={(e) => handleWatchClick(episode.youtubeLink)}
                     >
+                      <Play size={48} />
+                    </div>
+                  </div>
+
+                  <div className="episode-content">
+                    <div className="episode-header">
+                      <h3
+                        className="episode-title"
+                        onClick={() => handleEpisodeClick(episode)}
+                      >
+                        <HighlightText
+                          text={episode.title}
+                          searchQuery={searchQuery}
+                        />
+                      </h3>
+                      {episode.tag && (
+                        <div className="episode-tag">
+                          <HighlightText
+                            text={String(episode.tag).replace(/-/g, " ")}
+                            searchQuery={searchQuery}
+                          />
+                        </div>
+                      )}
+                    </div>
+                    <div className="episode-meta">
+                      <div className="meta-item">
+                        <User size={14} />
+                        <span>
+                          <HighlightText
+                            text={episode.author}
+                            searchQuery={searchQuery}
+                          />
+                        </span>
+                      </div>
+                      <div className="meta-item">
+                        <Clock size={14} />
+                        <span>{formatDate(episode.createdAt)}</span>
+                      </div>
+                    </div>
+                    <p className="episode-description">
                       <HighlightText
-                        text={episode.title}
+                        text={episode.description}
                         searchQuery={searchQuery}
                       />
-                    </h3>
-                    {episode.tag && (
-                      <div className="episode-tag">
-                        <HighlightText
-                          text={String(episode.tag).replace(/-/g, " ")}
-                          searchQuery={searchQuery}
-                        />
-                      </div>
-                    )}
-                  </div>
-                  <div className="episode-meta">
-                    <div className="meta-item">
-                      <User size={14} />
-                      <span>
-                        <HighlightText
-                          text={episode.author}
-                          searchQuery={searchQuery}
-                        />
-                      </span>
-                    </div>
-                    <div className="meta-item">
-                      <Clock size={14} />
-                      <span>{formatDate(episode.createdAt)}</span>
-                    </div>
-                  </div>
-                  <p className="episode-description">
-                    <HighlightText
-                      text={episode.description}
-                      searchQuery={searchQuery}
-                    />
-                  </p>
-                  <div className="episode-actions">
-                    <button
-                      className="watch-btn"
-                      onClick={() => handleWatchClick(episode.youtubeLink)}
-                    >
-                      <Play size={16} /> Watch
-                    </button>
-                    {episode.spotifyLink && (
-                      <a
-                        href={episode.spotifyLink}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="listen-btn"
+                    </p>
+                    <div className="episode-actions">
+                      <button
+                        className="watch-btn"
+                        onClick={() => handleWatchClick(episode.youtubeLink)}
                       >
-                        <Play size={16} /> Listen
-                      </a>
-                    )}
+                        <Play size={16} /> Watch
+                      </button>
+                      {episode.spotifyLink && (
+                        <a
+                          href={episode.spotifyLink}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="listen-btn"
+                        >
+                          <Play size={16} /> Listen
+                        </a>
+                      )}
+                    </div>
                   </div>
-                </div>
-              </motion.div>
-            ))}
-          </AnimatePresence>
-        </div>
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          </div>
+
+          {showPagination && (
+            <div className="pagination-container">
+              <button
+                className="pagination-arrow"
+                onClick={handlePrevPage}
+                disabled={currentPage === 1}
+              >
+                <ChevronLeft size={20} />
+              </button>
+
+              <div className="pagination-numbers">
+                {[...Array(totalPages)].map((_, index) => {
+                  const pageNumber = index + 1;
+                  return (
+                    <button
+                      key={pageNumber}
+                      className={`pagination-number ${
+                        currentPage === pageNumber ? "active" : ""
+                      }`}
+                      onClick={() => handlePageChange(pageNumber)}
+                    >
+                      {pageNumber}
+                    </button>
+                  );
+                })}
+              </div>
+
+              <button
+                className="pagination-arrow"
+                onClick={handleNextPage}
+                disabled={currentPage === totalPages}
+              >
+                <ChevronRight size={20} />
+              </button>
+            </div>
+          )}
+        </>
       )}
 
       <YouTubeModal

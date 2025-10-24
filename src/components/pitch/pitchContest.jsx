@@ -3,6 +3,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Loader2, CheckCircle, XCircle, ArrowRight } from "lucide-react";
 import "./pitchContest.scss";
 import pitchHero from "@/images/pitch-hero.png";
+import { useDispatch } from "react-redux";
+import { createPitch } from "@/redux/slices/pitchSlice";
 
 const PitchContest = () => {
   const [form, setForm] = useState({
@@ -24,6 +26,7 @@ const PitchContest = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null); // 'success' | 'error' | null
   const [submitMsg, setSubmitMsg] = useState("");
+  const dispatch = useDispatch();
 
   const categoryOptions = [
     "Residential",
@@ -66,15 +69,15 @@ const PitchContest = () => {
     setIsSubmitting(true);
     setSubmitStatus(null);
 
-    // Simulate API call
-    setTimeout(() => {
-      const success = Math.random() > 0.1; // 90% success rate for demo
+    try {
+      const resultAction = await dispatch(createPitch(form));
 
-      if (success) {
+      if (createPitch.fulfilled.match(resultAction)) {
         setSubmitStatus("success");
         setSubmitMsg(
           "Thanks! Our producers review new pitches weekly. If selected, you'll receive an invite to record your live pitch session."
         );
+
         setTimeout(() => {
           setForm({
             fullName: "",
@@ -94,16 +97,18 @@ const PitchContest = () => {
           setSubmitMsg("");
         }, 4000);
       } else {
-        setSubmitStatus("error");
-        setSubmitMsg("Failed to submit pitch. Please try again.");
-        setTimeout(() => {
-          setSubmitStatus(null);
-          setSubmitMsg("");
-        }, 4000);
+        throw new Error(resultAction.payload || "Failed to submit");
       }
+    } catch (err) {
+      setSubmitStatus("error");
+      setSubmitMsg(err.message || "Failed to submit pitch");
+      setTimeout(() => {
+        setSubmitStatus(null);
+        setSubmitMsg("");
+      }, 2500);
+    }
 
-      setIsSubmitting(false);
-    }, 2000);
+    setIsSubmitting(false);
   };
 
   return (
@@ -442,7 +447,7 @@ const PitchContest = () => {
               </div>
             </motion.div>
 
-            <motion.div
+            {/* <motion.div
               className="pitch-contest-form-group"
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -453,10 +458,9 @@ const PitchContest = () => {
                 type="text"
                 value=""
                 placeholder="Consent Checkbox (Your name or founder's name)"
-                disabled
-                readOnly
+                // readOnly
               />
-            </motion.div>
+            </motion.div> */}
 
             <motion.div
               className="pitch-contest-consent-row"
