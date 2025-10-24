@@ -2,8 +2,6 @@ import { ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
 import "./returnus-section.scss";
 import { Link } from "react-router-dom";
-import william from "@/images/william.png";
-import marvin from "@/images/marvin.png";
 import Hosts from "./Hosts";
 const ReturnusSection = () => {
   return (

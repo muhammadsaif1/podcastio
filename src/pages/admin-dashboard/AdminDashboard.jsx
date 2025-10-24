@@ -286,7 +286,7 @@ const AdminDashboard = () => {
 
   const handleLogout = () => {
     dispatch(logout());
-    navigate('/admin/login');
+    navigate("/admin/login");
   };
 
   return (
@@ -347,20 +347,19 @@ const AdminDashboard = () => {
           >
             Pitch
           </motion.button>
-        <div className="logout-section">
-          <motion.button
-            className="logout-btn"
-            onClick={handleLogout}
-            whileHover={{ x: 4 }}
-            whileTap={{ scale: 0.98 }}
-          >
-            <i className="ti ti-logout"></i> Logout
-          </motion.button>
-        </div>
+          <div className="logout-section">
+            <motion.button
+              className="logout-btn"
+              onClick={handleLogout}
+              whileHover={{ x: 4 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              <i className="ti ti-logout"></i> Logout
+            </motion.button>
+          </div>
         </nav>
 
         {/* --- Logout Button --- */}
-
       </motion.aside>
 
       <main>

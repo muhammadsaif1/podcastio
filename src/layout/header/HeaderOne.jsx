@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
-import { Menu, X } from "lucide-react"; // ✅ lucide icons
-// import logo from "../../images/logo2-6556cbb2.png";
+import { Menu, X } from "lucide-react";
 import logo from "../../images/navbar-logo.png";
 
 const HeaderOne = () => {

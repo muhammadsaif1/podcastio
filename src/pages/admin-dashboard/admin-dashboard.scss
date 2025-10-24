@@ -23,7 +23,7 @@ $success-green: #52c41a;
     display: flex;
     align-items: center;
     justify-content: center;
-    position: fixed;
+    position: absolute;
     top: 1rem;
     left: 1rem;
     z-index: 40;
@@ -146,7 +146,11 @@ $success-green: #52c41a;
           font-weight: 500;
 
           &:hover {
-            background: linear-gradient(135deg, $error-red, darken($error-red, 10%));
+            background: linear-gradient(
+              135deg,
+              $error-red,
+              darken($error-red, 10%)
+            );
             color: #000;
             box-shadow: 0 4px 15px rgba($error-red, 0.3);
           }
@@ -501,12 +505,14 @@ $success-green: #52c41a;
 }
 
 .social-tag.instagram {
-  background: linear-gradient(45deg,
-      #f58529,
-      #feda77,
-      #dd2a7b,
-      #8134af,
-      #515bd4);
+  background: linear-gradient(
+    45deg,
+    #f58529,
+    #feda77,
+    #dd2a7b,
+    #8134af,
+    #515bd4
+  );
   color: #ffffff;
 }
 
