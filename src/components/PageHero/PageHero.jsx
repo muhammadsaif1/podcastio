@@ -1,5 +1,3 @@
-import ListenOnBtns from "../Shared/ListenOnBtns";
-import record from "../../images/record-track.png";
 import SectionHeading from "../Shared/SectionHeading";
 import FadeDown from "../../motion/FadeDown";
 import waveLine from "@/images/wave-line.png";

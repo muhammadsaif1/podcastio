@@ -92,11 +92,23 @@ const PitchContestSection = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.4 }}
         >
-          <h2 className="headline">
+          <h2
+            className="headline"
+            style={{
+              textAlign: "left",
+              marginLeft: "0",
+            }}
+          >
             Got 5 Minutes? Win $100 + a Shot to Pitch on Kurudy!
           </h2>
 
-          <p className="description">
+          <p
+            className="description"
+            style={{
+              textAlign: "left",
+              marginLeft: "0",
+            }}
+          >
             Every week, we select 3 founders to pitch live on Returnus. The
             audience votes. The winner gets $100, exposure, and a fast-track to
             launch their Reg CF raise.
