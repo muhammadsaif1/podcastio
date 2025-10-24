@@ -32,6 +32,18 @@ const YouTubeModal = ({ isOpen, videoUrl, onClose }) => {
 
   if (!isOpen) return null;
 
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [isOpen]);
+
   return (
     <AnimatePresence>
       <motion.div
@@ -79,6 +91,16 @@ const EpisodeDetailModal = ({ isOpen, episode, onClose, onUpdated }) => {
       setEditData({ ...episode });
       setIsEditing(false);
     }
+
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+
+    return () => {
+      document.body.style.overflow = "auto";
+    };
   }, [episode]);
 
   if (!isOpen || !episode) return null;
@@ -606,14 +628,20 @@ const EpisodesList = () => {
       <EpisodeDetailModal
         isOpen={isDetailModalOpen}
         episode={selectedEpisode}
-        onClose={() => setIsDetailModalOpen(false)}
+        onClose={() => {
+          document.body.style.overflow = "auto";
+          setIsDetailModalOpen(false);
+        }}
         onUpdated={handleModalUpdated}
       />
 
       <YouTubeModal
         isOpen={youtubeModalOpen}
         videoUrl={selectedVideoUrl}
-        onClose={() => setYoutubeModalOpen(false)}
+        onClose={() => {
+          document.body.style.overflow = "auto";
+          setYoutubeModalOpen(false);
+        }}
       />
     </div>
   );

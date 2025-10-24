@@ -23,6 +23,18 @@ const MessageDetailModal = ({ isOpen, message, onClose }) => {
     });
   };
 
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [isOpen]);
+
   return (
     <AnimatePresence>
       <motion.div
@@ -192,7 +204,10 @@ export const MessagesList = () => {
       <MessageDetailModal
         isOpen={isDetailModalOpen}
         message={selectedMessage}
-        onClose={() => setIsDetailModalOpen(false)}
+        onClose={() => {
+          setIsDetailModalOpen(false);
+          document.body.style.overflow = "auto";
+        }}
       />
     </div>
   );

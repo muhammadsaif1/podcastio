@@ -169,7 +169,7 @@
     max-width: 600px;
     width: 100%;
     max-height: 90vh;
-    overflow-y: auto;
+    overflow-y: hidden;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
 
     .modal-header {
@@ -211,6 +211,8 @@
       display: flex;
       flex-direction: column;
       gap: 1.5rem;
+      overflow-y: auto;
+      flex: 1;
 
       .detail-group {
         display: flex;
