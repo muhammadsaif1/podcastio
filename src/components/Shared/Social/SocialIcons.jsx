@@ -15,7 +15,10 @@ export default function SocialIcons() {
       >
         <i className="ti ti-brand-youtube"></i>
       </a>
-      <a style={{ fontSize: "28px", marginLeft: "15px" }}>
+      <a
+        href="https://www.instagram.com/returnus2025/"
+        style={{ fontSize: "28px", marginLeft: "15px" }}
+      >
         <i className="ti ti-brand-instagram"></i>
       </a>
       {/* <a style={{ fontSize: "28px", marginLeft: "15px" }}>
