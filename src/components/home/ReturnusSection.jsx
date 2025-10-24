@@ -52,7 +52,7 @@ const ReturnusSection = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.3 }}
         >
-          <Link href="/about-us" className="cta-btn">
+          <Link to="/about-us" className="cta-btn">
             Meet the Hosts
             <span className="pitch-contest-arrow-circle">
               <ArrowRight size={16} />

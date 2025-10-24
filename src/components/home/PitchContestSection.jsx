@@ -81,7 +81,7 @@ const PitchContestSection = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.4 }}
         >
-          <a href="/about-us" className="contest-btn">
+          <a href="/pitch" className="contest-btn">
             <span className="icon">🚀</span> Pitch Contest
           </a>
         </motion.div>

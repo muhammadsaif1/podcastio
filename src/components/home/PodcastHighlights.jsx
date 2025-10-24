@@ -139,7 +139,7 @@ const PodcastHighlights = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.4 }}
         >
-          <a href="/about-us" className="expert-podcast-btn">
+          <a href="/latest-episode" className="expert-podcast-btn">
             <span className="expert-podcast-icon">🚀</span> Podcast
           </a>
         </motion.div>
@@ -281,7 +281,7 @@ const PodcastHighlights = () => {
           </div>
         )}
         <div className="expert-podcast-cta-container">
-          <Link to="/latest-episodes" className="expert-podcast-cta-btn">
+          <Link to="/latest-episode" className="expert-podcast-cta-btn">
             View All Episodes
             <span className="expert-podcast-arrow-circle">
               <ArrowRight size={16} />
