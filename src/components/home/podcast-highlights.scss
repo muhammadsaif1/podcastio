@@ -145,7 +145,7 @@ $blue: #41b4ea;
       }
 
       @media (max-width: 768px) {
-        gap: 0.75rem;
+        gap: 0rem;
       }
 
       .expert-podcast-episode-card {
@@ -172,6 +172,7 @@ $blue: #41b4ea;
 
         @media (max-width: 768px) {
           flex: 0 0 100%;
+          margin: 0;
         }
 
         .expert-podcast-thumbnail-wrap {
