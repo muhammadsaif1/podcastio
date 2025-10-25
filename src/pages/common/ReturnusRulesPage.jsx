@@ -323,27 +323,6 @@ const ReturnusRulesPage = () => {
             are final.
           </p>
         </section>
-
-        <div className="signup-cta">
-          <div className="signup-box">
-            <h4>
-              Join diverse founders and investors building the future of
-              community capital
-            </h4>
-            <form className="signup-form" onSubmit={(e) => e.preventDefault()}>
-              <input
-                aria-label="email"
-                type="email"
-                placeholder="Enter your email"
-              />
-              <button type="submit">Subscribe</button>
-            </form>
-          </div>
-        </div>
-
-        <div className="returnus-credit">
-          <p>© Returnus 2025</p>
-        </div>
       </div>
     </main>
   );

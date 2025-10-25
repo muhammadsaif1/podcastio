@@ -5,6 +5,7 @@ import "./pitchContest.scss";
 import pitchHero from "@/images/pitch-hero.png";
 import { useDispatch } from "react-redux";
 import { createPitch } from "@/redux/slices/pitchSlice";
+import { useNavigate } from "react-router-dom";
 
 const PitchContest = () => {
   const [form, setForm] = useState({
@@ -27,6 +28,7 @@ const PitchContest = () => {
   const [submitStatus, setSubmitStatus] = useState(null); // 'success' | 'error' | null
   const [submitMsg, setSubmitMsg] = useState("");
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const categoryOptions = [
     "Residential",
@@ -95,7 +97,11 @@ const PitchContest = () => {
           });
           setSubmitStatus(null);
           setSubmitMsg("");
-        }, 4000);
+        }, 2000);
+
+        setTimeout(() => {
+          navigate("/pitch-consent-rules");
+        }, 2200);
       } else {
         throw new Error(resultAction.payload || "Failed to submit");
       }

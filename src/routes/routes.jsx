@@ -17,6 +17,7 @@ import AboutPage from "@/pages/about-us/AboutPage";
 import TermsOfService from "@/pages/common/terms";
 import PrivacyPolicy from "@/pages/common/PrivacyPolicy";
 import ProductsPage from "@/pages/products/Products";
+import ReturnusRulesPage from "@/pages/common/ReturnusRulesPage";
 
 const router = createBrowserRouter([
   {
@@ -59,6 +60,10 @@ const router = createBrowserRouter([
       {
         path: "/products",
         element: <ProductsPage />,
+      },
+      {
+        path: "/pitch-consent-rules",
+        element: <ReturnusRulesPage />,
       },
     ],
   },
