@@ -28,6 +28,27 @@ const ModernHero = () => {
         <div className="vector-line position-absolute top-50 start-50 translate-middle w-100 h-100 z-n1 mt-20">
           <img className="w-100" src={waveLine} alt="line" />
         </div>
+        <div className="announcement-banner">
+          <div className="banner-content">
+            <span className="emoji">👉</span>
+            <a href="/pitch" className="enter-link">
+              Enter Now!
+            </a>
+            <span className="banner-text">
+              PITCH CONTEST! 🎉 🎤 Win $100 Every Week! Pitch your startup LIVE
+              on our show — and let the audience decide the winner!
+            </span>
+            <span className="emoji">💡</span>
+            <span className="banner-text">
+              Are you a founder (or know one)? This is your shot at cash,
+              exposure & bragging rights!
+            </span>
+            <span className="emoji">👉</span>
+            <a href="/pitch" className="enter-link">
+              Enter Now!
+            </a>
+          </div>
+        </div>
         <div className="modern-hero-container">
           <div className="modern-hero-content">
             {/* Left Side - Video Thumbnail */}
