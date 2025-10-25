@@ -278,6 +278,14 @@ const AdminDashboard = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+  }, [isMobileMenuOpen]);
+
   // NOTE: create happens in EpisodeModal via redux dispatch + unwrap
   const handleTabClick = (tab) => {
     setActiveTab(tab);
