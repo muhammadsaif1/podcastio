@@ -147,7 +147,7 @@ const HeaderOne = () => {
                           isActive ? "menu-link-active" : "menu-link"
                         }
                       >
-                        About-us
+                        About
                       </NavLink>
                     </li>
                   </ul>

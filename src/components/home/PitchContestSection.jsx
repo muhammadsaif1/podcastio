@@ -1,7 +1,7 @@
 import { ArrowRight } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchPitches } from "@/redux/slices/pitchSlice";
+import { fetchEpisodes } from "@/redux/slices/episodeSlice";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import "./pitch-contest-section.scss";
@@ -23,15 +23,65 @@ const calculateTimeLeft = (deadline) => {
 
 const PitchContestSection = () => {
   const dispatch = useDispatch();
-  const reduxState = useSelector((state) => state.pitches || {});
-  const pitches = reduxState.list || [];
+  const [activeVideo, setActiveVideo] = useState(null);
+
+  const handleVideoClick = (index) => {
+    // If this video is already active → MUTE it back
+    if (activeVideo === index) {
+      const iframe = document.getElementById(`youtube-${index}`);
+      if (iframe) {
+        iframe.contentWindow.postMessage(
+          JSON.stringify({
+            event: "command",
+            func: "mute",
+          }),
+          "*"
+        );
+      }
+      setActiveVideo(null); // remove highlight / overlay state
+      return;
+    }
+
+    // otherwise proceed like normal: mute all and unmute the clicked one
+    latestPitchEpisodes.forEach((_, i) => {
+      const iframe = document.getElementById(`youtube-${i}`);
+      if (iframe) {
+        iframe.contentWindow.postMessage(
+          JSON.stringify({
+            event: "command",
+            func: "mute",
+          }),
+          "*"
+        );
+      }
+    });
+
+    const clickedIframe = document.getElementById(`youtube-${index}`);
+    if (clickedIframe) {
+      clickedIframe.contentWindow.postMessage(
+        JSON.stringify({
+          event: "command",
+          func: "unMute",
+        }),
+        "*"
+      );
+    }
+
+    setActiveVideo(index);
+  };
+
+  const {
+    list: episodes = [],
+    loadingList,
+    error,
+  } = useSelector((state) => state.episodes);
 
   const [timeLeft, setTimeLeft] = useState(
     calculateTimeLeft("2025-10-28T23:59:59")
   );
 
   useEffect(() => {
-    dispatch(fetchPitches());
+    dispatch(fetchEpisodes());
   }, [dispatch]);
 
   useEffect(() => {
@@ -43,33 +93,17 @@ const PitchContestSection = () => {
 
   const formatTimeUnit = (unit) => (unit < 10 ? `0${unit}` : unit);
 
-  // Video data with names
-  const founders = [
-    {
-      name: "Courtney Henry",
-      video:
-        "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
-      bgColor: "#10b981",
-    },
-    {
-      name: "Ashould Islem",
-      video:
-        "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
-      bgColor: "#ef4444",
-    },
-    {
-      name: "Kathryn Murphy",
-      video:
-        "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4",
-      bgColor: "#fbbf24",
-    },
-    {
-      name: "Wendah Shafi",
-      video:
-        "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4",
-      bgColor: "#3b82f6",
-    },
-  ];
+  // Filter only pitch-tag episodes
+  const pitchEpisodes = episodes.filter(
+    (ep) => ep?.tag?.toLowerCase() === "pitch"
+  );
+
+  // Latest 4 only
+  const latestPitchEpisodes = pitchEpisodes.slice(0, 4);
+
+  // Calculate placeholders
+  const placeholdersNeeded =
+    latestPitchEpisodes.length < 4 ? 4 - latestPitchEpisodes.length : 0;
 
   return (
     <section className="pitch-contest-section texture-bg-2">
@@ -85,6 +119,7 @@ const PitchContestSection = () => {
             <span className="icon">🚀</span> Pitch Contest
           </a>
         </motion.div>
+
         <motion.div
           className="content-wrapper"
           initial={{ opacity: 0, y: 10 }}
@@ -94,20 +129,14 @@ const PitchContestSection = () => {
         >
           <h2
             className="headline"
-            style={{
-              textAlign: "left",
-              marginLeft: "0",
-            }}
+            style={{ textAlign: "left", marginLeft: "0" }}
           >
             Got 5 Minutes? Win $100 + a Shot to Pitch on Kurudy!
           </h2>
 
           <p
             className="description"
-            style={{
-              textAlign: "left",
-              marginLeft: "0",
-            }}
+            style={{ textAlign: "left", marginLeft: "0" }}
           >
             Every week, we select 3 founders to pitch live on Returnus. The
             audience votes. The winner gets $100, exposure, and a fast-track to
@@ -169,18 +198,75 @@ const PitchContestSection = () => {
             </div>
           </div>
 
-          {/* Video Grid */}
+          {/* VIDEO / PLACEHOLDER SECTION */}
           <div className="video-grid">
-            {founders.map((founder, index) => (
+            {/* DB ERROR */}
+            {error && (
               <div
-                key={index}
-                className="video-card"
-                style={{ backgroundColor: founder.bgColor }}
+                className="pitch-msg-error"
+                style={{
+                  display: "flex",
+                  alignContent: "center",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
               >
-                <video src={founder.video} loop autoPlay muted playsInline />
-                <div className="founder-name">{founder.name}</div>
+                Failed to fetch episodes — please try again later.
               </div>
-            ))}
+            )}
+
+            {/* NO PITCH EPISODES OR PLACEHOLDERS WHEN NO ERROR */}
+            {!error && (
+              <>
+                {/* NO PITCH EPISODES */}
+                {!loadingList && latestPitchEpisodes.length === 0 && (
+                  <div className="pitch-msg-waiting">
+                    No pitch episodes yet — please check back soon!
+                  </div>
+                )}
+
+                {/* RENDER YOUTUBE VIDEOS */}
+                {latestPitchEpisodes.length > 0 && (
+                  <>
+                    {latestPitchEpisodes.map((episode, index) => {
+                      const videoId = episode.youtubeLink
+                        ?.split("v=")[1]
+                        ?.split("&")[0];
+                      return (
+                        <div
+                          key={index}
+                          className={`video-card youtube-card ${
+                            activeVideo === index ? "unmuted" : ""
+                          }`}
+                          onClick={() => handleVideoClick(index)}
+                        >
+                          <div className="youtube-wrapper">
+                            <iframe
+                              id={`youtube-${index}`}
+                              src={`https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&controls=0&loop=1&playlist=${videoId}&modestbranding=1&rel=0&playsinline=1&enablejsapi=1&iv_load_policy=3&disablekb=1&fs=0`}
+                              frameBorder="0"
+                              allow="autoplay; encrypted-media"
+                              allowFullScreen
+                              title={`Pitch video ${index + 1}`}
+                            ></iframe>
+                          </div>
+                        </div>
+                      );
+                    })}
+
+                    {/* PLACEHOLDERS */}
+                    {Array.from({ length: placeholdersNeeded }).map((_, i) => (
+                      <div
+                        key={`placeholder-${i}`}
+                        className="video-card pitch-coming-soon"
+                      >
+                        <span>Coming Soon</span>
+                      </div>
+                    ))}
+                  </>
+                )}
+              </>
+            )}
           </div>
 
           {/* CTA Button */}

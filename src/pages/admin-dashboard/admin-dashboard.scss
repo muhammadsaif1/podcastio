@@ -567,3 +567,95 @@ $success-green: #52c41a;
     }
   }
 }
+
+.admin-episodes-modern-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  &.admin-episodes-modern-form-group-switch {
+    .admin-episodes-modern-switch-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+
+      label {
+        margin-bottom: 0;
+      }
+
+      .admin-episodes-modern-switch-container {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+
+        .admin-episodes-modern-switch-input {
+          display: none;
+
+          &:checked
+            + .admin-episodes-modern-switch-label
+            .admin-episodes-modern-switch-slider {
+            background: linear-gradient(135deg, #ff6b35 0%, #ff8c42 100%);
+
+            &::before {
+              transform: translateX(24px);
+            }
+          }
+        }
+
+        .admin-episodes-modern-switch-label {
+          position: relative;
+          display: inline-block;
+          width: 52px;
+          height: 28px;
+          cursor: pointer;
+          margin: 0;
+          text-transform: none;
+          letter-spacing: normal;
+
+          @media (max-width: 768px) {
+            width: 48px;
+            height: 26px;
+          }
+
+          .admin-episodes-modern-switch-slider {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 107, 53, 0.2);
+            border-radius: 28px;
+            transition: all 0.3s ease;
+
+            &::before {
+              content: "";
+              position: absolute;
+              height: 22px;
+              width: 22px;
+              left: 3px;
+              bottom: 3px;
+              background: white;
+              border-radius: 50%;
+              transition: transform 0.3s ease;
+              box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+
+              @media (max-width: 768px) {
+                height: 20px;
+                width: 20px;
+              }
+            }
+          }
+        }
+
+        .admin-episodes-modern-switch-status {
+          font-size: 0.9rem;
+          color: #ffffff;
+          font-weight: 500;
+
+          @media (max-width: 768px) {
+            font-size: 0.85rem;
+          }
+        }
+      }
+    }
+  }
+}

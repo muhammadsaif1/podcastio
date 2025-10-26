@@ -64,8 +64,8 @@ const FooterTwo = () => {
         </div>
         <div className="footer-two-bottom">
           <span className="footer-two-copyright">
-            © Returnus 2025 – {/* Powered by Kurudy. */}
-            Equity Crowdfunding for Generational Impact.
+            © Returnus 2025 {/* –Powered by Kurudy. */}
+            {/* Equity Crowdfunding for Generational Impact. */}
           </span>
           <div className="footer-two-links">
             <a href="/terms-and-conditions">Terms & Conditions</a>

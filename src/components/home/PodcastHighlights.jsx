@@ -237,10 +237,24 @@ const PodcastHighlights = () => {
                           "Discover insights and stories"}
                       </p>
                       <div className="expert-podcast-episode-footer">
-                        <span className="expert-podcast-episode-date">
-                          <Calendar size={12} />
-                          {formatDate(ep.publishedDate || ep.createdAt)}
-                        </span>
+                        <div
+                          style={{
+                            display: "flex",
+                            flexDirection: "column",
+                            gap: "0.5rem",
+                            flex: 1,
+                          }}
+                        >
+                          <span className="expert-podcast-episode-date">
+                            <Calendar size={12} />
+                            {formatDate(ep.publishedDate || ep.createdAt)}
+                          </span>
+                          {ep.tag && (
+                            <span className="expert-podcast-episode-tag">
+                              {ep.tag}
+                            </span>
+                          )}
+                        </div>
                         <button
                           className="expert-podcast-listen-now"
                           onClick={() => handleThumbnailClick(ep)}
@@ -333,16 +347,16 @@ const PodcastHighlights = () => {
                   </div>
                 ) : (
                   <div className="expert-podcast-details-container">
-                    <div className="expert-podcast-details-image">
+                    {/* <div className="expert-podcast-details-image">
                       <img
                         src={getYoutubeThumbnail(selected.youtubeLink)}
                         alt={selected.title}
                       />
-                    </div>
+                    </div> */}
                     <div className="expert-podcast-details-content">
                       <div className="expert-podcast-detail-item">
                         <span className="expert-podcast-detail-label">
-                          Guest:
+                          Author:
                         </span>
                         <span className="expert-podcast-detail-value">
                           {selected.author || "Not specified"}

@@ -24,6 +24,7 @@ const EpisodeModal = ({ isOpen, onClose }) => {
   const [tag, setTag] = useState("");
   const [errors, setErrors] = useState({});
   const [submitError, setSubmitError] = useState("");
+  const [mainEpisode, setMainEpisode] = useState(false);
 
   const validateForm = () => {
     const newErrors = {};
@@ -48,6 +49,7 @@ const EpisodeModal = ({ isOpen, onClose }) => {
     setYoutubeUrl("");
     setAuthorName("");
     setSpotifyUrl("");
+    setMainEpisode(false);
     setTag("");
     setErrors({});
     setSubmitError("");
@@ -217,7 +219,7 @@ const EpisodeModal = ({ isOpen, onClose }) => {
                 className={errors.tag ? "error" : ""}
               >
                 <option value="">Select a tag</option>
-                <option value="investor-education">Investor-Education</option>
+                <option value="investor">Investor</option>
                 <option value="pitch">Pitch</option>
                 <option value="founder">Founder</option>
               </select>
@@ -227,6 +229,29 @@ const EpisodeModal = ({ isOpen, onClose }) => {
             </div>
 
             {submitError && <div className="submit-error">{submitError}</div>}
+            <div className="admin-episodes-modern-form-group admin-episodes-modern-form-group-switch">
+              <div className="admin-episodes-modern-switch-wrapper">
+                <label htmlFor="createMainEpisodeSwitch">Main Episode</label>
+                <div className="admin-episodes-modern-switch-container">
+                  <input
+                    type="checkbox"
+                    id="createMainEpisodeSwitch"
+                    className="admin-episodes-modern-switch-input"
+                    checked={mainEpisode}
+                    onChange={(e) => setMainEpisode(e.target.checked)}
+                  />
+                  <label
+                    htmlFor="createMainEpisodeSwitch"
+                    className="admin-episodes-modern-switch-label"
+                  >
+                    <span className="admin-episodes-modern-switch-slider"></span>
+                  </label>
+                  <span className="admin-episodes-modern-switch-status">
+                    {mainEpisode ? "Yes" : "No"}
+                  </span>
+                </div>
+              </div>
+            </div>
 
             <div className="form-actions">
               <button
@@ -279,12 +304,12 @@ const AdminDashboard = () => {
   }, []);
 
   useEffect(() => {
-    if (isMobileMenuOpen) {
+    if (isMobileMenuOpen || isModalOpen) {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "";
     }
-  }, [isMobileMenuOpen]);
+  }, [isMobileMenuOpen, isModalOpen]);
 
   // NOTE: create happens in EpisodeModal via redux dispatch + unwrap
   const handleTabClick = (tab) => {

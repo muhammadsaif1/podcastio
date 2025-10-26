@@ -27,6 +27,7 @@ const PitchContest = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null); // 'success' | 'error' | null
   const [submitMsg, setSubmitMsg] = useState("");
+  const [validationError, setValidationError] = useState(""); // New state for general validation error
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -56,12 +57,43 @@ const PitchContest = () => {
     if (form.whyYou && form.whyYou.length > 1000)
       e.whyYou = "Must be under 1000 characters";
     setErrors(e);
+    // Set general validation error message if any errors exist
+    if (Object.keys(e).length > 0) {
+      setValidationError("Please fill out all required fields correctly");
+    } else {
+      setValidationError("");
+    }
     return Object.keys(e).length === 0;
   };
 
   const handleField = (key, value) => {
     setForm((p) => ({ ...p, [key]: value }));
-    if (errors[key]) setErrors((prev) => ({ ...prev, [key]: "" }));
+    if (errors[key]) {
+      setErrors((prev) => ({ ...prev, [key]: "" }));
+      // Recheck validation to clear general error if all fields are valid
+      const updatedForm = { ...form, [key]: value };
+      const e = {};
+      if (!updatedForm.fullName.trim()) e.fullName = "Full name is required";
+      if (!updatedForm.email.trim()) e.email = "Email is required";
+      if (updatedForm.email && !/^\S+@\S+\.\S+$/.test(updatedForm.email))
+        e.email = "Email is invalid";
+      if (!updatedForm.pitchCategory)
+        e.pitchCategory = "Pitch category is required";
+      if (!updatedForm.oneSentenceSummary.trim())
+        e.oneSentenceSummary = "1-sentence summary is required";
+      if (!updatedForm.pitchVideo.trim())
+        e.pitchVideo = "Pitch video link is required";
+      if (!updatedForm.stage) e.stage = "Stage is required";
+      if (!updatedForm.whyYou.trim()) e.whyYou = "This field is required";
+      if (!updatedForm.consent) e.consent = "Consent is required";
+      if (updatedForm.whyYou && updatedForm.whyYou.length > 1000)
+        e.whyYou = "Must be under 1000 characters";
+      setValidationError(
+        Object.keys(e).length > 0
+          ? "Please fill out all required fields correctly"
+          : ""
+      );
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -97,6 +129,7 @@ const PitchContest = () => {
           });
           setSubmitStatus(null);
           setSubmitMsg("");
+          setValidationError(""); // Clear validation error on success
         }, 2000);
 
         setTimeout(() => {
@@ -133,23 +166,6 @@ const PitchContest = () => {
           />
           <div className="pitch-contest-hero-overlay"></div>
         </div>
-        {/* <div className="pitch-contest-hero-content">
-          <motion.h1
-            initial={{ y: 30, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-          >
-            Pitch Your Idea. Win <span>$100</span>.
-          </motion.h1>
-          <motion.h2
-            className="pitch-contest-sub-text"
-            initial={{ y: 30, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
-          >
-            Launch on Kurudy.
-          </motion.h2>
-        </div> */}
       </motion.div>
 
       <motion.div
@@ -170,7 +186,7 @@ const PitchContest = () => {
                 text: "Submit your 60-second pitch (video + summary).",
               },
               { num: "02", text: "Top 3 founders pitch live on Returnus." },
-              { num: "03", text: "Top 3 founders pitch live on Returnus." },
+              { num: "03", text: "Top 3 founders pitch live on Returnus." }, // Note: Duplicate step, you may want to fix this
               { num: "04", text: "Winner gets $100 + mentorship + exposure." },
             ].map((step, index) => (
               <motion.div
@@ -453,21 +469,6 @@ const PitchContest = () => {
               </div>
             </motion.div>
 
-            {/* <motion.div
-              className="pitch-contest-form-group"
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.65 }}
-            >
-              <input
-                type="text"
-                value=""
-                placeholder="Consent Checkbox (Your name or founder's name)"
-                // readOnly
-              />
-            </motion.div> */}
-
             <motion.div
               className="pitch-contest-consent-row"
               initial={{ opacity: 0, x: -20 }}
@@ -491,6 +492,24 @@ const PitchContest = () => {
                 </span>
               )}
             </motion.div>
+
+            {/* General Validation Error Message */}
+            <AnimatePresence>
+              {validationError && (
+                <motion.div
+                  className="pitch-contest-submit-block pitch-contest-server-error"
+                  initial={{ opacity: 0, y: -20, scale: 0.9 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: -20, scale: 0.9 }}
+                  transition={{ duration: 0.4, type: "spring" }}
+                >
+                  <div className="pitch-contest-status-icon">
+                    <XCircle size={24} />
+                  </div>
+                  <p>{validationError}</p>
+                </motion.div>
+              )}
+            </AnimatePresence>
 
             <motion.button
               type="submit"
@@ -518,32 +537,33 @@ const PitchContest = () => {
                 </>
               )}
             </motion.button>
-          </form>
 
-          <AnimatePresence>
-            {submitStatus && (
-              <motion.div
-                className={`pitch-contest-submit-block ${
-                  submitStatus === "success"
-                    ? "pitch-contest-success-message"
-                    : "pitch-contest-server-error"
-                }`}
-                initial={{ opacity: 0, y: -20, scale: 0.9 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, y: -20, scale: 0.9 }}
-                transition={{ duration: 0.4, type: "spring" }}
-              >
-                <div className="pitch-contest-status-icon">
-                  {submitStatus === "success" ? (
-                    <CheckCircle size={24} />
-                  ) : (
-                    <XCircle size={24} />
-                  )}
-                </div>
-                <p>{submitMsg}</p>
-              </motion.div>
-            )}
-          </AnimatePresence>
+            {/* Success/Error Message */}
+            <AnimatePresence>
+              {submitStatus && (
+                <motion.div
+                  className={`pitch-contest-submit-block ${
+                    submitStatus === "success"
+                      ? "pitch-contest-success-message"
+                      : "pitch-contest-server-error"
+                  }`}
+                  initial={{ opacity: 0, y: -20, scale: 0.9 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: -20, scale: 0.9 }}
+                  transition={{ duration: 0.4, type: "spring" }}
+                >
+                  <div className="pitch-contest-status-icon">
+                    {submitStatus === "success" ? (
+                      <CheckCircle size={24} />
+                    ) : (
+                      <XCircle size={24} />
+                    )}
+                  </div>
+                  <p>{submitMsg}</p>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </form>
         </div>
       </motion.div>
     </section>

@@ -11,6 +11,9 @@ import {
   Trash2,
   Check,
   XCircle,
+  Eye,
+  Star,
+  AlertTriangle,
 } from "lucide-react";
 import "./episodes-list.scss";
 
@@ -30,40 +33,42 @@ const YouTubeModal = ({ isOpen, videoUrl, onClose }) => {
     return videoId ? `https://www.youtube.com/embed/${videoId}?autoplay=1` : "";
   };
 
-  if (!isOpen) return null;
-
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "auto";
     }
-
     return () => {
       document.body.style.overflow = "auto";
     };
   }, [isOpen]);
 
+  if (!isOpen) return null;
+
   return (
     <AnimatePresence>
       <motion.div
-        className="youtube-modal"
+        className="admin-episodes-modern-youtube-modal"
         onClick={onClose}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
       >
         <motion.div
-          className="youtube-modal-content"
+          className="admin-episodes-modern-youtube-modal-content"
           onClick={(e) => e.stopPropagation()}
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           exit={{ scale: 0.8, opacity: 0 }}
         >
-          <button className="youtube-close-btn" onClick={onClose}>
+          <button
+            className="admin-episodes-modern-youtube-close-btn"
+            onClick={onClose}
+          >
             <X size={24} />
           </button>
-          <div className="youtube-player">
+          <div className="admin-episodes-modern-youtube-player">
             <iframe
               src={getYouTubeEmbedUrl(videoUrl)}
               title="YouTube video player"
@@ -78,38 +83,30 @@ const YouTubeModal = ({ isOpen, videoUrl, onClose }) => {
   );
 };
 
-const EpisodeDetailModal = ({ isOpen, episode, onClose, onUpdated }) => {
+const EpisodeDetailModal = ({
+  isOpen,
+  episode,
+  onClose,
+  onUpdated,
+  onEdit,
+}) => {
   const dispatch = useDispatch();
-  const [isEditing, setIsEditing] = useState(false);
-  const [editData, setEditData] = useState(null);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
-  const [isUpdating, setIsUpdating] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
   const [youtubeModalOpen, setYoutubeModalOpen] = useState(false);
 
   useEffect(() => {
-    if (episode) {
-      setEditData({ ...episode });
-      setIsEditing(false);
-    }
-
     if (isOpen) {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "auto";
     }
-
     return () => {
       document.body.style.overflow = "auto";
     };
-  }, [episode]);
+  }, [isOpen]);
 
   if (!isOpen || !episode) return null;
-
-  const tagOptions = [
-    { value: "investor-education", label: "Investor Education" },
-    { value: "pitch", label: "Pitch" },
-    { value: "founder-story", label: "Founder Story" },
-  ];
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -123,46 +120,21 @@ const EpisodeDetailModal = ({ isOpen, episode, onClose, onUpdated }) => {
   };
 
   const handleEdit = () => {
-    setIsEditing(true);
-  };
-
-  const handleCancel = () => {
-    setIsEditing(false);
-    setEditData({ ...episode });
-  };
-
-  const handleUpdate = async () => {
-    if (!editData) return;
-    try {
-      setIsUpdating(true);
-      await dispatch(
-        updateEpisode({ id: editData._id, updates: editData })
-      ).unwrap();
-
-      if (typeof onUpdated === "function") onUpdated(editData);
-
-      setIsEditing(false);
-    } catch (err) {
-      console.error("Error updating episode:", err);
-      alert("Failed to update episode. Please try again.");
-    } finally {
-      setIsUpdating(false);
-    }
+    onEdit(episode);
+    onClose();
   };
 
   const handleDelete = async () => {
     try {
-      setIsUpdating(true);
+      setIsDeleting(true);
       await dispatch(deleteEpisode(episode._id)).unwrap();
-
       if (typeof onUpdated === "function") onUpdated(null, episode._id);
-
       onClose();
     } catch (err) {
       console.error("Error deleting episode:", err);
       alert("Failed to delete episode. Please try again.");
     } finally {
-      setIsUpdating(false);
+      setIsDeleting(false);
     }
   };
 
@@ -170,7 +142,7 @@ const EpisodeDetailModal = ({ isOpen, episode, onClose, onUpdated }) => {
     <>
       <AnimatePresence>
         <motion.div
-          className="episode-detail-modal"
+          className="admin-episodes-modern-detail-modal"
           onClick={onClose}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -178,40 +150,18 @@ const EpisodeDetailModal = ({ isOpen, episode, onClose, onUpdated }) => {
           transition={{ duration: 0.2 }}
         >
           <motion.div
-            className="modal-content"
+            className="admin-episodes-modern-modal-content"
             onClick={(e) => e.stopPropagation()}
             initial={{ scale: 0.8, opacity: 0, y: 20 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.8, opacity: 0, y: 20 }}
             transition={{ duration: 0.3 }}
           >
-            <div className="modal-header">
+            <div className="admin-episodes-modern-modal-header">
               <h2>Episode Details</h2>
-              <div className="header-actions">
-                {!isEditing && (
-                  <>
-                    <motion.button
-                      className="action-btn edit-btn"
-                      onClick={handleEdit}
-                      whileHover={{ scale: 1.1 }}
-                      whileTap={{ scale: 0.95 }}
-                      title="Edit episode"
-                    >
-                      <Edit2 size={20} />
-                    </motion.button>
-                    <motion.button
-                      className="action-btn delete-btn"
-                      onClick={() => setShowDeleteConfirm(true)}
-                      whileHover={{ scale: 1.1 }}
-                      whileTap={{ scale: 0.95 }}
-                      title="Delete episode"
-                    >
-                      <Trash2 size={20} />
-                    </motion.button>
-                  </>
-                )}
+              <div className="admin-episodes-modern-header-actions">
                 <motion.button
-                  className="close-btn"
+                  className="admin-episodes-modern-close-btn"
                   onClick={onClose}
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.95 }}
@@ -223,7 +173,7 @@ const EpisodeDetailModal = ({ isOpen, episode, onClose, onUpdated }) => {
 
             {showDeleteConfirm && (
               <motion.div
-                className="delete-confirmation"
+                className="admin-episodes-modern-delete-confirmation"
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
@@ -232,194 +182,105 @@ const EpisodeDetailModal = ({ isOpen, episode, onClose, onUpdated }) => {
                   Are you sure you want to delete this episode? This action
                   cannot be undone.
                 </p>
-                <div className="confirmation-actions">
+                <div className="admin-episodes-modern-confirmation-actions">
                   <motion.button
-                    className="confirm-btn cancel"
+                    className="admin-episodes-modern-confirm-btn admin-episodes-modern-cancel"
                     onClick={() => setShowDeleteConfirm(false)}
                   >
                     Cancel
                   </motion.button>
                   <motion.button
-                    className="confirm-btn delete"
+                    className="admin-episodes-modern-confirm-btn admin-episodes-modern-delete"
                     onClick={handleDelete}
-                    disabled={isUpdating}
+                    disabled={isDeleting}
                   >
-                    Delete
+                    {isDeleting ? "Deleting..." : "Delete"}
                   </motion.button>
                 </div>
               </motion.div>
             )}
 
-            <div className="modal-body">
-              {isEditing ? (
-                <div className="edit-form">
-                  <div className="form-group">
-                    <label>Title</label>
-                    <input
-                      type="text"
-                      value={editData?.title || ""}
-                      onChange={(e) =>
-                        setEditData({ ...editData, title: e.target.value })
-                      }
-                    />
-                  </div>
+            <div className="admin-episodes-modern-modal-body">
+              <div className="admin-episodes-modern-detail-group">
+                <label>Title</label>
+                <p className="admin-episodes-modern-detail-value">
+                  {episode.title}
+                </p>
+              </div>
 
-                  <div className="form-group">
-                    <label>Description</label>
-                    <textarea
-                      value={editData?.description || ""}
-                      onChange={(e) =>
-                        setEditData({
-                          ...editData,
-                          description: e.target.value,
-                        })
-                      }
-                    />
-                  </div>
-
-                  <div className="form-group">
-                    <label>Author</label>
-                    <input
-                      type="text"
-                      value={editData?.author || ""}
-                      onChange={(e) =>
-                        setEditData({ ...editData, author: e.target.value })
-                      }
-                    />
-                  </div>
-
-                  <div className="form-group">
-                    <label>YouTube Link</label>
-                    <input
-                      type="text"
-                      value={editData?.youtubeLink || ""}
-                      onChange={(e) =>
-                        setEditData({
-                          ...editData,
-                          youtubeLink: e.target.value,
-                        })
-                      }
-                    />
-                  </div>
-
-                  <div className="form-group">
-                    <label>Spotify Link (Optional)</label>
-                    <input
-                      type="text"
-                      value={editData?.spotifyLink || ""}
-                      onChange={(e) =>
-                        setEditData({
-                          ...editData,
-                          spotifyLink: e.target.value,
-                        })
-                      }
-                    />
-                  </div>
-
-                  <div className="form-group">
-                    <label>Tag</label>
-                    <select
-                      value={editData?.tag || ""}
-                      onChange={(e) =>
-                        setEditData({ ...editData, tag: e.target.value })
-                      }
-                    >
-                      <option value="">Select a tag</option>
-                      {tagOptions.map((o) => (
-                        <option key={o.value} value={o.value}>
-                          {o.label}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-
-                  <div className="edit-actions">
-                    <motion.button
-                      className="action-btn cancel"
-                      onClick={handleCancel}
-                      disabled={isUpdating}
-                    >
-                      <XCircle size={18} /> Cancel
-                    </motion.button>
-                    <motion.button
-                      className="action-btn update"
-                      onClick={handleUpdate}
-                      disabled={isUpdating}
-                    >
-                      <Check size={18} />{" "}
-                      {isUpdating ? "Updating..." : "Update"}
-                    </motion.button>
-                  </div>
+              {episode.tag && (
+                <div className="admin-episodes-modern-detail-group">
+                  <label>Tag</label>
+                  <p className="admin-episodes-modern-detail-value">
+                    {episode.tag}
+                  </p>
                 </div>
-              ) : (
-                <>
-                  <div className="detail-group">
-                    <label>Title</label>
-                    <p className="detail-value">{episode.title}</p>
-                  </div>
+              )}
 
-                  {episode.tag && (
-                    <div className="detail-group">
-                      <label>Tag</label>
-                      <p className="detail-value">{episode.tag}</p>
-                    </div>
-                  )}
+              <div className="admin-episodes-modern-detail-group">
+                <label>Author</label>
+                <p className="admin-episodes-modern-detail-value">
+                  {episode.author}
+                </p>
+              </div>
 
-                  <div className="detail-group">
-                    <label>Author</label>
-                    <p className="detail-value">{episode.author}</p>
-                  </div>
+              <div className="admin-episodes-modern-detail-group">
+                <label>Created At</label>
+                <p className="admin-episodes-modern-detail-value">
+                  {formatDate(episode.createdAt)}
+                </p>
+              </div>
 
-                  <div className="detail-group">
-                    <label>Created At</label>
-                    <p className="detail-value">
-                      {formatDate(episode.createdAt)}
-                    </p>
-                  </div>
+              {episode.mainEpisode !== undefined && (
+                <div className="admin-episodes-modern-detail-group">
+                  <label>Main Episode</label>
+                  <p className="admin-episodes-modern-detail-value">
+                    {episode.mainEpisode ? "Yes" : "No"}
+                  </p>
+                </div>
+              )}
 
-                  <div className="detail-group full-width">
-                    <label>Description</label>
-                    <p className="detail-value description-text">
-                      {episode.description}
-                    </p>
-                  </div>
+              <div className="admin-episodes-modern-detail-group admin-episodes-modern-full-width">
+                <label>Description</label>
+                <p className="admin-episodes-modern-detail-value admin-episodes-modern-description-text">
+                  {episode.description}
+                </p>
+              </div>
 
-                  <div className="detail-group">
-                    <label>YouTube Link</label>
-                    <div className="link-with-button">
-                      <a
-                        href={episode.youtubeLink}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="detail-link"
-                      >
-                        {episode.youtubeLink}
-                      </a>
-                      <motion.button
-                        className="play-btn"
-                        onClick={() => setYoutubeModalOpen(true)}
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                      >
-                        <Play size={16} /> Watch
-                      </motion.button>
-                    </div>
-                  </div>
+              <div className="admin-episodes-modern-detail-group">
+                <label>YouTube Link</label>
+                <div className="admin-episodes-modern-link-with-button">
+                  <a
+                    href={episode.youtubeLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="admin-episodes-modern-detail-link"
+                  >
+                    {episode.youtubeLink}
+                  </a>
+                  <motion.button
+                    className="admin-episodes-modern-play-btn"
+                    onClick={() => setYoutubeModalOpen(true)}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <Play size={16} /> Watch
+                  </motion.button>
+                </div>
+              </div>
 
-                  {episode.spotifyLink && (
-                    <div className="detail-group">
-                      <label>Spotify Link</label>
-                      <a
-                        href={episode.spotifyLink}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="detail-link"
-                      >
-                        {episode.spotifyLink}
-                      </a>
-                    </div>
-                  )}
-                </>
+              {episode.spotifyLink && (
+                <div className="admin-episodes-modern-detail-group">
+                  <label>Spotify Link</label>
+                  <a
+                    href={episode.spotifyLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="admin-episodes-modern-detail-link"
+                  >
+                    {episode.spotifyLink}
+                  </a>
+                </div>
               )}
             </div>
           </motion.div>
@@ -435,6 +296,222 @@ const EpisodeDetailModal = ({ isOpen, episode, onClose, onUpdated }) => {
   );
 };
 
+const EpisodeEditModal = ({ isOpen, episode, onClose, onUpdated }) => {
+  const dispatch = useDispatch();
+  const [editData, setEditData] = useState(null);
+  const [isUpdating, setIsUpdating] = useState(false);
+
+  useEffect(() => {
+    if (episode) {
+      setEditData({ ...episode });
+    }
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [episode, isOpen]);
+
+  if (!isOpen || !episode) return null;
+
+  const tagOptions = [
+    { value: "investor", label: "Investor" },
+    { value: "pitch", label: "Pitch" },
+    { value: "founder-story", label: "Founder Story" },
+  ];
+
+  const handleCancel = () => {
+    setEditData({ ...episode });
+    onClose();
+  };
+
+  const handleUpdate = async () => {
+    if (!editData) return;
+    try {
+      setIsUpdating(true);
+      await dispatch(
+        updateEpisode({ id: editData._id, updates: editData })
+      ).unwrap();
+      if (typeof onUpdated === "function") onUpdated(editData);
+      onClose();
+    } catch (err) {
+      console.error("Error updating episode:", err);
+      alert("Failed to delete episode. Please try again.");
+    } finally {
+      setIsUpdating(false);
+    }
+  };
+
+  return (
+    <AnimatePresence>
+      <motion.div
+        className="admin-episodes-modern-detail-modal"
+        onClick={onClose}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.2 }}
+      >
+        <motion.div
+          className="admin-episodes-modern-modal-content"
+          onClick={(e) => e.stopPropagation()}
+          initial={{ scale: 0.8, opacity: 0, y: 20 }}
+          animate={{ scale: 1, opacity: 1, y: 0 }}
+          exit={{ scale: 0.8, opacity: 0, y: 20 }}
+          transition={{ duration: 0.3 }}
+        >
+          <div className="admin-episodes-modern-modal-header">
+            <h2>Edit Episode</h2>
+            <div className="admin-episodes-modern-header-actions">
+              <motion.button
+                className="admin-episodes-modern-close-btn"
+                onClick={onClose}
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <X size={24} />
+              </motion.button>
+            </div>
+          </div>
+
+          <div className="admin-episodes-modern-modal-body">
+            <div className="admin-episodes-modern-edit-form">
+              <div className="admin-episodes-modern-form-group">
+                <label>Title</label>
+                <input
+                  type="text"
+                  value={editData?.title || ""}
+                  onChange={(e) =>
+                    setEditData({ ...editData, title: e.target.value })
+                  }
+                />
+              </div>
+
+              <div className="admin-episodes-modern-form-group">
+                <label>Description</label>
+                <textarea
+                  value={editData?.description || ""}
+                  onChange={(e) =>
+                    setEditData({
+                      ...editData,
+                      description: e.target.value,
+                    })
+                  }
+                />
+              </div>
+
+              <div className="admin-episodes-modern-form-group">
+                <label>Author</label>
+                <input
+                  type="text"
+                  value={editData?.author || ""}
+                  onChange={(e) =>
+                    setEditData({ ...editData, author: e.target.value })
+                  }
+                />
+              </div>
+
+              <div className="admin-episodes-modern-form-group">
+                <label>YouTube Link</label>
+                <input
+                  type="text"
+                  value={editData?.youtubeLink || ""}
+                  onChange={(e) =>
+                    setEditData({
+                      ...editData,
+                      youtubeLink: e.target.value,
+                    })
+                  }
+                />
+              </div>
+
+              <div className="admin-episodes-modern-form-group">
+                <label>Spotify Link (Optional)</label>
+                <input
+                  type="text"
+                  value={editData?.spotifyLink || ""}
+                  onChange={(e) =>
+                    setEditData({
+                      ...editData,
+                      spotifyLink: e.target.value,
+                    })
+                  }
+                />
+              </div>
+
+              <div className="admin-episodes-modern-form-group">
+                <label>Tag</label>
+                <select
+                  value={editData?.tag || ""}
+                  onChange={(e) =>
+                    setEditData({ ...editData, tag: e.target.value })
+                  }
+                >
+                  <option value="">Select a tag</option>
+                  {tagOptions.map((o) => (
+                    <option key={o.value} value={o.value}>
+                      {o.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="admin-episodes-modern-form-group admin-episodes-modern-form-group-switch">
+                <div className="admin-episodes-modern-switch-wrapper">
+                  <label htmlFor="mainEpisodeSwitch">Main Episode</label>
+                  <div className="admin-episodes-modern-switch-container">
+                    <input
+                      type="checkbox"
+                      id="mainEpisodeSwitch"
+                      className="admin-episodes-modern-switch-input"
+                      checked={editData?.mainEpisode || false}
+                      onChange={(e) =>
+                        setEditData({
+                          ...editData,
+                          mainEpisode: e.target.checked,
+                        })
+                      }
+                    />
+                    <label
+                      htmlFor="mainEpisodeSwitch"
+                      className="admin-episodes-modern-switch-label"
+                    >
+                      <span className="admin-episodes-modern-switch-slider"></span>
+                    </label>
+                    <span className="admin-episodes-modern-switch-status">
+                      {editData?.mainEpisode ? "Yes" : "No"}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="admin-episodes-modern-edit-actions">
+                <motion.button
+                  className="admin-episodes-modern-action-btn admin-episodes-modern-cancel"
+                  onClick={handleCancel}
+                  disabled={isUpdating}
+                >
+                  <XCircle size={18} /> Cancel
+                </motion.button>
+                <motion.button
+                  className="admin-episodes-modern-action-btn admin-episodes-modern-update"
+                  onClick={handleUpdate}
+                  disabled={isUpdating}
+                >
+                  <Check size={18} /> {isUpdating ? "Updating..." : "Update"}
+                </motion.button>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+      </motion.div>
+    </AnimatePresence>
+  );
+};
+
 const EpisodesList = () => {
   const dispatch = useDispatch();
   const reduxState = useSelector((state) => state.episodes || {});
@@ -447,8 +524,10 @@ const EpisodesList = () => {
   const [error, setError] = useState(errorFromStore);
   const [selectedEpisode, setSelectedEpisode] = useState(null);
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [youtubeModalOpen, setYoutubeModalOpen] = useState(false);
   const [selectedVideoUrl, setSelectedVideoUrl] = useState("");
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(null); // Store episode for deletion
 
   useEffect(() => {
     dispatch(fetchEpisodes());
@@ -499,9 +578,33 @@ const EpisodesList = () => {
       : "/episode-thumbnail.jpg";
   };
 
-  const handleEpisodeClick = (episode) => {
+  const handleViewClick = (e, episode) => {
+    e.stopPropagation();
     setSelectedEpisode(episode);
     setIsDetailModalOpen(true);
+  };
+
+  const handleEditClick = (e, episode) => {
+    e.stopPropagation();
+    setSelectedEpisode(episode);
+    setIsEditModalOpen(true);
+  };
+
+  const handleDeleteClick = (e, episode) => {
+    e.stopPropagation();
+    setShowDeleteConfirm(episode); // Show confirmation modal for this episode
+  };
+
+  const handleDeleteConfirm = async () => {
+    if (!showDeleteConfirm) return;
+    try {
+      await dispatch(deleteEpisode(showDeleteConfirm._id)).unwrap();
+      await dispatch(fetchEpisodes());
+      setShowDeleteConfirm(null);
+    } catch (err) {
+      console.error("Error deleting episode:", err);
+      alert("Failed to delete episode. Please try again.");
+    }
   };
 
   const handleThumbnailClick = (e, videoUrl) => {
@@ -530,12 +633,17 @@ const EpisodesList = () => {
     }
   };
 
+  const handleEditFromDetail = (episode) => {
+    setSelectedEpisode(episode);
+    setIsEditModalOpen(true);
+  };
+
   if (loading) {
     return (
-      <div className="episodes-container">
-        <div className="loading-state">
+      <div className="admin-episodes-modern-container">
+        <div className="admin-episodes-modern-loading-state">
           <motion.div
-            className="spinner"
+            className="admin-episodes-modern-spinner"
             animate={{ rotate: 360 }}
             transition={{
               duration: 1,
@@ -550,10 +658,10 @@ const EpisodesList = () => {
   }
 
   return (
-    <div className="episodes-container">
+    <div className="admin-episodes-modern-container">
       {error && (
         <motion.div
-          className="error-state"
+          className="admin-episodes-modern-error-state"
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
         >
@@ -562,17 +670,17 @@ const EpisodesList = () => {
       )}
 
       {episodes.length === 0 && !error ? (
-        <div className="empty-state">
+        <div className="admin-episodes-modern-empty-state">
           <Play size={48} />
           <p>You have no episodes</p>
         </div>
       ) : (
-        <ul className="episodes-list">
+        <ul className="admin-episodes-modern-list">
           <AnimatePresence>
             {episodes.map((episode, idx) => (
               <motion.li
                 key={episode._id || idx}
-                className="episode-item"
+                className="admin-episodes-modern-item"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
@@ -581,7 +689,7 @@ const EpisodesList = () => {
                 whileTap={{ scale: 0.98 }}
               >
                 <div
-                  className="episode-thumbnail"
+                  className="admin-episodes-modern-thumbnail"
                   onClick={(e) => handleThumbnailClick(e, episode.youtubeLink)}
                 >
                   <img
@@ -591,33 +699,71 @@ const EpisodesList = () => {
                     }
                     alt={episode.title}
                   />
+                  <div className="admin-episodes-modern-play-overlay">
+                    <Play size={32} />
+                  </div>
+                  {episode.mainEpisode && (
+                    <div className="admin-episodes-modern-star-overlay">
+                      <Star size={24} />
+                    </div>
+                  )}
                 </div>
 
-                <div
-                  className="episode-content"
-                  onClick={() => handleEpisodeClick(episode)}
-                >
-                  <div className="episode-header">
-                    <div className="episode-title-section">
-                      <div className="author-icon">
-                        <User size={16} />
-                      </div>
-                      <div className="title-info">
-                        <h4>{episode.title}</h4>
+                <div className="admin-episodes-modern-content">
+                  <div className="admin-episodes-modern-header">
+                    <div className="admin-episodes-modern-title-section">
+                      <div className="admin-episodes-modern-title-info">
+                        <h4>
+                          {episode.title}
+                          <span className="admin-episodes-modern-author-inline">
+                            <User size={14} />
+                            {episode.author}
+                          </span>
+                        </h4>
                         {episode.tag && (
-                          <div className="episode-tag">
+                          <div className="admin-episodes-modern-tag-badge">
                             {String(episode.tag).replace(/-/g, " ")}
                           </div>
                         )}
-                        <p className="author">{episode.author}</p>
                       </div>
                     </div>
-                    <div className="time-section">
-                      <Clock size={14} />
-                      <span>{formatDate(episode.createdAt)}</span>
+                    <div className="admin-episodes-modern-actions">
+                      <motion.button
+                        className="admin-episodes-modern-action-icon admin-episodes-modern-view-icon"
+                        onClick={(e) => handleViewClick(e, episode)}
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.95 }}
+                        title="View details"
+                      >
+                        <Eye size={18} />
+                      </motion.button>
+                      <motion.button
+                        className="admin-episodes-modern-action-icon admin-episodes-modern-edit-icon"
+                        onClick={(e) => handleEditClick(e, episode)}
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.95 }}
+                        title="Edit episode"
+                      >
+                        <Edit2 size={18} />
+                      </motion.button>
+                      <motion.button
+                        className="admin-episodes-modern-action-icon admin-episodes-modern-delete-icon"
+                        onClick={(e) => handleDeleteClick(e, episode)}
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.95 }}
+                        title="Delete episode"
+                      >
+                        <Trash2 size={18} />
+                      </motion.button>
                     </div>
                   </div>
-                  <p className="episode-preview">{episode.description}</p>
+                  <div className="admin-episodes-modern-time-section">
+                    <Clock size={14} />
+                    <span>{formatDate(episode.createdAt)}</span>
+                  </div>
+                  <p className="admin-episodes-modern-preview">
+                    {episode.description}
+                  </p>
                 </div>
               </motion.li>
             ))}
@@ -625,12 +771,73 @@ const EpisodesList = () => {
         </ul>
       )}
 
+      {/* Custom Delete Confirmation Modal */}
+      <AnimatePresence>
+        {showDeleteConfirm && (
+          <motion.div
+            className="admin-episodes-modern-delete-confirm-modal"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            onClick={() => setShowDeleteConfirm(null)}
+          >
+            <motion.div
+              className="admin-episodes-modern-delete-confirm-content"
+              onClick={(e) => e.stopPropagation()}
+              initial={{ scale: 0.8, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.8, opacity: 0, y: 20 }}
+              transition={{ duration: 0.3 }}
+            >
+              <div className="admin-episodes-modern-delete-confirm-header">
+                <AlertTriangle size={24} color="#ff6666" />
+                <h3>Confirm Delete</h3>
+              </div>
+              <p>
+                Are you sure you want to delete the episode "
+                {showDeleteConfirm.title}"? This action cannot be undone.
+              </p>
+              <div className="admin-episodes-modern-delete-confirm-actions">
+                <motion.button
+                  className="admin-episodes-modern-confirm-btn admin-episodes-modern-cancel"
+                  onClick={() => setShowDeleteConfirm(null)}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <XCircle size={18} /> Cancel
+                </motion.button>
+                <motion.button
+                  className="admin-episodes-modern-confirm-btn admin-episodes-modern-delete"
+                  onClick={handleDeleteConfirm}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <Trash2 size={18} /> Delete
+                </motion.button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <EpisodeDetailModal
         isOpen={isDetailModalOpen}
         episode={selectedEpisode}
         onClose={() => {
           document.body.style.overflow = "auto";
           setIsDetailModalOpen(false);
+        }}
+        onUpdated={handleModalUpdated}
+        onEdit={handleEditFromDetail}
+      />
+
+      <EpisodeEditModal
+        isOpen={isEditModalOpen}
+        episode={selectedEpisode}
+        onClose={() => {
+          document.body.style.overflow = "auto";
+          setIsEditModalOpen(false);
         }}
         onUpdated={handleModalUpdated}
       />
