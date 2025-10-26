@@ -10,7 +10,15 @@ const AboutPage = () => {
 
   const handleMeetHosts = () => {
     if (hostsRef.current) {
-      hostsRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+      const navbarHeight = 80; // Adjust to your navbar height
+      const elementPosition = hostsRef.current.getBoundingClientRect().top;
+      const offsetPosition =
+        elementPosition + window.pageYOffset - navbarHeight;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth",
+      });
     }
   };
 
@@ -20,7 +28,7 @@ const AboutPage = () => {
         <img className="w-100" src={waveLine} alt="line" />
       </div>
 
-      <h2 className="host-title-text-modern" id="host-title">
+      <h2 className="host-title-text-modern">
         The <span className="blue-gradient">Hosts</span>
       </h2>
       <div>
@@ -33,7 +41,9 @@ const AboutPage = () => {
           pitches from emerging entrepreneurs changing the world.
         </p>
       </div>
-      <Hosts />
+      <div ref={hostsRef}>
+        <Hosts />
+      </div>
 
       <motion.div
         className="section mission"
@@ -94,11 +104,7 @@ const AboutPage = () => {
 
         {/* Meet the Hosts CTA */}
         <div className="meet-hosts-wrap">
-          <button
-            id="host-title"
-            className="meet-hosts-btn"
-            onClick={handleMeetHosts}
-          >
+          <button className="meet-hosts-btn" onClick={handleMeetHosts}>
             Meet the Hosts <span className="arrow">➜</span>
           </button>
         </div>
@@ -145,7 +151,8 @@ const AboutPage = () => {
       </motion.div> */}
 
       {/* Partners */}
-      <motion.div
+      {/* removed kurudy */}
+      {/* <motion.div
         className="section partners"
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -162,31 +169,31 @@ const AboutPage = () => {
             <img src={kurudy} alt="Kurudy" />
           </motion.div>
 
-          {/* <motion.div
+          <motion.div
             className="partner-logo"
             whileHover={{ scale: 1.05, rotate: 3 }}
             transition={{ duration: 0.2 }}
           >
             <img src={crunchbase} alt="Crunchbase" />
-          </motion.div> */}
+          </motion.div>
 
-          {/* <motion.div
+          <motion.div
             className="partner-logo"
             whileHover={{ scale: 1.05, rotate: 3 }}
             transition={{ duration: 0.2 }}
           >
             <img src={kingscrowd} alt="Kingscrowd" />
-          </motion.div> */}
+          </motion.div>
 
-          {/* <motion.div
+          <motion.div
             className="partner-logo"
             whileHover={{ scale: 1.05, rotate: 3 }}
             transition={{ duration: 0.2 }}
           >
             <img src={finra} alt="FINRA" />
-          </motion.div> */}
+          </motion.div>
         </div>
-      </motion.div>
+      </motion.div> */}
     </section>
   );
 };

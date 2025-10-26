@@ -35,11 +35,12 @@ const FooterTwo = () => {
           <span> | </span>
           <NavLink to="/contact">Contact</NavLink>
         </div>
-        <div className="footer-two-kurudy">
+        {/* removed kurudy */}
+        {/* <div className="footer-two-kurudy">
           <a target="_blank" href="https://www.kurudy.com/">
             Kurudy.com
           </a>
-        </div>
+        </div> */}
         <div
           className="social-links"
           style={{
@@ -63,8 +64,8 @@ const FooterTwo = () => {
         </div>
         <div className="footer-two-bottom">
           <span className="footer-two-copyright">
-            © Returnus 2025 – Powered by Kurudy. Equity Crowdfunding for
-            Generational Impact.
+            © Returnus 2025 – {/* Powered by Kurudy. */}
+            Equity Crowdfunding for Generational Impact.
           </span>
           <div className="footer-two-links">
             <a href="/terms-and-conditions">Terms & Conditions</a>
