@@ -219,6 +219,17 @@ const EpisodesList = () => {
   }, [listFromStore]);
 
   useEffect(() => {
+    if (youtubeModalOpen || isDetailModalOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [youtubeModalOpen, isDetailModalOpen]);
+  useEffect(() => {
     if (!searchQuery.trim()) {
       setFilteredEpisodes(episodes);
       setCurrentPage(1);

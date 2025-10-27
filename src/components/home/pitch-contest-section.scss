@@ -127,10 +127,11 @@ $orange: orange;
         position: relative;
         border-radius: 16px;
         overflow: hidden;
-        aspect-ratio: 3/4;
+        aspect-ratio: 16/9;
         cursor: pointer;
         transition: transform 0.3s ease;
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        background: #000;
 
         &:nth-child(even) {
           margin-top: 40px;
@@ -273,45 +274,6 @@ $orange: orange;
   color: $text-white;
 }
 
-// .contest-btn {
-//   display: inline-flex;
-//   align-items: center;
-//   gap: 0.5rem;
-//   padding: 0.65rem 1.5rem;
-//   border: 2px solid $orange;
-//   border-radius: 50px;
-//   color: $orange;
-//   font-weight: 600;
-//   font-size: 0.95rem;
-//   text-decoration: none;
-//   transition: all 0.3s ease;
-//   background: transparent;
-
-//   // ✅ Desktop (default) → stay on left
-//   margin-left: 0;
-//   margin-right: auto;
-
-//   .icon {
-//     font-size: 1.1rem;
-//   }
-
-//   &:hover {
-//     background: $orange;
-//     color: #000;
-//     transform: translateY(-2px);
-//     box-shadow: 0 4px 12px rgba($orange, 0.3);
-//   }
-// }
-
-// /* ✅ Mobile: center the button */
-// @media (max-width: 768px) {
-//   .contest-btn {
-//     margin: 0 auto;
-//     display: flex;
-//     justify-content: center;
-//   }
-// }
-
 .container {
   max-width: 1400px;
   margin: 0 auto;
@@ -326,10 +288,6 @@ $orange: orange;
   width: 100%;
   display: flex;
   justify-content: flex-start;
-
-  // @media (max-width: 768px) {
-  //   justify-content: center;
-  // }
 
   .contest-btn {
     display: inline-flex;
@@ -403,8 +361,7 @@ $orange: orange;
   }
 }
 
-/* YouTube wrapper and overlay */
-/* YouTube wrapper - full coverage */
+/* ========== YOUTUBE CARD STYLES (CRITICAL FIX) ========== */
 .youtube-card {
   position: relative;
   overflow: hidden;
@@ -412,7 +369,9 @@ $orange: orange;
   background: #000;
 
   .youtube-wrapper {
-    position: relative;
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
     overflow: hidden;
@@ -422,21 +381,17 @@ $orange: orange;
     position: absolute;
     top: 50%;
     left: 50%;
+    /* Optimized for 9:16 container */
     width: 100%;
     height: 100%;
     min-width: 100%;
     min-height: 100%;
-    transform: translate(-50%, -50%) scale(1.1);
-    object-fit: cover;
+    transform: translate(-50%, -50%);
     border: none;
     pointer-events: none;
-
-    @media (max-width: 768px) {
-      transform: translate(-50%, -50%) scale(1.2);
-    }
   }
 
-  /* Audio indicator */
+  /* Audio indicator - UNMUTED */
   &.unmuted::after {
     content: "🔊";
     position: absolute;
@@ -457,6 +412,7 @@ $orange: orange;
     }
   }
 
+  /* Audio indicator - MUTED */
   &:not(.unmuted)::after {
     content: "🔇";
     position: absolute;
@@ -491,38 +447,4 @@ $orange: orange;
   50% {
     opacity: 0.6;
   }
-}
-
-/* Error & waiting message boxes */
-.pitch-msg-error {
-  background: #ff4d4f;
-  color: white;
-  padding: 1rem 1.5rem;
-  border-radius: 6px;
-  text-align: center;
-  font-weight: 600;
-  width: 100%;
-}
-
-.pitch-msg-waiting {
-  background: #ff9800;
-  color: white;
-  padding: 1rem 1.5rem;
-  border-radius: 6px;
-  text-align: center;
-  font-weight: 600;
-  width: 100%;
-}
-
-/* Coming soon placeholder */
-.pitch-coming-soon {
-  background: #3b82f6;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
-  font-weight: 600;
-  font-size: 1.1rem;
-  position: relative;
-  overflow: hidden;
 }

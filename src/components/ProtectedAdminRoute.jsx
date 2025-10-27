@@ -1,7 +1,9 @@
 import { Navigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { checkExpiry } from "@/redux/slices/authSlice";
 
 const ProtectedAdminRoute = ({ children }) => {
+  const dispatch = useDispatch();
   const isAuthenticatedRedux = useSelector(
     (state) => state.auth?.isAuthenticated
   );
@@ -10,6 +12,7 @@ const ProtectedAdminRoute = ({ children }) => {
   const isAuthenticatedLocal =
     localStorage.getItem("isAuthenticated") === "true";
 
+  dispatch(checkExpiry());
   const isAuthenticated = isAuthenticatedRedux || isAuthenticatedLocal;
 
   if (!isAuthenticated) {
