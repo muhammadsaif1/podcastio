@@ -320,7 +320,7 @@ const EpisodeEditModal = ({ isOpen, episode, onClose, onUpdated }) => {
   const tagOptions = [
     { value: "investor", label: "Investor" },
     { value: "pitch", label: "Pitch" },
-    { value: "founder-story", label: "Founder Story" },
+    { value: "founder", label: "Founder" },
   ];
 
   const handleCancel = () => {
@@ -520,6 +520,7 @@ const EpisodesList = () => {
   const errorFromStore = reduxState.error || null;
 
   const [episodes, setEpisodes] = useState([]);
+  const [filteredEpisodes, setFilteredEpisodes] = useState([]);
   const [loading, setLoading] = useState(loadingList);
   const [error, setError] = useState(errorFromStore);
   const [selectedEpisode, setSelectedEpisode] = useState(null);
@@ -527,7 +528,8 @@ const EpisodesList = () => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [youtubeModalOpen, setYoutubeModalOpen] = useState(false);
   const [selectedVideoUrl, setSelectedVideoUrl] = useState("");
-  const [showDeleteConfirm, setShowDeleteConfirm] = useState(null); // Store episode for deletion
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(null);
+  const [selectedFilter, setSelectedFilter] = useState("all");
 
   useEffect(() => {
     dispatch(fetchEpisodes());
@@ -544,10 +546,22 @@ const EpisodesList = () => {
   useEffect(() => {
     if (Array.isArray(listFromStore) && listFromStore.length > 0) {
       setEpisodes(listFromStore);
+      setFilteredEpisodes(listFromStore);
     } else {
       setEpisodes([]);
+      setFilteredEpisodes([]);
     }
   }, [listFromStore]);
+
+  useEffect(() => {
+    if (selectedFilter === "all") {
+      setFilteredEpisodes(episodes);
+    } else {
+      setFilteredEpisodes(
+        episodes.filter((episode) => episode.tag === selectedFilter)
+      );
+    }
+  }, [selectedFilter, episodes]);
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -592,7 +606,7 @@ const EpisodesList = () => {
 
   const handleDeleteClick = (e, episode) => {
     e.stopPropagation();
-    setShowDeleteConfirm(episode); // Show confirmation modal for this episode
+    setShowDeleteConfirm(episode);
   };
 
   const handleDeleteConfirm = async () => {
@@ -638,6 +652,13 @@ const EpisodesList = () => {
     setIsEditModalOpen(true);
   };
 
+  const filterOptions = [
+    { value: "all", label: "All" },
+    { value: "pitch", label: "Pitches" },
+    { value: "founder", label: "Founder" },
+    { value: "investor", label: "Investors" },
+  ];
+
   if (loading) {
     return (
       <div className="admin-episodes-modern-container">
@@ -659,6 +680,39 @@ const EpisodesList = () => {
 
   return (
     <div className="admin-episodes-modern-container">
+      <div className="admin-episodes-modern-filter-section">
+        <h2>
+          {selectedFilter &&
+            selectedFilter.charAt(0).toUpperCase() + selectedFilter.slice(1)}
+
+          {selectedFilter === "pitch"
+            ? "es"
+            : selectedFilter === "all"
+            ? ""
+            : "s"}
+        </h2>
+        <div className="admin-episodes-modern-filter-wrapper">
+          <label
+            htmlFor="filterSelect"
+            className="admin-episodes-modern-filter-label"
+          >
+            Filter by:
+          </label>
+          <select
+            id="filterSelect"
+            className="admin-episodes-modern-filter-select"
+            value={selectedFilter}
+            onChange={(e) => setSelectedFilter(e.target.value)}
+          >
+            {filterOptions.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
+
       {error && (
         <motion.div
           className="admin-episodes-modern-error-state"
@@ -669,7 +723,7 @@ const EpisodesList = () => {
         </motion.div>
       )}
 
-      {episodes.length === 0 && !error ? (
+      {filteredEpisodes.length === 0 && !error ? (
         <div className="admin-episodes-modern-empty-state">
           <Play size={48} />
           <p>You have no episodes</p>
@@ -677,7 +731,7 @@ const EpisodesList = () => {
       ) : (
         <ul className="admin-episodes-modern-list">
           <AnimatePresence>
-            {episodes.map((episode, idx) => (
+            {filteredEpisodes.map((episode, idx) => (
               <motion.li
                 key={episode._id || idx}
                 className="admin-episodes-modern-item"
@@ -771,7 +825,6 @@ const EpisodesList = () => {
         </ul>
       )}
 
-      {/* Custom Delete Confirmation Modal */}
       <AnimatePresence>
         {showDeleteConfirm && (
           <motion.div

@@ -131,7 +131,7 @@ const PitchContestSection = () => {
             className="headline"
             style={{ textAlign: "left", marginLeft: "0" }}
           >
-            Got 5 Minutes? Win $100 + a Shot to Pitch on returnus!
+            Got 5 Minutes? Win $100 + a Shot to Pitch on Returnus!
           </h2>
 
           <p

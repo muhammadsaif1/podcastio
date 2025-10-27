@@ -645,6 +645,10 @@
     animation: scroll-left 30s linear infinite;
   }
 
+  &:hover .banner-content {
+    animation-play-state: paused;
+  }
+
   @keyframes scroll-left {
     0% {
       transform: translateX();
