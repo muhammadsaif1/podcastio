@@ -17,8 +17,8 @@ const AdminLogin = () => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const ADMIN_EMAIL = "william12@admin.com";
-  const ADMIN_PASSWORD = "William98";
+  const ADMIN_EMAIL = "returnus@kurudy.com";
+  const ADMIN_PASSWORD = "Kurudy@2025@@";
 
   const handleSubmit = (e) => {
     e.preventDefault();
