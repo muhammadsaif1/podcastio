@@ -2,7 +2,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Loader2, CheckCircle, XCircle, ArrowRight } from "lucide-react";
 import "./pitchContest.scss";
-import pitchHero from "@/images/pitch-hero.png";
+import pitchHeroVideo from "@/images/pitch-hero.mp4"; // Update import path as needed
 import { useDispatch } from "react-redux";
 import { createPitch } from "@/redux/slices/pitchSlice";
 import { useNavigate } from "react-router-dom";
@@ -25,9 +25,9 @@ const PitchContest = () => {
 
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState(null); // 'success' | 'error' | null
+  const [submitStatus, setSubmitStatus] = useState(null);
   const [submitMsg, setSubmitMsg] = useState("");
-  const [validationError, setValidationError] = useState(""); // New state for general validation error
+  const [validationError, setValidationError] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -57,7 +57,6 @@ const PitchContest = () => {
     if (form.whyYou && form.whyYou.length > 1000)
       e.whyYou = "Must be under 1000 characters";
     setErrors(e);
-    // Set general validation error message if any errors exist
     if (Object.keys(e).length > 0) {
       setValidationError("Please fill out all required fields correctly");
     } else {
@@ -70,7 +69,6 @@ const PitchContest = () => {
     setForm((p) => ({ ...p, [key]: value }));
     if (errors[key]) {
       setErrors((prev) => ({ ...prev, [key]: "" }));
-      // Recheck validation to clear general error if all fields are valid
       const updatedForm = { ...form, [key]: value };
       const e = {};
       if (!updatedForm.fullName.trim()) e.fullName = "Full name is required";
@@ -129,7 +127,7 @@ const PitchContest = () => {
           });
           setSubmitStatus(null);
           setSubmitMsg("");
-          setValidationError(""); // Clear validation error on success
+          setValidationError("");
         }, 2000);
 
         setTimeout(() => {
@@ -158,13 +156,22 @@ const PitchContest = () => {
         animate={{ opacity: 1 }}
         transition={{ duration: 0.8 }}
       >
-        <div className="pitch-contest-hero-image-wrapper">
-          <img
-            src={pitchHero}
-            alt="Pitch Contest Hero"
-            className="pitch-contest-hero-image"
-          />
+        <div className="pitch-contest-hero-video-wrapper">
+          <video
+            className="pitch-contest-hero-video"
+            autoPlay
+            loop
+            muted
+            playsInline
+          >
+            <source src={pitchHeroVideo} type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
           <div className="pitch-contest-hero-overlay"></div>
+        </div>
+
+        <div className="pitch-contest-hero-content">
+          <h1>Pitch Your Idea.</h1>
         </div>
       </motion.div>
 
@@ -186,7 +193,7 @@ const PitchContest = () => {
                 text: "Submit your 60-second pitch (video + summary).",
               },
               { num: "02", text: "Top 3 founders pitch live on Returnus." },
-              { num: "03", text: "Top 3 founders pitch live on Returnus." }, // Note: Duplicate step, you may want to fix this
+              { num: "03", text: "Community votes for the winner." },
               { num: "04", text: "Winner gets $100 + mentorship + exposure." },
             ].map((step, index) => (
               <motion.div
@@ -452,20 +459,7 @@ const PitchContest = () => {
                   placeholder="Upload Logo / Deck (optional)"
                   disabled={isSubmitting}
                 />
-                <div className="pitch-contest-upload-icon">
-                  {/* <svg
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  >
-                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                    <polyline points="17 8 12 3 7 8" />
-                    <line x1="12" y1="3" x2="12" y2="15" />
-                  </svg> */}
-                </div>
+                <div className="pitch-contest-upload-icon"></div>
               </div>
             </motion.div>
 
@@ -493,7 +487,6 @@ const PitchContest = () => {
               )}
             </motion.div>
 
-            {/* General Validation Error Message */}
             <AnimatePresence>
               {validationError && (
                 <motion.div
@@ -538,7 +531,6 @@ const PitchContest = () => {
               )}
             </motion.button>
 
-            {/* Success/Error Message */}
             <AnimatePresence>
               {submitStatus && (
                 <motion.div

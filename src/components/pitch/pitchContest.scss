@@ -31,35 +31,37 @@ $glass: rgba(255, 255, 255, 0.03);
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: clamp(350px, 50vh, 500px);
+    width: 100%;
+    /* ---- lock the container to the video’s native ratio ---- */
+    aspect-ratio: 16 / 9;
+    /* change to 4:3 or 21:9 if your video is different */
+    min-height: clamp(500px, 70vh, 800px);
+    height: auto; /* let the ratio decide the real height */
+    margin-top: 3.5rem;
+    // top: 5;
     overflow: hidden;
 
-    .pitch-contest-hero-image-wrapper {
+    .pitch-contest-hero-video-wrapper {
       position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      inset: 0;
       z-index: 1;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
 
-      .pitch-contest-hero-image {
+      .pitch-contest-hero-video {
         width: 100%;
         height: 100%;
-        object-fit: cover;
+        object-fit: contain; /* <-- SHOW THE WHOLE FRAME (letter-box if needed) */
         object-position: center;
+        display: block;
       }
 
       .pitch-contest-hero-overlay {
         position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(
-          180deg,
-          rgba(0, 0, 0, 0.4) 0%,
-          rgba(0, 0, 0, 0.6) 100%
-        );
+        inset: 0;
+        z-index: 1;
       }
     }
 
@@ -68,32 +70,56 @@ $glass: rgba(255, 255, 255, 0.03);
       z-index: 2;
       width: 100%;
       max-width: 1100px;
-      padding: clamp(2rem, 5vw, 3rem) clamp(1rem, 3vw, 2rem);
+      padding: clamp(2rem, 5vw, 3rem) clamp(1.5rem, 4vw, 2rem);
       text-align: center;
       color: $text-white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
 
       h1 {
-        font-size: clamp(1.8rem, 4.5vw, 2.8rem);
-        font-weight: 700;
-        margin: 0 0 10px 0;
-        line-height: 1.2;
-        text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
-
-        span {
-          color: $orange;
-          background: rgba($orange, 0.06);
-          padding: 0.08rem 0.3rem;
-          border-radius: 6px;
-        }
-      }
-
-      .pitch-contest-sub-text {
-        font-size: clamp(1.8rem, 4.5vw, 2.8rem);
+        font-size: clamp(2.5rem, 6vw, 4.5rem);
         font-weight: 700;
         margin: 0;
         line-height: 1.2;
-        text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+        text-shadow: 3px 3px 12px rgba(0, 0, 0, 0.8);
+        letter-spacing: -0.5px;
+        text-align: center;
+        width: 100%;
       }
+    }
+  }
+
+  /* ---------- RESPONSIVE (single set – no duplicates) ---------- */
+  @media (max-width: 1024px) {
+    .pitch-contest-hero-section {
+      min-height: clamp(450px, 55vh, 600px);
+      margin-top: 3.5rem;
+    }
+  }
+  @media (max-width: 768px) {
+    .pitch-contest-hero-section {
+      min-height: clamp(380px, 50vh, 550px);
+      margin-top: 1.3rem;
+    }
+  }
+  @media (max-width: 600px) {
+    .pitch-contest-hero-section {
+      min-height: clamp(340px, 45vh, 480px);
+      margin-top: 60px;
+    }
+  }
+  @media (max-width: 480px) {
+    .pitch-contest-hero-section {
+      min-height: clamp(300px, 42vh, 420px);
+      margin-top: -4rem;
+    }
+  }
+  @media (max-width: 380px) {
+    .pitch-contest-hero-section {
+      min-height: clamp(270px, 40vh, 380px);
+      margin-top: -1.5rem;
     }
   }
 
@@ -391,10 +417,6 @@ $glass: rgba(255, 255, 255, 0.03);
 
   @media (max-width: 600px) {
     padding-top: 60px;
-
-    .pitch-contest-hero-section {
-      min-height: clamp(300px, 40vh, 400px);
-    }
 
     .pitch-contest-how-it-works-section,
     .pitch-contest-form-section {
