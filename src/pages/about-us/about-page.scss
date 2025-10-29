@@ -99,25 +99,38 @@ $green-pill: #00c58b;
     }
 
     .meet-hosts-btn {
-      background: linear-gradient(90deg, $accent, $accent-2);
+      /* ---- SOLID ORANGE (no gradient) ---- */
+      background: #f24f1d; // exact orange from your Figma
       color: white;
       border: none;
       padding: 0.8rem 2rem;
       border-radius: 40px;
       font-weight: 700;
       cursor: pointer;
-      box-shadow: 0 8px 28px rgba(242, 79, 29, 0.12);
+      box-shadow: 0 8px 28px rgba(#f24f1d, 0.12);
       display: inline-flex;
       align-items: center;
       gap: 0.6rem;
-      transform: translateY(0);
-    }
+      transition: all 0.3s ease;
 
-    .arrow {
-      font-size: 1rem;
-      background: rgba(255, 255, 255, 0.06);
-      padding: 0.25rem 0.6rem;
-      border-radius: 999px;
+      /* ---- DARKER ORANGE ON HOVER ---- */
+      &:hover {
+        // background: #d24416; // darker shade
+        transform: translateY(-2px);
+        box-shadow: 0 12px 35px rgba(#d24416, 0.25);
+      }
+
+      &:active {
+        transform: translateY(0);
+      }
+
+      .arrow {
+        font-size: 1rem;
+        background: white;
+        padding: 0.25rem 0.6rem;
+        border-radius: 999px;
+        color: #f24f1d;
+      }
     }
   }
 

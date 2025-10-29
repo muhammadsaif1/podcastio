@@ -152,7 +152,9 @@ $orange: orange;
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        background: linear-gradient(135deg, $accent, $accent-2);
+
+        /* ---- SOLID ORANGE (no gradient) ---- */
+        background: #f24f1d; // exact orange from your Figma design
         padding: 0.8rem 3.2rem 0.8rem 1.7rem;
         border-radius: 50px;
         color: #fff;
@@ -160,12 +162,14 @@ $orange: orange;
         text-decoration: none;
         font-size: 1.05rem;
         transition: all 0.3s ease;
-        box-shadow: 0 4px 15px rgba($accent, 0.3);
+        box-shadow: 0 4px 15px rgba(#f24f1d, 0.3);
         overflow: hidden;
 
+        /* ---- DARKER ORANGE ON HOVER ---- */
         &:hover {
+          background: #d24416; // darker orange (matching your $orange-dark)
           transform: translateY(-2px);
-          box-shadow: 0 8px 25px rgba($accent, 0.4);
+          box-shadow: 0 8px 25px rgba(#d24416, 0.4);
         }
 
         &:active {
@@ -180,7 +184,7 @@ $orange: orange;
           display: flex;
           align-items: center;
           justify-content: center;
-          color: $orange;
+          color: #f24f1d; // arrow matches base orange
           position: absolute;
           right: 8px;
           top: 50%;
@@ -190,9 +194,11 @@ $orange: orange;
 
         &:hover .pitch-contest-arrow-circle {
           transform: translateY(-50%) scale(1.1);
+          color: #d24416; // arrow matches hover orange
         }
       }
 
+      /* ---- MOBILE ADJUSTMENTS ---- */
       @media screen and (max-width: 575px) {
         .cta-btn {
           font-size: 0.9rem;

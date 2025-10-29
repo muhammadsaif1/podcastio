@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { X, Play } from "lucide-react";
+import { X, Play, YoutubeIcon } from "lucide-react";
 import "./ModernHero.scss";
 import { Link } from "react-router-dom";
 import { fetchEpisodes } from "@/redux/slices/episodeSlice";
 import trackImg from "@/images/track-line.png";
 import waveLine from "@/images/wave-line.png";
+import { IconBrandSpotify, IconBrandYoutubeFilled } from "@tabler/icons-react";
 
 // Function to extract YouTube video ID from a URL
 const getYouTubeVideoId = (url) => {
@@ -116,12 +117,18 @@ const ModernHero = () => {
                     </h3>
                     <div className="modern-hero-cta-buttons">
                       <button className="modern-hero-btn modern-hero-btn-spotify">
-                        <span className="modern-hero-btn-icon">🎧</span>
                         Listen on Spotify
+                        <span className="modern-hero-btn-icon">
+                          {" "}
+                          <IconBrandSpotify />
+                        </span>
                       </button>
                       <button className="modern-hero-btn modern-hero-btn-youtube">
-                        <span className="modern-hero-btn-icon">▶️</span>
                         Watch on YouTube
+                        <span className="modern-hero-btn-icon">
+                          {" "}
+                          <IconBrandYoutubeFilled />
+                        </span>
                       </button>
                     </div>
                   </div>
@@ -157,7 +164,8 @@ const ModernHero = () => {
               rel="noopener noreferrer"
               className="bttn-1"
             >
-              🎧 Listen on Spotify
+              Listen on Spotify
+              <IconBrandSpotify />
             </a>
             <a
               href="https://www.youtube.com/@Returnus"
@@ -165,10 +173,11 @@ const ModernHero = () => {
               rel="noopener noreferrer"
               className="bttn-1 bttn-outline"
             >
-              ▶️ Watch on YouTube
+              Watch on YouTube
+              <IconBrandYoutubeFilled />
             </a>
             <Link to="/pitch" className="bttn-1">
-              📝 Enter the Pitch Contest
+              Enter the Pitch Contest 📝
             </Link>
           </div>
         </div>
