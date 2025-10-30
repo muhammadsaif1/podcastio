@@ -15,6 +15,7 @@ import "./episodes-list.scss";
 
 import { useDispatch, useSelector } from "react-redux";
 import { fetchEpisodes } from "@/redux/slices/episodeSlice";
+import { IconBrandSpotify, IconBrandYoutubeFilled } from "@tabler/icons-react";
 
 const YouTubeModal = ({ isOpen, videoUrl, onClose }) => {
   const getYouTubeEmbedUrl = (url) => {
@@ -114,10 +115,10 @@ const EpisodeDetailModal = ({ isOpen, episode, onClose }) => {
               <label>Author</label>
               <p className="detail-value">{episode.author}</p>
             </div>
-            <div className="detail-group">
+            {/* <div className="detail-group">
               <label>Created At</label>
               <p className="detail-value">{formatDate(episode.createdAt)}</p>
-            </div>
+            </div> */}
             <div className="detail-group full-width">
               <label>Description</label>
               <p className="detail-value description-text">
@@ -229,6 +230,7 @@ const EpisodesList = () => {
       document.body.style.overflow = "auto";
     };
   }, [youtubeModalOpen, isDetailModalOpen]);
+
   useEffect(() => {
     if (!searchQuery.trim()) {
       setFilteredEpisodes(episodes);
@@ -255,13 +257,12 @@ const EpisodesList = () => {
     setCurrentPage(1);
   }, [searchQuery, episodes]);
 
-  // Update items per page based on screen size
   useEffect(() => {
     const updateItemsPerPage = () => {
       if (window.innerWidth <= 768) {
-        setItemsPerPage(7); // 6 rows × 1 column on mobile
+        setItemsPerPage(7);
       } else {
-        setItemsPerPage(8); // 4 rows × 2 columns on desktop
+        setItemsPerPage(8);
       }
     };
 
@@ -299,9 +300,23 @@ const EpisodesList = () => {
       : "/episode-thumbnail.jpg";
   };
 
-  const handleWatchClick = (url) => {
+  const handleThumbnailClick = (url) => {
     setSelectedVideoUrl(url);
     setYoutubeModalOpen(true);
+  };
+
+  const handleSpotifyClick = (e, spotifyLink) => {
+    e.stopPropagation();
+    if (spotifyLink) {
+      window.open(spotifyLink, "_blank", "noopener,noreferrer");
+    }
+  };
+
+  const handleYouTubeClick = (e, youtubeLink) => {
+    e.stopPropagation();
+    if (youtubeLink) {
+      window.open(youtubeLink, "_blank", "noopener,noreferrer");
+    }
   };
 
   const handleEpisodeClick = (episode) => {
@@ -313,7 +328,6 @@ const EpisodesList = () => {
     setSearchQuery(e.target.value);
   };
 
-  // Pagination calculations
   const totalPages = Math.ceil(filteredEpisodes.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
@@ -416,10 +430,12 @@ const EpisodesList = () => {
                     />
                     <div
                       className="play-overlay"
-                      onClick={(e) => handleWatchClick(episode.youtubeLink)}
+                      onClick={() => handleThumbnailClick(episode.youtubeLink)}
                     >
                       <Play size={48} />
                     </div>
+
+                    {/* Platform Buttons on Thumbnail */}
                   </div>
 
                   <div className="episode-content">
@@ -463,23 +479,32 @@ const EpisodesList = () => {
                         searchQuery={searchQuery}
                       />
                     </p>
-                    <div className="episode-actions">
+
+                    {/* Platform Buttons Below Description */}
+                    <div className="episode-platform-buttons">
                       <button
-                        className="watch-btn"
-                        onClick={() => handleWatchClick(episode.youtubeLink)}
+                        onClick={(e) =>
+                          handleSpotifyClick(e, episode.spotifyLink)
+                        }
+                        className="episode-btn episode-btn-spotify"
+                        disabled={!episode.spotifyLink}
                       >
-                        <Play size={16} /> Watch
+                        Listen on Spotify
+                        <span className="episode-btn-icon episode-btn-circle-spotify">
+                          <IconBrandSpotify />
+                        </span>
                       </button>
-                      {episode.spotifyLink && (
-                        <a
-                          href={episode.spotifyLink}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="listen-btn"
-                        >
-                          <Play size={16} /> Listen
-                        </a>
-                      )}
+                      <button
+                        onClick={(e) =>
+                          handleYouTubeClick(e, episode.youtubeLink)
+                        }
+                        className="episode-btn episode-btn-youtube"
+                      >
+                        Watch on YouTube
+                        <span className="episode-btn-icon episode-btn-circle-youtube">
+                          <IconBrandYoutubeFilled />
+                        </span>
+                      </button>
                     </div>
                   </div>
                 </motion.div>
