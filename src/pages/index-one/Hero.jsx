@@ -56,6 +56,17 @@ const ModernHero = () => {
     document.body.style.overflow = "unset";
   };
 
+  const handleSpotifyClick = (e) => {
+    if (!latestEpisode?.spotifyLink) {
+      e.preventDefault(); // no link → stay on page
+    }
+  };
+
+  const handleYouTubeClick = () => {
+    // always opens the episode youtubeLink in a new tab
+    window.open(latestEpisode?.youtubeLink, "_blank", "noopener,noreferrer");
+  };
+
   return (
     <>
       <section className="modern-hero-section texture-bg-2">
@@ -116,18 +127,24 @@ const ModernHero = () => {
                         "To educate, inspire, and onboard entrepreneurs and investors into the Returnus ecosystem — blending storytelling, live pitches, and community-driven investing education."}
                     </h3>
                     <div className="modern-hero-cta-buttons">
-                      <button className="modern-hero-btn modern-hero-btn-spotify">
+                      <button
+                        onClick={handleSpotifyClick}
+                        className="modern-hero-btn modern-hero-btn-spotify"
+                      >
                         Listen on Spotify
-                        <span className="modern-hero-btn-icon">
+                        <span className="modern-hero-btn-icon modern-hero-btn-circle-spotify">
                           {" "}
-                          <IconBrandSpotify />
+                          <IconBrandSpotify size={24} />
                         </span>
                       </button>
-                      <button className="modern-hero-btn modern-hero-btn-youtube">
+                      <button
+                        onClick={handleYouTubeClick}
+                        className="modern-hero-btn modern-hero-btn-youtube"
+                      >
                         Watch on YouTube
-                        <span className="modern-hero-btn-icon">
+                        <span className="modern-hero-btn-icon modern-hero-btn-circle-youtube">
                           {" "}
-                          <IconBrandYoutubeFilled />
+                          <IconBrandYoutubeFilled size={24} />
                         </span>
                       </button>
                     </div>

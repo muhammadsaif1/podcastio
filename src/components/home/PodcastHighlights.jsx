@@ -223,7 +223,7 @@ const PodcastHighlights = () => {
                     <div className="expert-podcast-episode-info">
                       <div className="expert-podcast-episode-meta">
                         <span className="expert-podcast-episode-badge">
-                          Episode {i + 1}
+                          Episode {listFromStore.length - i}
                         </span>
                         <span className="expert-podcast-episode-guest">
                           <User size={12} />
@@ -245,10 +245,6 @@ const PodcastHighlights = () => {
                             flex: 1,
                           }}
                         >
-                          <span className="expert-podcast-episode-date">
-                            <Calendar size={12} />
-                            {formatDate(ep.publishedDate || ep.createdAt)}
-                          </span>
                           {ep.tag && (
                             <span className="expert-podcast-episode-tag">
                               {ep.tag}
@@ -362,7 +358,7 @@ const PodcastHighlights = () => {
                           {selected.author || "Not specified"}
                         </span>
                       </div>
-                      <div className="expert-podcast-detail-item">
+                      {/* <div className="expert-podcast-detail-item">
                         <span className="expert-podcast-detail-label">
                           Published:
                         </span>
@@ -371,7 +367,7 @@ const PodcastHighlights = () => {
                             selected.publishedDate || selected.createdAt
                           )}
                         </span>
-                      </div>
+                      </div> */}
                       <div className="expert-podcast-detail-item full-width">
                         <span className="expert-podcast-detail-label">
                           Description:
