@@ -6,6 +6,22 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import "./pitch-contest-section.scss";
 
+// Get the next Sunday at 23:59:59
+const getNextSundayDeadline = () => {
+  const now = new Date();
+  const dayOfWeek = now.getDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
+
+  // Calculate days until next Sunday
+  const daysUntilSunday = dayOfWeek === 0 ? 7 : 7 - dayOfWeek;
+
+  // Create next Sunday date
+  const nextSunday = new Date(now);
+  nextSunday.setDate(now.getDate() + daysUntilSunday);
+  nextSunday.setHours(23, 59, 59, 999);
+
+  return nextSunday;
+};
+
 // Countdown helper
 const calculateTimeLeft = (deadline) => {
   const difference = +new Date(deadline) - +new Date();
@@ -24,6 +40,8 @@ const calculateTimeLeft = (deadline) => {
 const PitchContestSection = () => {
   const dispatch = useDispatch();
   const [activeVideo, setActiveVideo] = useState(null);
+  const [deadline, setDeadline] = useState(getNextSundayDeadline());
+  const [timeLeft, setTimeLeft] = useState(calculateTimeLeft(deadline));
 
   const handleVideoClick = (index) => {
     // If this video is already active → MUTE it back
@@ -76,20 +94,27 @@ const PitchContestSection = () => {
     error,
   } = useSelector((state) => state.episodes);
 
-  const [timeLeft, setTimeLeft] = useState(
-    calculateTimeLeft("2025-10-28T23:59:59")
-  );
-
   useEffect(() => {
     dispatch(fetchEpisodes());
   }, [dispatch]);
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setTimeLeft(calculateTimeLeft("2025-10-28T23:59:59"));
+      const newTimeLeft = calculateTimeLeft(deadline);
+
+      // Check if countdown reached zero
+      if (Object.keys(newTimeLeft).length === 0) {
+        // Reset to next Sunday
+        const newDeadline = getNextSundayDeadline();
+        setDeadline(newDeadline);
+        setTimeLeft(calculateTimeLeft(newDeadline));
+      } else {
+        setTimeLeft(newTimeLeft);
+      }
     }, 1000);
+
     return () => clearInterval(timer);
-  }, []);
+  }, [deadline]);
 
   const formatTimeUnit = (unit) => (unit < 10 ? `0${unit}` : unit);
 

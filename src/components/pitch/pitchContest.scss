@@ -26,6 +26,7 @@ $glass: rgba(255, 255, 255, 0.03);
   color: $text-white;
 
   .pitch-contest-hero-section {
+    // background: black;
     position: relative;
     padding: 0;
     display: flex;
@@ -42,6 +43,7 @@ $glass: rgba(255, 255, 255, 0.03);
     overflow: hidden;
 
     .pitch-contest-hero-video-wrapper {
+      // background: rgba(0, 0, 0, 0.25);
       position: absolute;
       inset: 0;
       z-index: 1;
@@ -59,16 +61,10 @@ $glass: rgba(255, 255, 255, 0.03);
       }
 
       .pitch-contest-hero-overlay {
+        background: rgba(0, 0, 0, 0.25);
         position: absolute;
         inset: 0;
         z-index: 1;
-        background: linear-gradient(
-          to bottom,
-          rgba(15, 15, 15, 0.75) 0%,
-          rgba(15, 15, 15, 0.55) 50%,
-          rgba(15, 15, 15, 0.85) 100%
-        );
-        backdrop-filter: blur(1px);
       }
     }
 
@@ -127,6 +123,43 @@ $glass: rgba(255, 255, 255, 0.03);
     .pitch-contest-hero-section {
       min-height: clamp(270px, 40vh, 380px);
       margin-top: -1.5rem;
+    }
+  }
+
+  /* ✅ Desktop-only fix: full width + full video visible + reduced height */
+  @media (min-width: 1024px) {
+    .pitch-contest-hero-section {
+      background: black;
+      height: 65vh !important;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .pitch-contest-hero-video-wrapper {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+
+    .pitch-contest-hero-video {
+      width: 100%;
+      height: auto; /* maintain natural aspect ratio */
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%); /* center video perfectly */
+      min-height: 100%;
+      object-fit: cover; /* still covers horizontally */
+    }
+
+    .pitch-contest-hero-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.25);
+      pointer-events: none;
     }
   }
 
