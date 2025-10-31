@@ -132,6 +132,7 @@ $success-green: #52c41a;
       // --- Logout button section ---
       .logout-section {
         margin-top: auto;
+        margin-bottom: 4px;
         padding-top: 1rem;
         border-top: 1px solid rgba($text-gray, 0.2);
 
@@ -144,6 +145,7 @@ $success-green: #52c41a;
           color: $error-red;
           border: 2px solid rgba($error-red, 0.3);
           font-weight: 500;
+          margin-top: 1rem;
 
           &:hover {
             background: linear-gradient(

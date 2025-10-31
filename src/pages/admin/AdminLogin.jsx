@@ -3,11 +3,10 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import loginImage from "@/images/sign-up-img.png";
-
 import "./admin-login.scss";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { login } from "@/redux/slices/authSlice";
+import { loginUser } from "@/redux/slices/authSlice"; // updated import
 
 const AdminLogin = () => {
   const [email, setEmail] = useState("");
@@ -17,44 +16,37 @@ const AdminLogin = () => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const ADMIN_EMAIL = "returnus@kurudy.com";
-  const ADMIN_PASSWORD = "Kurudy@2025@@";
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
     setIsLoading(true);
 
-    // Simulate API call delay
-    setTimeout(() => {
-      if (!email) {
-        setError("Email is required");
-        setIsLoading(false);
-        return;
-      }
-      if (!password) {
-        setError("Password is required");
-        setIsLoading(false);
-        return;
-      }
-      if (email !== ADMIN_EMAIL) {
-        setError("Invalid email address");
-        setIsLoading(false);
-        return;
-      }
-      if (password !== ADMIN_PASSWORD) {
-        setError("Incorrect password");
-        setIsLoading(false);
-        return;
-      }
-
-      dispatch(login());
-
-      setError("");
+    if (!email || !password) {
+      setError("Please enter both email and password.");
       setIsLoading(false);
-      navigate("/admin/dashboard");
-      // navigate to dashboard or next page
-    }, 500);
+      return;
+    }
+
+    try {
+      // Dispatch async thunk from authSlice
+      const resultAction = await dispatch(loginUser({ email, password }));
+
+      if (loginUser.fulfilled.match(resultAction)) {
+        // ✅ Login success
+        setIsLoading(false);
+        navigate("/admin/dashboard");
+      } else {
+        // ❌ Login failed
+        setError(resultAction.payload || "Invalid email or password");
+        setIsLoading(false);
+      }
+    } catch (err) {
+      setError("Something went wrong. Please try again.", err);
+      console.log(err);
+
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -69,9 +61,7 @@ const AdminLogin = () => {
           <img
             src={loginImage}
             alt="Admin Login Illustration"
-            fill
             className="object-cover"
-            priority
           />
         </div>
 
@@ -97,7 +87,7 @@ const AdminLogin = () => {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="Enter admin email"
+                placeholder="Enter your email"
                 disabled={isLoading}
               />
             </motion.div>
@@ -113,7 +103,7 @@ const AdminLogin = () => {
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="Enter admin password"
+                placeholder="Enter your password"
                 disabled={isLoading}
               />
             </motion.div>
@@ -122,7 +112,6 @@ const AdminLogin = () => {
               <motion.p
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
                 transition={{ duration: 0.3 }}
                 className="error-msg"
               >

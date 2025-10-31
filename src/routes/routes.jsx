@@ -18,6 +18,7 @@ import TermsOfService from "@/pages/common/terms";
 import PrivacyPolicy from "@/pages/common/PrivacyPolicy";
 import ProductsPage from "@/pages/products/Products";
 import ReturnusRulesPage from "@/pages/common/ReturnusRulesPage";
+import UpdateUser from "@/pages/admin/update-user/update-user";
 
 const router = createBrowserRouter([
   {
@@ -76,6 +77,14 @@ const router = createBrowserRouter([
     element: (
       <ProtectedAdminRoute>
         <AdminDashboard />
+      </ProtectedAdminRoute>
+    ),
+  },
+  {
+    path: "/admin/update-user",
+    element: (
+      <ProtectedAdminRoute>
+        <UpdateUser />
       </ProtectedAdminRoute>
     ),
   },

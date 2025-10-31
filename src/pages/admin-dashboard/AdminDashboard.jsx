@@ -322,6 +322,10 @@ const AdminDashboard = () => {
     navigate("/admin/login");
   };
 
+  const handeUpdate = () => {
+    navigate("/admin/update-user");
+  };
+
   return (
     <div className="admin-dashboard">
       <motion.button
@@ -355,6 +359,7 @@ const AdminDashboard = () => {
         style={{ willChange: "transform" }}
       >
         <h2>Admin Panel</h2>
+
         <nav>
           <motion.button
             className={activeTab === "episodes" ? "active" : ""}
@@ -380,7 +385,16 @@ const AdminDashboard = () => {
           >
             Pitch
           </motion.button>
+
           <div className="logout-section">
+            <motion.button
+              className="logout-btn"
+              onClick={handeUpdate}
+              whileHover={{ x: 4 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              <i className="ti ti-settings"></i> Update Info
+            </motion.button>
             <motion.button
               className="logout-btn"
               onClick={handleLogout}
