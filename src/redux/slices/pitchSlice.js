@@ -47,6 +47,20 @@ export const createPitch = createAsyncThunk(
   }
 );
 
+export const deletePitch = createAsyncThunk(
+  "pitches/deletePitch",
+  async (id, { rejectWithValue }) => {
+    try {
+      await axios.delete(`${API}/pitch/${id}`);
+      return id; // return deleted pitch ID
+    } catch (err) {
+      return rejectWithValue(
+        err.response?.data?.error || "Failed to delete pitch"
+      );
+    }
+  }
+);
+
 const pitchSlice = createSlice({
   name: "pitches",
   initialState: {
@@ -106,6 +120,17 @@ const pitchSlice = createSlice({
       })
       .addCase(createPitch.rejected, (state, action) => {
         state.creating = false;
+        state.error = action.payload;
+      })
+      // delete
+      .addCase(deletePitch.pending, (state) => {
+        state.error = null;
+      })
+      .addCase(deletePitch.fulfilled, (state, action) => {
+        // Remove deleted pitch from list
+        state.list = state.list.filter((pitch) => pitch._id !== action.payload);
+      })
+      .addCase(deletePitch.rejected, (state, action) => {
         state.error = action.payload;
       });
   },

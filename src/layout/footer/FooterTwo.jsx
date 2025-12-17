@@ -29,8 +29,8 @@ const FooterTwo = () => {
           <span> | </span>
           <NavLink to="/pitch">Pitch Contest</NavLink>
           <span> | </span>
-          <NavLink to="/products">Products</NavLink>
-          <span> | </span>
+          {/* <NavLink to="/products">Products</NavLink>
+          <span> | </span> */}
           <NavLink to="/about-us">About</NavLink>
           <span> | </span>
           <NavLink to="/contact">Contact</NavLink>

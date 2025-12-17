@@ -761,6 +761,12 @@ const EpisodesList = () => {
                       <Star size={24} />
                     </div>
                   )}
+                  <div className="admin-episodes-modern-episode-number">
+                    EP{" "}
+                    {String(
+                      episodes.length - episodes.indexOf(episode)
+                    ).padStart(2, "0")}
+                  </div>
                 </div>
 
                 <div className="admin-episodes-modern-content">

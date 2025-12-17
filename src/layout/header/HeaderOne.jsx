@@ -117,7 +117,7 @@ const HeaderOne = () => {
                         Pitch
                       </NavLink>
                     </li>
-                    <li className="menu-item">
+                    {/* <li className="menu-item">
                       <NavLink
                         to="/products"
                         onClick={() => setMenuOpen(false)}
@@ -127,7 +127,7 @@ const HeaderOne = () => {
                       >
                         Products
                       </NavLink>
-                    </li>
+                    </li> */}
                     <li className="menu-item">
                       <NavLink
                         to="/contact"

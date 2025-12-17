@@ -2,12 +2,90 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Mail, Clock, User, X } from "lucide-react";
+import { Mail, Clock, User, X, Trash2 } from "lucide-react";
 import "./messages-list.scss";
 
 //  NEW IMPORTS
 import { useDispatch, useSelector } from "react-redux";
-import { getAllMessages } from "../../redux/slices/messageSlice";
+import { getAllMessages, deleteMessage } from "../../redux/slices/messageSlice";
+
+const DeleteConfirmationModal = ({
+  isOpen,
+  onClose,
+  onConfirm,
+  isDeleting,
+}) => {
+  if (!isOpen) return null;
+
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [isOpen]);
+
+  return (
+    <AnimatePresence>
+      <motion.div
+        className="delete-confirmation-modal"
+        onClick={onClose}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.2 }}
+      >
+        <motion.div
+          className="delete-modal-content"
+          onClick={(e) => e.stopPropagation()}
+          initial={{ scale: 0.8, opacity: 0, y: 20 }}
+          animate={{ scale: 1, opacity: 1, y: 0 }}
+          exit={{ scale: 0.8, opacity: 0, y: 20 }}
+          transition={{ duration: 0.3 }}
+        >
+          <div className="delete-modal-header">
+            <div className="warning-icon">
+              <Trash2 size={24} />
+            </div>
+            <h2>Delete Message</h2>
+          </div>
+
+          <div className="delete-modal-body">
+            <p>
+              Are you sure you want to delete this message? This action cannot
+              be undone.
+            </p>
+          </div>
+
+          <div className="delete-modal-footer">
+            <motion.button
+              className="cancel-btn"
+              onClick={onClose}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              disabled={isDeleting}
+            >
+              Cancel
+            </motion.button>
+            <motion.button
+              className="delete-btn"
+              onClick={onConfirm}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              disabled={isDeleting}
+            >
+              {isDeleting ? "Deleting..." : "Delete"}
+            </motion.button>
+          </div>
+        </motion.div>
+      </motion.div>
+    </AnimatePresence>
+  );
+};
 
 const MessageDetailModal = ({ isOpen, message, onClose }) => {
   if (!isOpen || !message) return null;
@@ -99,6 +177,9 @@ export const MessagesList = () => {
 
   const [selectedMessage, setSelectedMessage] = useState(null);
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [messageToDelete, setMessageToDelete] = useState(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
     dispatch(getAllMessages());
@@ -126,6 +207,32 @@ export const MessagesList = () => {
   const handleMessageClick = (message) => {
     setSelectedMessage(message);
     setIsDetailModalOpen(true);
+  };
+
+  const handleDeleteClick = (e, message) => {
+    e.stopPropagation();
+    setMessageToDelete(message);
+    setIsDeleteModalOpen(true);
+  };
+
+  const handleDeleteConfirm = async () => {
+    if (!messageToDelete) return;
+
+    setIsDeleting(true);
+    try {
+      await dispatch(deleteMessage(messageToDelete._id)).unwrap();
+      setIsDeleteModalOpen(false);
+      setMessageToDelete(null);
+    } catch (error) {
+      console.error("Failed to delete message:", error);
+    } finally {
+      setIsDeleting(false);
+    }
+  };
+
+  const handleDeleteCancel = () => {
+    setIsDeleteModalOpen(false);
+    setMessageToDelete(null);
   };
 
   if (isLoading) {
@@ -179,6 +286,16 @@ export const MessagesList = () => {
                 whileHover={{ scale: 1.02, x: 4 }}
                 whileTap={{ scale: 0.98 }}
               >
+                <motion.button
+                  className="delete-icon-btn"
+                  onClick={(e) => handleDeleteClick(e, message)}
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                  aria-label="Delete message"
+                >
+                  <Trash2 size={18} />
+                </motion.button>
+
                 <div className="message-header">
                   <div className="message-title-section">
                     <div className="author-icon">
@@ -208,6 +325,13 @@ export const MessagesList = () => {
           setIsDetailModalOpen(false);
           document.body.style.overflow = "auto";
         }}
+      />
+
+      <DeleteConfirmationModal
+        isOpen={isDeleteModalOpen}
+        onClose={handleDeleteCancel}
+        onConfirm={handleDeleteConfirm}
+        isDeleting={isDeleting}
       />
     </div>
   );

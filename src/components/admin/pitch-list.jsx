@@ -2,11 +2,11 @@
 
 import React, { useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Play, X } from "lucide-react";
+import { Play, X, Trash2 } from "lucide-react";
 import "./pitch-list.scss";
 
 import { useDispatch, useSelector } from "react-redux";
-import { fetchPitches } from "@/redux/slices/pitchSlice"; // adjust if path different
+import { fetchPitches, deletePitch } from "@/redux/slices/pitchSlice";
 
 // helpers: extract youtube id, thumbnail, embed url
 const getYoutubeVideoId = (url) => {
@@ -37,11 +37,16 @@ const PitchList = () => {
   const [selected, setSelected] = useState(null);
   const [detailOpen, setDetailOpen] = useState(false);
   const [isPlayingInline, setIsPlayingInline] = useState(false);
-  const [iframeKey, setIframeKey] = useState(0); // force iframe remount on reopen
+  const [iframeKey, setIframeKey] = useState(0);
+
+  // Delete confirmation state
+  const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
+  const [pitchToDelete, setPitchToDelete] = useState(null);
+  const [deleting, setDeleting] = useState(false);
 
   // Lock body scroll when modal open
   useEffect(() => {
-    if (detailOpen) {
+    if (detailOpen || deleteConfirmOpen) {
       document.body.style.overflow = "hidden";
       document.body.classList.add("body-locked");
     } else {
@@ -53,7 +58,7 @@ const PitchList = () => {
       document.body.style.overflow = "";
       document.body.classList.remove("body-locked");
     };
-  }, [detailOpen]);
+  }, [detailOpen, deleteConfirmOpen]);
 
   useEffect(() => {
     dispatch(fetchPitches());
@@ -72,11 +77,37 @@ const PitchList = () => {
     setIsPlayingInline(false);
   };
 
-  // click thumbnail -> replace with iframe in same location
   const handlePlayInline = () => {
     setIsPlayingInline(true);
-    // ensure iframe remounts for autoplay
     setIframeKey((k) => k + 1);
+  };
+
+  // Delete handlers
+  const handleDeleteClick = (e, pitch) => {
+    e.stopPropagation(); // Prevent opening detail modal
+    setPitchToDelete(pitch);
+    setDeleteConfirmOpen(true);
+  };
+
+  const handleCancelDelete = () => {
+    setDeleteConfirmOpen(false);
+    setPitchToDelete(null);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (!pitchToDelete) return;
+
+    setDeleting(true);
+    try {
+      await dispatch(deletePitch(pitchToDelete._id)).unwrap();
+      setDeleteConfirmOpen(false);
+      setPitchToDelete(null);
+    } catch (err) {
+      console.error("Failed to delete pitch:", err);
+      alert("Failed to delete pitch. Please try again.");
+    } finally {
+      setDeleting(false);
+    }
   };
 
   const displayList =
@@ -140,6 +171,14 @@ const PitchList = () => {
                 </div>
 
                 <div className="right">
+                  <button
+                    className="delete-icon-btn"
+                    onClick={(e) => handleDeleteClick(e, p)}
+                    aria-label="Delete pitch"
+                    title="Delete pitch"
+                  >
+                    <Trash2 size={18} />
+                  </button>
                   <span className="time">
                     {new Date(p.createdAt).toLocaleDateString()}
                   </span>
@@ -149,6 +188,57 @@ const PitchList = () => {
           </AnimatePresence>
         </ul>
       )}
+
+      {/* Delete Confirmation Modal */}
+      <AnimatePresence>
+        {deleteConfirmOpen && pitchToDelete && (
+          <motion.div
+            className="delete-confirm-modal"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={handleCancelDelete}
+          >
+            <motion.div
+              className="confirm-content"
+              onClick={(e) => e.stopPropagation()}
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              transition={{ duration: 0.2 }}
+            >
+              <div className="confirm-icon">
+                <Trash2 size={32} />
+              </div>
+              <h3>Delete Pitch?</h3>
+              <p>
+                Are you sure you want to delete the pitch from{" "}
+                <strong>{pitchToDelete.fullName}</strong>
+                {pitchToDelete.companyName && (
+                  <> ({pitchToDelete.companyName})</>
+                )}
+                ? This action cannot be undone.
+              </p>
+              <div className="confirm-actions">
+                <button
+                  className="cancel-btn"
+                  onClick={handleCancelDelete}
+                  disabled={deleting}
+                >
+                  Cancel
+                </button>
+                <button
+                  className="delete-btn"
+                  onClick={handleConfirmDelete}
+                  disabled={deleting}
+                >
+                  {deleting ? "Deleting..." : "Delete"}
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Detail Modal */}
       <AnimatePresence>
@@ -172,7 +262,6 @@ const PitchList = () => {
               <div className="modal-header">
                 <h2>{selected.companyName || selected.fullName}</h2>
                 <div className="header-actions">
-                  {/* optional action buttons placeholders — keep styling consistent */}
                   <button
                     className="close-btn"
                     onClick={handleClose}

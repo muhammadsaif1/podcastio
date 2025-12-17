@@ -70,6 +70,40 @@ $error-red: #ff4d4f;
       box-shadow: 0 10px 30px rgba($accent, 0.06);
       border-color: rgba($accent, 0.12);
     }
+    .right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 0.4rem;
+
+      .delete-icon-btn {
+        background: none;
+        border: none;
+        color: rgb(233, 48, 48);
+        cursor: pointer;
+        padding: 0.35rem;
+        border-radius: 6px;
+        transition: all 0.2s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &:hover {
+          color: $error-red;
+          background: rgba($error-red, 0.08);
+        }
+
+        &:active {
+          transform: scale(0.95);
+        }
+      }
+
+      @media (max-width: 760px) {
+        align-items: center;
+        flex-direction: row;
+        gap: 0.5rem;
+      }
+    }
 
     .left {
       display: flex;
@@ -359,4 +393,132 @@ $error-red: #ff4d4f;
   height: 100vh;
   position: fixed;
   width: 100%;
+}
+
+.delete-confirm-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1001; // Higher than detail modal
+  padding: 1rem;
+
+  .confirm-content {
+    background: linear-gradient(135deg, $bg-card 0%, $bg-card-2 100%);
+    border: 1px solid rgba($error-red, 0.2);
+    border-radius: 16px;
+    padding: 2rem;
+    max-width: 450px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+
+    .confirm-icon {
+      width: 64px;
+      height: 64px;
+      margin: 0 auto 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: rgba($error-red, 0.1);
+      color: $error-red;
+    }
+
+    h3 {
+      margin: 0 0 0.75rem;
+      font-size: 1.5rem;
+      color: $text-white;
+    }
+
+    p {
+      margin: 0 0 1.5rem;
+      color: $text-gray;
+      line-height: 1.6;
+      font-size: 0.95rem;
+
+      strong {
+        color: $text-white;
+        font-weight: 600;
+      }
+    }
+
+    .confirm-actions {
+      display: flex;
+      gap: 0.75rem;
+      justify-content: center;
+
+      button {
+        flex: 1;
+        padding: 0.75rem 1.5rem;
+        border: none;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 0.95rem;
+        cursor: pointer;
+        transition: all 0.2s;
+
+        &:disabled {
+          opacity: 0.6;
+          cursor: not-allowed;
+        }
+
+        &.cancel-btn {
+          background: rgba($text-white, 0.08);
+          color: $text-white;
+
+          &:hover:not(:disabled) {
+            background: rgba($text-white, 0.12);
+          }
+        }
+
+        &.delete-btn {
+          background: linear-gradient(
+            135deg,
+            $error-red,
+            darken($error-red, 8%)
+          );
+          color: $text-white;
+
+          &:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba($error-red, 0.3);
+          }
+
+          &:active:not(:disabled) {
+            transform: translateY(0);
+          }
+        }
+      }
+    }
+  }
+
+  @media (max-width: 560px) {
+    .confirm-content {
+      padding: 1.5rem;
+      max-width: 90%;
+
+      .confirm-icon {
+        width: 56px;
+        height: 56px;
+      }
+
+      h3 {
+        font-size: 1.25rem;
+      }
+
+      .confirm-actions {
+        flex-direction: column;
+
+        button {
+          width: 100%;
+        }
+      }
+    }
+  }
 }
