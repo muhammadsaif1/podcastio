@@ -286,15 +286,21 @@ export const MessagesList = () => {
                 whileHover={{ scale: 1.02, x: 4 }}
                 whileTap={{ scale: 0.98 }}
               >
-                <motion.button
-                  className="delete-icon-btn"
-                  onClick={(e) => handleDeleteClick(e, message)}
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
-                  aria-label="Delete message"
-                >
-                  <Trash2 size={18} />
-                </motion.button>
+                <div className="message-top-bar">
+                  <div className="time-section">
+                    <Clock size={14} />
+                    <span>{formatDate(message.createdAt)}</span>
+                  </div>
+                  <motion.button
+                    className="delete-icon-btn"
+                    onClick={(e) => handleDeleteClick(e, message)}
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
+                    aria-label="Delete message"
+                  >
+                    <Trash2 size={18} />
+                  </motion.button>
+                </div>
 
                 <div className="message-header">
                   <div className="message-title-section">
@@ -305,10 +311,6 @@ export const MessagesList = () => {
                       <h4>{message.name}</h4>
                       <p className="email">{message.email}</p>
                     </div>
-                  </div>
-                  <div className="time-section">
-                    <Clock size={14} />
-                    <span>{formatDate(message.createdAt)}</span>
                   </div>
                 </div>
                 <p className="message-preview">{message.message}</p>
