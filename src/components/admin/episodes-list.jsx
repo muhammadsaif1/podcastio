@@ -731,102 +731,130 @@ const EpisodesList = () => {
       ) : (
         <ul className="admin-episodes-modern-list">
           <AnimatePresence>
-            {filteredEpisodes.map((episode, idx) => (
-              <motion.li
-                key={episode._id || idx}
-                className="admin-episodes-modern-item"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.3, delay: idx * 0.05 }}
-                whileHover={{ scale: 1.02, x: 4 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                <div
-                  className="admin-episodes-modern-thumbnail"
-                  onClick={(e) => handleThumbnailClick(e, episode.youtubeLink)}
-                >
-                  <img
-                    src={
-                      getYouTubeThumbnail(episode.youtubeLink) ||
-                      "/placeholder.svg"
-                    }
-                    alt={episode.title}
-                  />
-                  <div className="admin-episodes-modern-play-overlay">
-                    <Play size={32} />
-                  </div>
-                  {episode.mainEpisode && (
-                    <div className="admin-episodes-modern-star-overlay">
-                      <Star size={24} />
-                    </div>
-                  )}
-                  <div className="admin-episodes-modern-episode-number">
-                    EP{" "}
-                    {String(
-                      episodes.length - episodes.indexOf(episode)
-                    ).padStart(2, "0")}
-                  </div>
-                </div>
+            {filteredEpisodes.map((episode, idx) => {
+              // Calculate episode number based on tag
+              let episodeNumber;
+              let episodePrefix;
 
-                <div className="admin-episodes-modern-content">
-                  <div className="admin-episodes-modern-header">
-                    <div className="admin-episodes-modern-title-section">
-                      <div className="admin-episodes-modern-title-info">
-                        <h4>
-                          {episode.title}
-                          <span className="admin-episodes-modern-author-inline">
-                            <User size={14} />
-                            {episode.author}
-                          </span>
-                        </h4>
-                        {episode.tag && (
-                          <div className="admin-episodes-modern-tag-badge">
-                            {String(episode.tag).replace(/-/g, " ")}
-                          </div>
-                        )}
+              if (episode.tag === "pitch") {
+                // Count only pitch episodes for pitch numbering
+                const pitchEpisodes = [...episodes]
+                  .filter((ep) => ep.tag === "pitch")
+                  .sort(
+                    (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
+                  );
+                episodeNumber =
+                  pitchEpisodes.findIndex((ep) => ep._id === episode._id) + 1;
+                episodePrefix = "PITCH EP";
+              } else {
+                // Count non-pitch episodes for regular numbering
+                const nonPitchEpisodes = [...episodes]
+                  .filter((ep) => ep.tag !== "pitch")
+                  .sort(
+                    (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
+                  );
+                episodeNumber =
+                  nonPitchEpisodes.findIndex((ep) => ep._id === episode._id) +
+                  1;
+                episodePrefix = "EP";
+              }
+
+              return (
+                <motion.li
+                  key={episode._id || idx}
+                  className="admin-episodes-modern-item"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ duration: 0.3, delay: idx * 0.05 }}
+                  whileHover={{ scale: 1.02, x: 4 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <div
+                    className="admin-episodes-modern-thumbnail"
+                    onClick={(e) =>
+                      handleThumbnailClick(e, episode.youtubeLink)
+                    }
+                  >
+                    <img
+                      src={
+                        getYouTubeThumbnail(episode.youtubeLink) ||
+                        "/placeholder.svg"
+                      }
+                      alt={episode.title}
+                    />
+                    <div className="admin-episodes-modern-play-overlay">
+                      <Play size={32} />
+                    </div>
+                    {episode.mainEpisode && (
+                      <div className="admin-episodes-modern-star-overlay">
+                        <Star size={24} />
+                      </div>
+                    )}
+                    <div className="admin-episodes-modern-episode-number">
+                      {episodePrefix} {String(episodeNumber).padStart(2, "0")}
+                    </div>
+                  </div>
+
+                  <div className="admin-episodes-modern-content">
+                    <div className="admin-episodes-modern-header">
+                      <div className="admin-episodes-modern-title-section">
+                        <div className="admin-episodes-modern-title-info">
+                          <h4>
+                            {episode.title}
+                            <span className="admin-episodes-modern-author-inline">
+                              <User size={14} />
+                              {episode.author}
+                            </span>
+                          </h4>
+                          {episode.tag && (
+                            <div className="admin-episodes-modern-tag-badge">
+                              {String(episode.tag).replace(/-/g, " ")}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                      <div className="admin-episodes-modern-actions">
+                        <motion.button
+                          className="admin-episodes-modern-action-icon admin-episodes-modern-view-icon"
+                          onClick={(e) => handleViewClick(e, episode)}
+                          whileHover={{ scale: 1.1 }}
+                          whileTap={{ scale: 0.95 }}
+                          title="View details"
+                        >
+                          <Eye size={18} />
+                        </motion.button>
+                        <motion.button
+                          className="admin-episodes-modern-action-icon admin-episodes-modern-edit-icon"
+                          onClick={(e) => handleEditClick(e, episode)}
+                          whileHover={{ scale: 1.1 }}
+                          whileTap={{ scale: 0.95 }}
+                          title="Edit episode"
+                        >
+                          <Edit2 size={18} />
+                        </motion.button>
+                        <motion.button
+                          className="admin-episodes-modern-action-icon admin-episodes-modern-delete-icon"
+                          onClick={(e) => handleDeleteClick(e, episode)}
+                          whileHover={{ scale: 1.1 }}
+                          whileTap={{ scale: 0.95 }}
+                          title="Delete episode"
+                        >
+                          <Trash2 size={18} />
+                        </motion.button>
                       </div>
                     </div>
-                    <div className="admin-episodes-modern-actions">
-                      <motion.button
-                        className="admin-episodes-modern-action-icon admin-episodes-modern-view-icon"
-                        onClick={(e) => handleViewClick(e, episode)}
-                        whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.95 }}
-                        title="View details"
-                      >
-                        <Eye size={18} />
-                      </motion.button>
-                      <motion.button
-                        className="admin-episodes-modern-action-icon admin-episodes-modern-edit-icon"
-                        onClick={(e) => handleEditClick(e, episode)}
-                        whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.95 }}
-                        title="Edit episode"
-                      >
-                        <Edit2 size={18} />
-                      </motion.button>
-                      <motion.button
-                        className="admin-episodes-modern-action-icon admin-episodes-modern-delete-icon"
-                        onClick={(e) => handleDeleteClick(e, episode)}
-                        whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.95 }}
-                        title="Delete episode"
-                      >
-                        <Trash2 size={18} />
-                      </motion.button>
+                    <div className="admin-episodes-modern-time-section">
+                      <Clock size={14} />
+                      <span>{formatDate(episode.createdAt)}</span>
                     </div>
+                    <p className="admin-episodes-modern-preview">
+                      {episode.description}
+                    </p>
                   </div>
-                  <div className="admin-episodes-modern-time-section">
-                    <Clock size={14} />
-                    <span>{formatDate(episode.createdAt)}</span>
-                  </div>
-                  <p className="admin-episodes-modern-preview">
-                    {episode.description}
-                  </p>
-                </div>
-              </motion.li>
-            ))}
+                </motion.li>
+              );
+            })}
           </AnimatePresence>
         </ul>
       )}

@@ -52,6 +52,10 @@ const PodcastHighlights = () => {
   const loading = reduxState.loadingList || false;
   const error = reduxState.error || null;
 
+  const filteredEpisodes = listFromStore.filter(
+    (episode) => episode.tag !== "pitch"
+  );
+
   const [selected, setSelected] = useState(null);
   const [modalType, setModalType] = useState(null); // 'video' or 'details'
   const [iframeKey, setIframeKey] = useState(0);
@@ -81,7 +85,7 @@ const PodcastHighlights = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const maxIndex = Math.max(0, listFromStore.length - itemsPerView);
+  const maxIndex = Math.max(0, filteredEpisodes.length - itemsPerView);
   const canGoLeft = currentIndex > 0;
   const canGoRight = currentIndex < maxIndex;
 
@@ -167,7 +171,7 @@ const PodcastHighlights = () => {
           <div className="expert-podcast-error-row">
             <p>⚠️ Failed to fetch episodes. Please check your connection.</p>
           </div>
-        ) : listFromStore.length === 0 ? (
+        ) : filteredEpisodes.length === 0 ? (
           <div className="expert-podcast-empty-row">
             <p>No episodes yet. Stay tuned!</p>
           </div>
@@ -190,7 +194,7 @@ const PodcastHighlights = () => {
                 }}
                 transition={{ type: "spring", stiffness: 300, damping: 30 }}
               >
-                {listFromStore.map((ep, i) => (
+                {filteredEpisodes.map((ep, i) => (
                   <div
                     className="expert-podcast-episode-card"
                     key={ep._id || i}
@@ -223,7 +227,7 @@ const PodcastHighlights = () => {
                     <div className="expert-podcast-episode-info">
                       <div className="expert-podcast-episode-meta">
                         <span className="expert-podcast-episode-badge">
-                          Episode {listFromStore.length - i}
+                          Episode {filteredEpisodes.length - i}
                         </span>
                         <span className="expert-podcast-episode-guest">
                           <User size={12} />
@@ -276,7 +280,7 @@ const PodcastHighlights = () => {
         )}
 
         {/* Carousel Indicators */}
-        {listFromStore.length > itemsPerView && (
+        {filteredEpisodes.length > itemsPerView && (
           <div className="expert-podcast-carousel-indicators">
             {Array.from({ length: maxIndex + 1 }).map((_, idx) => (
               <button

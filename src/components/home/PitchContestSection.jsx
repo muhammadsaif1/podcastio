@@ -251,45 +251,45 @@ const PitchContestSection = () => {
                 )}
 
                 {/* RENDER YOUTUBE VIDEOS */}
-                {latestPitchEpisodes.length > 0 && (
-                  <>
-                    {latestPitchEpisodes.map((episode, index) => {
-                      const videoId = episode.youtubeLink
-                        ?.split("v=")[1]
-                        ?.split("&")[0];
-                      return (
-                        <div
-                          key={index}
-                          className={`video-card youtube-card ${
-                            activeVideo === index ? "unmuted" : ""
-                          }`}
-                          onClick={() => handleVideoClick(index)}
-                        >
-                          <div className="youtube-wrapper">
-                            <iframe
-                              id={`youtube-${index}`}
-                              src={`https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&controls=0&loop=1&playlist=${videoId}&modestbranding=1&rel=0&playsinline=1&enablejsapi=1&iv_load_policy=3&disablekb=1&fs=0`}
-                              frameBorder="0"
-                              allow="autoplay; encrypted-media"
-                              allowFullScreen
-                              title={`Pitch video ${index + 1}`}
-                            ></iframe>
-                          </div>
-                        </div>
-                      );
-                    })}
+                {latestPitchEpisodes.map((episode, index) => {
+                  // Extract video ID from YouTube URL
+                  const getVideoId = (url) => {
+                    if (!url) return null;
+                    const match = url.match(
+                      /(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\n?#]+)/
+                    );
+                    return match ? match[1] : null;
+                  };
 
-                    {/* PLACEHOLDERS */}
-                    {Array.from({ length: placeholdersNeeded }).map((_, i) => (
-                      <div
-                        key={`placeholder-${i}`}
-                        className="video-card pitch-coming-soon"
-                      >
-                        <span>Coming Soon</span>
+                  const videoId = getVideoId(episode.youtubeLink);
+                  const embedUrl = videoId
+                    ? `https://www.youtube.com/embed/${videoId}?enablejsapi=1&mute=1&autoplay=1&loop=1&playlist=${videoId}`
+                    : null;
+                  return (
+                    <div
+                      key={index}
+                      className={`video-card youtube-card ${
+                        activeVideo === index ? "unmuted" : ""
+                      }`}
+                      onClick={() => handleVideoClick(index)}
+                    >
+                      <div className="youtube-wrapper">
+                        {embedUrl ? (
+                          <iframe
+                            id={`youtube-${index}`}
+                            src={embedUrl}
+                            // frameBorder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowFullScreen
+                            title={`Pitch video ${index + 1}`}
+                          ></iframe>
+                        ) : (
+                          <div className="video-error">Invalid video URL</div>
+                        )}
                       </div>
-                    ))}
-                  </>
-                )}
+                    </div>
+                  );
+                })}
               </>
             )}
           </div>
