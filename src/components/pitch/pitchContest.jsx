@@ -7,6 +7,20 @@ import { useDispatch } from "react-redux";
 import { createPitch } from "@/redux/slices/pitchSlice";
 import { useNavigate } from "react-router-dom";
 
+// helpers
+const getYoutubeVideoId = (url) => {
+  if (!url) return null;
+  const m = url.match(
+    /(?:youtube\.com\/(?:watch\?v=|shorts\/|embed\/)|youtu\.be\/)([^&\n?#]+)/i
+  );
+  return m ? m[1] : null;
+};
+
+const getYoutubeEmbedUrl = (url) => {
+  const id = getYoutubeVideoId(url);
+  return id ? `https://www.youtube.com/embed/${id}?autoplay=0` : null;
+};
+
 const PitchContest = () => {
   const [form, setForm] = useState({
     fullName: "",
@@ -14,6 +28,7 @@ const PitchContest = () => {
     email: "",
     phone: "",
     pitchCategory: "",
+    africanCountry: "",
     oneSentenceSummary: "",
     pitchVideo: "",
     stage: "",
@@ -32,14 +47,28 @@ const PitchContest = () => {
   const navigate = useNavigate();
 
   const categoryOptions = [
-    "Residential",
-    "Commercial",
-    "Industrial",
-    "Mixed-Use",
-    "Agriculture",
+    "💡 Innovation",
+    "🎨 Creative",
+    "💼 Business",
+    "🏢 Property",
+    "🎯 Impact",
+    "🚚 Logistics"
   ];
 
-  const stageOptions = ["Idea", "MVP", "Traction", "Raising"];
+  const stageOptions = ["Idea", "MVP", "Traction", "Revenue"];
+
+  const africanCountries = [
+    "🇩🇿 Algeria", "🇦🇴 Angola", "🇧🇯 Benin", "🇧🇼 Botswana", "🇧🇫 Burkina Faso", "🇧🇮 Burundi",
+    "🇨🇻 Cabo Verde", "🇨🇲 Cameroon", "🇨🇫 Central African Republic", "🇹🇩 Chad", "🇰🇲 Comoros",
+    "🇨🇬 Congo", "🇨🇩 Congo, Democratic Republic of the", "🇩🇯 Djibouti", "🇪🇬 Egypt",
+    "🇬🇶 Equatorial Guinea", "🇪🇷 Eritrea", "🇸🇿 Eswatini", "🇪🇹 Ethiopia", "🇬🇦 Gabon", "🇬🇲 Gambia",
+    "🇬🇭 Ghana", "🇬🇳 Guinea", "🇬🇼 Guinea-Bissau", "🇨🇮 Ivory Coast", "🇰🇪 Kenya", "🇱🇸 Lesotho",
+    "🇱🇷 Liberia", "🇱🇾 Libya", "🇲🇬 Madagascar", "🇲🇼 Malawi", "🇲🇱 Mali", "🇲🇷 Mauritania",
+    "🇲🇺 Mauritius", "🇲🇦 Morocco", "🇲🇿 Mozambique", "🇳🇦 Namibia", "🇳🇪 Niger", "🇳🇬 Nigeria",
+    "🇷🇼 Rwanda", "🇸🇹 Sao Tome and Principe", "🇸🇳 Senegal", "🇸🇨 Seychelles", "🇸🇱 Sierra Leone",
+    "🇸🇴 Somalia", "🇿🇦 South Africa", "🇸🇸 South Sudan", "🇸🇩 Sudan", "🇹🇿 Tanzania", "🇹🇬 Togo",
+    "🇹🇳 Tunisia", "🇺🇬 Uganda", "🇿🇲 Zambia", "🇿🇼 Zimbabwe"
+  ];
 
   const validate = () => {
     const e = {};
@@ -48,6 +77,7 @@ const PitchContest = () => {
     if (form.email && !/^\S+@\S+\.\S+$/.test(form.email))
       e.email = "Email is invalid";
     if (!form.pitchCategory) e.pitchCategory = "Pitch category is required";
+    if (!form.africanCountry) e.africanCountry = "African country is required";
     if (!form.oneSentenceSummary.trim())
       e.oneSentenceSummary = "1-sentence summary is required";
     if (!form.pitchVideo.trim()) e.pitchVideo = "Pitch video link is required";
@@ -77,6 +107,8 @@ const PitchContest = () => {
         e.email = "Email is invalid";
       if (!updatedForm.pitchCategory)
         e.pitchCategory = "Pitch category is required";
+      if (!updatedForm.africanCountry)
+        e.africanCountry = "African country is required";
       if (!updatedForm.oneSentenceSummary.trim())
         e.oneSentenceSummary = "1-sentence summary is required";
       if (!updatedForm.pitchVideo.trim())
@@ -117,6 +149,7 @@ const PitchContest = () => {
             email: "",
             phone: "",
             pitchCategory: "",
+            africanCountry: "",
             oneSentenceSummary: "",
             pitchVideo: "",
             stage: "",
@@ -190,10 +223,10 @@ const PitchContest = () => {
             {[
               {
                 num: "01",
-                text: "Submit your 60-second pitch (video + summary).",
+                text: "Submit your 5 minutes pitch (video + summary).",
               },
               { num: "02", text: "Top 3 founders pitch live on Returnus." },
-              { num: "03", text: "Community votes for the winner." },
+              { num: "03", text: "We vote." },
               { num: "04", text: "Winner gets $100 + mentorship + exposure." },
             ].map((step, index) => (
               <motion.div
@@ -209,6 +242,26 @@ const PitchContest = () => {
                 <p>{step.text}</p>
               </motion.div>
             ))}
+          </div>
+        </div>
+      </motion.div>
+
+      <motion.div
+        className="pitch-contest-video-section"
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-100px" }}
+        transition={{ duration: 0.6 }}
+      >
+        <div className="pitch-contest-video-container">
+          <div className="pitch-contest-video-wrapper">
+            <iframe
+              src={getYoutubeEmbedUrl("https://youtube.com/shorts/6fLLt7cuSgE?feature=share")}
+              title="Latest Pitch Video"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            />
           </div>
         </div>
       </motion.div>
@@ -311,21 +364,46 @@ const PitchContest = () => {
               <select
                 value={form.pitchCategory}
                 onChange={(e) => handleField("pitchCategory", e.target.value)}
-                className={
-                  errors.pitchCategory ? "pitch-contest-input-error" : ""
-                }
+                className={errors.pitchCategory ? "pitch-contest-input-error" : ""}
                 disabled={isSubmitting}
               >
                 <option value="">Select Pitch Category</option>
-                {categoryOptions.map((c) => (
-                  <option key={c} value={c}>
-                    {c}
+                {categoryOptions.map((category) => (
+                  <option key={category} value={category}>
+                    {category}
                   </option>
                 ))}
               </select>
               {errors.pitchCategory && (
                 <span className="pitch-contest-field-error">
                   {errors.pitchCategory}
+                </span>
+              )}
+            </motion.div>
+
+            <motion.div
+              className="pitch-contest-form-group"
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.325 }}
+            >
+              <select
+                value={form.africanCountry}
+                onChange={(e) => handleField("africanCountry", e.target.value)}
+                className={errors.africanCountry ? "pitch-contest-input-error" : ""}
+                disabled={isSubmitting}
+              >
+                <option value="">Choose African Country</option>
+                {africanCountries.map((country) => (
+                  <option key={country} value={country}>
+                    {country}
+                  </option>
+                ))}
+              </select>
+              {errors.africanCountry && (
+                <span className="pitch-contest-field-error">
+                  {errors.africanCountry}
                 </span>
               )}
             </motion.div>
@@ -392,7 +470,7 @@ const PitchContest = () => {
                 disabled={isSubmitting}
               >
                 <option value="">
-                  Company Stage (Idea / MVP / Traction / Raising)
+                  Stage
                 </option>
                 {stageOptions.map((s) => (
                   <option key={s} value={s}>

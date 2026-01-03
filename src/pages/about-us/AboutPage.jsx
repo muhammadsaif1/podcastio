@@ -78,7 +78,7 @@ const AboutPage = () => {
             {
               num: "02",
               title: "Educating Everyday Investors",
-              body: "The investment landscape has changed, but many potential investors don't know how to participate. We demystify equity crowdfunding, Regulation CF, and community capital, giving everyday people the knowledge to make smart investment decisions and build generational wealth.",
+              body: "The investment landscape has changed, but many potential investors don't know how to participate. We demystify crowdfunding, and community capital, giving everyday people the knowledge to make smart investment decisions and build generational wealth.",
             },
             {
               num: "03",
