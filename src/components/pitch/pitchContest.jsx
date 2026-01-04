@@ -1,13 +1,20 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Loader2, CheckCircle, XCircle, ArrowRight } from "lucide-react";
+import {
+  Loader2,
+  CheckCircle,
+  XCircle,
+  ArrowRight,
+  Upload,
+  X,
+} from "lucide-react";
 import "./pitchContest.scss";
 import pitchHeroVideo from "@/images/pitch-hero.mp4"; // Update import path as needed
 import { useDispatch } from "react-redux";
 import { createPitch } from "@/redux/slices/pitchSlice";
 import { useNavigate } from "react-router-dom";
 
-// helpers
+// Helpers
 const getYoutubeVideoId = (url) => {
   if (!url) return null;
   const m = url.match(
@@ -20,6 +27,15 @@ const getYoutubeEmbedUrl = (url) => {
   const id = getYoutubeVideoId(url);
   return id ? `https://www.youtube.com/embed/${id}?autoplay=0` : null;
 };
+
+const MAX_FILE_SIZE = 12 * 1024 * 1024; // 12 MB in bytes
+const ALLOWED_TYPES = [
+  "image/jpeg",
+  "image/png",
+  "image/gif",
+  "image/webp",
+  "application/pdf",
+];
 
 const PitchContest = () => {
   const [form, setForm] = useState({
@@ -34,15 +50,19 @@ const PitchContest = () => {
     stage: "",
     fundingGoal: "",
     whyYou: "",
-    logoOrDeck: "",
+    logoOrDeck: "", // base64 string
+    logoOrDeckMimeType: "", // mime type
+    logoOrDeckFileName: "", // for display
     consent: false,
   });
 
   const [errors, setErrors] = useState({});
+  const [fileError, setFileError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null);
   const [submitMsg, setSubmitMsg] = useState("");
   const [validationError, setValidationError] = useState("");
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -52,23 +72,74 @@ const PitchContest = () => {
     "💼 Business",
     "🏢 Property",
     "🎯 Impact",
-    "🚚 Logistics"
+    "🚚 Logistics",
   ];
 
   const stageOptions = ["Idea", "MVP", "Traction", "Revenue"];
 
   const africanCountries = [
-    "🇩🇿 Algeria", "🇦🇴 Angola", "🇧🇯 Benin", "🇧🇼 Botswana", "🇧🇫 Burkina Faso", "🇧🇮 Burundi",
-    "🇨🇻 Cabo Verde", "🇨🇲 Cameroon", "🇨🇫 Central African Republic", "🇹🇩 Chad", "🇰🇲 Comoros",
-    "🇨🇬 Congo", "🇨🇩 Congo, Democratic Republic of the", "🇩🇯 Djibouti", "🇪🇬 Egypt",
-    "🇬🇶 Equatorial Guinea", "🇪🇷 Eritrea", "🇸🇿 Eswatini", "🇪🇹 Ethiopia", "🇬🇦 Gabon", "🇬🇲 Gambia",
-    "🇬🇭 Ghana", "🇬🇳 Guinea", "🇬🇼 Guinea-Bissau", "🇨🇮 Ivory Coast", "🇰🇪 Kenya", "🇱🇸 Lesotho",
-    "🇱🇷 Liberia", "🇱🇾 Libya", "🇲🇬 Madagascar", "🇲🇼 Malawi", "🇲🇱 Mali", "🇲🇷 Mauritania",
-    "🇲🇺 Mauritius", "🇲🇦 Morocco", "🇲🇿 Mozambique", "🇳🇦 Namibia", "🇳🇪 Niger", "🇳🇬 Nigeria",
-    "🇷🇼 Rwanda", "🇸🇹 Sao Tome and Principe", "🇸🇳 Senegal", "🇸🇨 Seychelles", "🇸🇱 Sierra Leone",
-    "🇸🇴 Somalia", "🇿🇦 South Africa", "🇸🇸 South Sudan", "🇸🇩 Sudan", "🇹🇿 Tanzania", "🇹🇬 Togo",
-    "🇹🇳 Tunisia", "🇺🇬 Uganda", "🇿🇲 Zambia", "🇿🇼 Zimbabwe"
+    "🇩🇿 Algeria",
+    "🇦🇴 Angola",
+    "🇧🇯 Benin",
+    "🇧🇼 Botswana",
+    "🇧🇫 Burkina Faso",
+    "🇧🇮 Burundi",
+    "🇨🇻 Cabo Verde",
+    "🇨🇲 Cameroon",
+    "🇨🇫 Central African Republic",
+    "🇹🇩 Chad",
+    "🇰🇲 Comoros",
+    "🇨🇬 Congo",
+    "🇨🇩 Congo, Democratic Republic of the",
+    "🇩🇯 Djibouti",
+    "🇪🇬 Egypt",
+    "🇬🇶 Equatorial Guinea",
+    "🇪🇷 Eritrea",
+    "🇸🇿 Eswatini",
+    "🇪🇹 Ethiopia",
+    "🇬🇦 Gabon",
+    "🇬🇲 Gambia",
+    "🇬🇭 Ghana",
+    "🇬🇳 Guinea",
+    "🇬🇼 Guinea-Bissau",
+    "🇨🇮 Ivory Coast",
+    "🇰🇪 Kenya",
+    "🇱🇸 Lesotho",
+    "🇱🇷 Liberia",
+    "🇱🇾 Libya",
+    "🇲🇬 Madagascar",
+    "🇲🇼 Malawi",
+    "🇲🇱 Mali",
+    "🇲🇷 Mauritania",
+    "🇲🇺 Mauritius",
+    "🇲🇦 Morocco",
+    "🇲🇿 Mozambique",
+    "🇳🇦 Namibia",
+    "🇳🇪 Niger",
+    "🇳🇬 Nigeria",
+    "🇷🇼 Rwanda",
+    "🇸🇹 Sao Tome and Principe",
+    "🇸🇳 Senegal",
+    "🇸🇨 Seychelles",
+    "🇸🇱 Sierra Leone",
+    "🇸🇴 Somalia",
+    "🇿🇦 South Africa",
+    "🇸🇸 South Sudan",
+    "🇸🇩 Sudan",
+    "🇹🇿 Tanzania",
+    "🇹🇬 Togo",
+    "🇹🇳 Tunisia",
+    "🇺🇬 Uganda",
+    "🇿🇲 Zambia",
+    "🇿🇼 Zimbabwe",
   ];
+
+  const isValidYoutubeUrl = (url) => {
+    if (!url || typeof url !== "string") return false;
+    const youtubeRegex =
+      /^(https?:\/\/)?(www\.)?(youtube\.com\/(watch\?v=|shorts\/|embed\/)|youtu\.be\/)[a-zA-Z0-9_-]{11}/i;
+    return youtubeRegex.test(url.trim());
+  };
 
   const validate = () => {
     const e = {};
@@ -81,49 +152,88 @@ const PitchContest = () => {
     if (!form.oneSentenceSummary.trim())
       e.oneSentenceSummary = "1-sentence summary is required";
     if (!form.pitchVideo.trim()) e.pitchVideo = "Pitch video link is required";
+
+    if (!form.pitchVideo.trim()) {
+      e.pitchVideo = "Pitch video link is required";
+    } else if (!isValidYoutubeUrl(form.pitchVideo)) {
+      e.pitchVideo = "Only YouTube links are allowed (youtube.com or youtu.be)";
+    }
+
     if (!form.stage) e.stage = "Stage is required";
     if (!form.whyYou.trim()) e.whyYou = "This field is required";
     if (!form.consent) e.consent = "Consent is required";
     if (form.whyYou && form.whyYou.length > 1000)
       e.whyYou = "Must be under 1000 characters";
+
     setErrors(e);
-    if (Object.keys(e).length > 0) {
-      setValidationError("Please fill out all required fields correctly");
-    } else {
-      setValidationError("");
-    }
-    return Object.keys(e).length === 0;
+    setValidationError(
+      Object.keys(e).length > 0
+        ? "Please fill out all required fields correctly"
+        : ""
+    );
+    return Object.keys(e).length === 0 && !fileError;
   };
 
   const handleField = (key, value) => {
     setForm((p) => ({ ...p, [key]: value }));
     if (errors[key]) {
       setErrors((prev) => ({ ...prev, [key]: "" }));
-      const updatedForm = { ...form, [key]: value };
-      const e = {};
-      if (!updatedForm.fullName.trim()) e.fullName = "Full name is required";
-      if (!updatedForm.email.trim()) e.email = "Email is required";
-      if (updatedForm.email && !/^\S+@\S+\.\S+$/.test(updatedForm.email))
-        e.email = "Email is invalid";
-      if (!updatedForm.pitchCategory)
-        e.pitchCategory = "Pitch category is required";
-      if (!updatedForm.africanCountry)
-        e.africanCountry = "African country is required";
-      if (!updatedForm.oneSentenceSummary.trim())
-        e.oneSentenceSummary = "1-sentence summary is required";
-      if (!updatedForm.pitchVideo.trim())
-        e.pitchVideo = "Pitch video link is required";
-      if (!updatedForm.stage) e.stage = "Stage is required";
-      if (!updatedForm.whyYou.trim()) e.whyYou = "This field is required";
-      if (!updatedForm.consent) e.consent = "Consent is required";
-      if (updatedForm.whyYou && updatedForm.whyYou.length > 1000)
-        e.whyYou = "Must be under 1000 characters";
-      setValidationError(
-        Object.keys(e).length > 0
-          ? "Please fill out all required fields correctly"
-          : ""
-      );
     }
+    if (validationError) validate();
+  };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    setFileError("");
+
+    if (!file) {
+      setForm((p) => ({
+        ...p,
+        logoOrDeck: "",
+        logoOrDeckMimeType: "",
+        logoOrDeckFileName: "",
+      }));
+      return;
+    }
+
+    if (!ALLOWED_TYPES.includes(file.type)) {
+      setFileError(
+        "Only JPEG, PNG, GIF, WebP images and PDF files are allowed."
+      );
+      e.target.value = "";
+      return;
+    }
+
+    if (file.size > MAX_FILE_SIZE) {
+      setFileError("File size must be 12 MB or smaller.");
+      e.target.value = "";
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const base64String = event.target.result.split(",")[1];
+      setForm((p) => ({
+        ...p,
+        logoOrDeck: base64String,
+        logoOrDeckMimeType: file.type,
+        logoOrDeckFileName: file.name,
+      }));
+    };
+    reader.onerror = () => {
+      setFileError("Error reading file. Please try again.");
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const clearFile = () => {
+    setForm((p) => ({
+      ...p,
+      logoOrDeck: "",
+      logoOrDeckMimeType: "",
+      logoOrDeckFileName: "",
+    }));
+    setFileError("");
   };
 
   const handleSubmit = async (e) => {
@@ -133,8 +243,25 @@ const PitchContest = () => {
     setIsSubmitting(true);
     setSubmitStatus(null);
 
+    const payload = {
+      fullName: form.fullName.trim(),
+      companyName: form.companyName.trim(),
+      email: form.email.trim().toLowerCase(),
+      phone: form.phone.trim(),
+      pitchCategory: form.pitchCategory,
+      africanCountry: form.africanCountry,
+      oneSentenceSummary: form.oneSentenceSummary.trim(),
+      pitchVideo: form.pitchVideo.trim(),
+      stage: form.stage,
+      fundingGoal: form.fundingGoal.trim(),
+      whyYou: form.whyYou.trim(),
+      logoOrDeck: form.logoOrDeck,
+      logoOrDeckMimeType: form.logoOrDeckMimeType,
+      consent: form.consent,
+    };
+
     try {
-      const resultAction = await dispatch(createPitch(form));
+      const resultAction = await dispatch(createPitch(payload));
 
       if (createPitch.fulfilled.match(resultAction)) {
         setSubmitStatus("success");
@@ -156,8 +283,11 @@ const PitchContest = () => {
             fundingGoal: "",
             whyYou: "",
             logoOrDeck: "",
+            logoOrDeckMimeType: "",
+            logoOrDeckFileName: "",
             consent: false,
           });
+          setFileError("");
           setSubmitStatus(null);
           setSubmitMsg("");
           setValidationError("");
@@ -167,18 +297,18 @@ const PitchContest = () => {
           navigate("/pitch-consent-rules");
         }, 2200);
       } else {
-        throw new Error(resultAction.payload || "Failed to submit");
+        throw new Error(resultAction.payload?.error || "Failed to submit");
       }
     } catch (err) {
       setSubmitStatus("error");
-      setSubmitMsg(err.message || "Failed to submit pitch");
+      setSubmitMsg(err.message || "Something went wrong. Please try again.");
       setTimeout(() => {
         setSubmitStatus(null);
         setSubmitMsg("");
-      }, 2500);
+      }, 3000);
+    } finally {
+      setIsSubmitting(false);
     }
-
-    setIsSubmitting(false);
   };
 
   return (
@@ -212,7 +342,6 @@ const PitchContest = () => {
         className="pitch-contest-how-it-works-section"
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
-        // viewport={{ once: true, margin: "-100px" }}
         transition={{ duration: 0.6 }}
       >
         <div className="pitch-contest-steps-container">
@@ -256,7 +385,9 @@ const PitchContest = () => {
         <div className="pitch-contest-video-container">
           <div className="pitch-contest-video-wrapper">
             <iframe
-              src={getYoutubeEmbedUrl("https://youtube.com/shorts/6fLLt7cuSgE?feature=share")}
+              src={getYoutubeEmbedUrl(
+                "https://youtube.com/shorts/6fLLt7cuSgE?feature=share"
+              )}
               title="Latest Pitch Video"
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -364,7 +495,9 @@ const PitchContest = () => {
               <select
                 value={form.pitchCategory}
                 onChange={(e) => handleField("pitchCategory", e.target.value)}
-                className={errors.pitchCategory ? "pitch-contest-input-error" : ""}
+                className={
+                  errors.pitchCategory ? "pitch-contest-input-error" : ""
+                }
                 disabled={isSubmitting}
               >
                 <option value="">Select Pitch Category</option>
@@ -391,7 +524,9 @@ const PitchContest = () => {
               <select
                 value={form.africanCountry}
                 onChange={(e) => handleField("africanCountry", e.target.value)}
-                className={errors.africanCountry ? "pitch-contest-input-error" : ""}
+                className={
+                  errors.africanCountry ? "pitch-contest-input-error" : ""
+                }
                 disabled={isSubmitting}
               >
                 <option value="">Choose African Country</option>
@@ -446,7 +581,7 @@ const PitchContest = () => {
                 value={form.pitchVideo}
                 onChange={(e) => handleField("pitchVideo", e.target.value)}
                 className={errors.pitchVideo ? "pitch-contest-input-error" : ""}
-                placeholder="Pitch Video Link (YouTube, Loom, or Vimeo link - max 5 minutes)"
+                placeholder="Pitch Video Link (YouTube - max 5 minutes)"
                 disabled={isSubmitting}
               />
               {errors.pitchVideo && (
@@ -469,9 +604,7 @@ const PitchContest = () => {
                 className={errors.stage ? "pitch-contest-input-error" : ""}
                 disabled={isSubmitting}
               >
-                <option value="">
-                  Stage
-                </option>
+                <option value="">Stage</option>
                 {stageOptions.map((s) => (
                   <option key={s} value={s}>
                     {s}
@@ -522,6 +655,7 @@ const PitchContest = () => {
               )}
             </motion.div>
 
+            {/* File Upload Section */}
             <motion.div
               className="pitch-contest-form-group pitch-contest-upload-group"
               initial={{ opacity: 0, x: -20 }}
@@ -529,16 +663,42 @@ const PitchContest = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.6 }}
             >
-              <div className="pitch-contest-upload-box">
+              <label className="pitch-contest-upload-label">
                 <input
-                  type="text"
-                  value={form.logoOrDeck}
-                  onChange={(e) => handleField("logoOrDeck", e.target.value)}
-                  placeholder="Upload Logo / Deck (optional)"
+                  type="file"
+                  accept="image/jpeg,image/png,image/gif,image/webp,application/pdf"
+                  onChange={handleFileChange}
                   disabled={isSubmitting}
+                  style={{ display: "none" }}
                 />
-                <div className="pitch-contest-upload-icon"></div>
-              </div>
+                <div className="pitch-contest-upload-box">
+                  <Upload size={28} className="pitch-contest-upload-icon" />
+                  <p>
+                    {form.logoOrDeckFileName
+                      ? form.logoOrDeckFileName
+                      : "Upload Logo / Deck (optional - max 12 MB)"}
+                  </p>
+                  <small>Images (JPEG, PNG, GIF, WebP) or PDF</small>
+                </div>
+              </label>
+
+              {form.logoOrDeckFileName && (
+                <div className="pitch-contest-selected-file">
+                  <span>{form.logoOrDeckFileName}</span>
+                  <button
+                    type="button"
+                    onClick={clearFile}
+                    disabled={isSubmitting}
+                    className="pitch-contest-clear-file-btn"
+                  >
+                    <X size={18} />
+                  </button>
+                </div>
+              )}
+
+              {fileError && (
+                <span className="pitch-contest-field-error">{fileError}</span>
+              )}
             </motion.div>
 
             <motion.div

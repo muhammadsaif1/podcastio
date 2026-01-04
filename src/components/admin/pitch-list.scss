@@ -522,3 +522,18 @@ $error-red: #ff4d4f;
     }
   }
 }
+
+.download-btn {
+  background-color: $accent-2;
+  color: white;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  margin-right: 12px;
+}
+
+.download-btn:hover {
+  background-color: $accent;
+}

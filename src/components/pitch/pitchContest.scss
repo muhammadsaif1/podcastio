@@ -514,4 +514,193 @@ $glass: rgba(255, 255, 255, 0.03);
   }
 }
 
+/* ========== FILE UPLOAD STYLES - FULLY MATCHING YOUR FORM INPUTS ========== */
 
+.pitch-contest-upload-group {
+  .pitch-contest-upload-label {
+    cursor: pointer;
+    display: block;
+    width: 100%;
+  }
+
+  .pitch-contest-upload-box {
+    background: rgba(255, 255, 255, 0.03);
+    border: 2px dashed rgba($text-white, 0.2);
+    border-radius: 12px;
+    padding: clamp(20px, 4vw, 28px);
+    text-align: center;
+    transition: all 0.4s ease;
+    backdrop-filter: blur(4px);
+    position: relative;
+
+    /* Default state - matches your input style */
+    &:hover:not(:focus) {
+      background: rgba(255, 255, 255, 0.04);
+      border-color: rgba($text-white, 0.4);
+    }
+
+    /* Active / "focused" state when clicked or file selected */
+    &:focus,
+    &.active {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: #00a8ff;
+      box-shadow: 0 2px 8px rgba(0, 168, 255, 0.4),
+        0 4px 16px rgba(0, 168, 255, 0.2);
+      transform: translateY(0);
+      outline: none;
+    }
+
+    /* Stronger hover when not focused */
+    &:hover {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: rgba($orange, 0.6);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 16px rgba($orange, 0.15);
+
+      .pitch-contest-upload-icon {
+        color: $orange;
+      }
+    }
+
+    .pitch-contest-upload-icon {
+      color: rgba($text-white, 0.6);
+      margin-bottom: 12px;
+      transition: color 0.3s ease;
+    }
+
+    p {
+      color: $text-white;
+      font-size: clamp(0.95rem, 2vw, 1.05rem);
+      font-weight: 500;
+      margin: 0 0 8px 0;
+      line-height: 1.4;
+    }
+
+    small {
+      color: rgba($text-gray, 0.7);
+      font-size: clamp(0.8rem, 1.8vw, 0.9rem);
+      display: block;
+    }
+  }
+
+  // Selected file preview box
+  .pitch-contest-selected-file {
+    margin-top: 12px;
+    background: rgba($orange, 0.1);
+    border: 1px solid rgba($orange, 0.3);
+    border-radius: 10px;
+    padding: clamp(10px, 2vw, 12px) clamp(14px, 3vw, 16px);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: clamp(0.85rem, 1.9vw, 0.95rem);
+    color: $text-white;
+    backdrop-filter: blur(4px);
+
+    span {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 80%;
+      color: $text-white;
+    }
+
+    .pitch-contest-clear-file-btn {
+      background: rgba($error-red, 0.2);
+      border: none;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      flex-shrink: 0;
+
+      &:hover {
+        background: rgba($error-red, 0.4);
+        transform: scale(1.1);
+      }
+
+      &:active {
+        transform: scale(0.95);
+      }
+
+      svg {
+        color: $error-red;
+      }
+    }
+  }
+
+  // Error state - matches your .pitch-contest-input-error
+  &.pitch-contest-input-error,
+  &:has(+ .pitch-contest-field-error) {
+    .pitch-contest-upload-box {
+      border-color: $error-red;
+      background: rgba($error-red, 0.05);
+      box-shadow: 0 2px 8px rgba($error-red, 0.4),
+        0 4px 16px rgba($error-red, 0.2);
+
+      &:hover {
+        border-color: $error-red;
+        box-shadow: 0 4px 20px rgba($error-red, 0.3);
+      }
+
+      .pitch-contest-upload-icon {
+        color: $error-red;
+      }
+    }
+  }
+}
+
+/* Optional: Add active class via JS when file is selected (for blue focus glow) */
+.pitch-contest-upload-box.active {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: #00a8ff !important;
+  box-shadow: 0 2px 8px rgba(0, 168, 255, 0.4),
+    0 4px 16px rgba(0, 168, 255, 0.2);
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  .pitch-contest-upload-group {
+    .pitch-contest-upload-box {
+      padding: 18px 14px;
+
+      p {
+        font-size: 0.95rem;
+      }
+
+      small {
+        font-size: 0.8rem;
+      }
+    }
+
+    .pitch-contest-selected-file {
+      padding: 10px 12px;
+      font-size: 0.9rem;
+      flex-direction: column;
+      gap: 8px;
+      text-align: center;
+
+      span {
+        max-width: 100%;
+      }
+
+      .pitch-contest-clear-file-btn {
+        width: 28px;
+        height: 28px;
+        align-self: flex-end;
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .pitch-contest-upload-group {
+    .pitch-contest-selected-file {
+      padding: 10px;
+    }
+  }
+}

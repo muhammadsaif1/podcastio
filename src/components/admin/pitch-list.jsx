@@ -361,6 +361,14 @@ const PitchList = () => {
                     </p>
                   </div>
                 )}
+                {selected.africanCountry && (
+                  <div className="detail-group">
+                    <label>Country</label>
+                    <p className="detail-value tag-badge">
+                      {selected.africanCountry}
+                    </p>
+                  </div>
+                )}
 
                 {selected.stage && (
                   <div className="detail-group">
@@ -397,23 +405,114 @@ const PitchList = () => {
                 {selected.logoOrDeck && (
                   <div className="detail-group">
                     <label>Logo / Deck</label>
-                    <div className="link-with-button">
-                      <a
-                        className="detail-link"
-                        href={selected.logoOrDeck}
-                        target="_blank"
-                        rel="noopener noreferrer"
+                    <div className="logo-deck-preview">
+                      {/* Detect if it's likely a PDF */}
+                      {selected.logoOrDeck.includes("JVBERi0") ||
+                      selected.logoOrDeck.startsWith("JVBER") ? (
+                        // Simple inline PDF preview (works for most cases)
+                        <iframe
+                          src={`data:application/pdf;base64,${selected.logoOrDeck}`}
+                          width="100%"
+                          height="600px"
+                          style={{ border: "none" }}
+                          title="Pitch Deck PDF"
+                        />
+                      ) : (
+                        // Assume image (common types: jpeg, png, gif, svg)
+                        <img
+                          src={`data:image/png;base64,${selected.logoOrDeck}`}
+                          alt="Company Logo or Deck Preview"
+                          style={{
+                            maxWidth: "100%",
+                            height: "auto",
+                            borderRadius: "8px",
+                          }}
+                          onError={(e) => {
+                            // Fallback if wrong MIME (try jpeg, then generic)
+                            if (e.currentTarget.src.includes("png")) {
+                              e.currentTarget.src = `data:image/jpeg;base64,${selected.logoOrDeck}`;
+                            } else if (e.currentTarget.src.includes("jpeg")) {
+                              e.currentTarget.src = `data:image;base64,${selected.logoOrDeck}`;
+                            }
+                          }}
+                        />
+                      )}
+
+                      {/* Always show the raw link and View button */}
+                      <div
+                        className="link-with-button"
+                        style={{ marginTop: "12px" }}
                       >
-                        {selected.logoOrDeck}
-                      </a>
-                      <a
-                        className="play-btn"
-                        href={selected.logoOrDeck}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        View Logo/Deck
-                      </a>
+                        <button
+                          type="button"
+                          className="download-btn"
+                          onClick={() => {
+                            let mimeType = "application/octet-stream";
+                            let extension = "";
+                            let filename = "logo_or_deck";
+
+                            const base64String = selected.logoOrDeck;
+
+                            // Detect if it's a PDF (PDF files in base64 almost always start with "JVBERi0")
+                            if (base64String.startsWith("JVBERi0")) {
+                              mimeType = "application/pdf";
+                              extension = ".pdf";
+                              filename = `${(
+                                selected.companyName ||
+                                selected.fullName ||
+                                "pitch"
+                              ).replace(/[^a-z0-9]/gi, "_")}_deck.pdf`;
+                            }
+                            // Detect common image types by checking magic bytes in base64
+                            else if (base64String.startsWith("/9j/")) {
+                              mimeType = "image/jpeg";
+                              extension = ".jpg";
+                              filename = `${(
+                                selected.companyName ||
+                                selected.fullName ||
+                                "pitch"
+                              ).replace(/[^a-z0-9]/gi, "_")}_logo.jpg`;
+                            } else if (base64String.startsWith("iVBORw0KGgo")) {
+                              mimeType = "image/png";
+                              extension = ".png";
+                              filename = `${(
+                                selected.companyName ||
+                                selected.fullName ||
+                                "pitch"
+                              ).replace(/[^a-z0-9]/gi, "_")}_logo.png`;
+                            } else if (base64String.startsWith("R0lGOD")) {
+                              mimeType = "image/gif";
+                              extension = ".gif";
+                              filename = `${(
+                                selected.companyName ||
+                                selected.fullName ||
+                                "pitch"
+                              ).replace(/[^a-z0-9]/gi, "_")}_logo.gif`;
+                            } else {
+                              // Fallback: treat as generic file
+                              extension = ".bin";
+                              filename = `${(
+                                selected.companyName ||
+                                selected.fullName ||
+                                "pitch"
+                              ).replace(/[^a-z0-9]/gi, "_")}_file${extension}`;
+                            }
+
+                            // Create proper data URI with correct MIME
+                            const dataUri = `data:${mimeType};base64,${base64String}`;
+
+                            // Trigger download
+                            const link = document.createElement("a");
+                            link.href = dataUri;
+                            link.download = filename; // This sets the correct name + extension
+                            document.body.appendChild(link);
+                            link.click();
+                            document.body.removeChild(link);
+                          }}
+                        >
+                          Download logo
+                        </button>
+                      </div>
                     </div>
                   </div>
                 )}
