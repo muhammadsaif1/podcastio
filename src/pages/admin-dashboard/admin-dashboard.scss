@@ -661,3 +661,149 @@ $success-green: #52c41a;
     }
   }
 }
+
+// ========================================
+// PITCH UPLOAD STYLES (Admin Pitch Modal)
+// ========================================
+
+.pitch-contest-upload-label {
+  display: block;
+  cursor: pointer;
+  width: 100%;
+
+  // Hidden file input
+  input[type="file"] {
+    display: none;
+  }
+}
+
+.pitch-contest-upload-box {
+  border: 2px dashed rgba($primary-orange, 0.3);
+  border-radius: 12px;
+  padding: 2rem 1.5rem;
+  text-align: center;
+  background: rgba($bg-card, 0.4);
+  backdrop-filter: blur(4px);
+  transition: all 0.3s ease;
+  margin-top: 0.75rem;
+
+  &:hover {
+    border-color: $primary-orange;
+    background: rgba($primary-orange, 0.05);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba($primary-orange, 0.15);
+  }
+
+  .pitch-contest-upload-icon {
+    color: $primary-orange;
+    margin-bottom: 1rem;
+    transition: transform 0.3s ease;
+  }
+
+  &:hover .pitch-contest-upload-icon {
+    transform: scale(1.1);
+  }
+
+  p {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: $text-white;
+    margin: 0.5rem 0;
+  }
+
+  small {
+    font-size: 0.9rem;
+    color: $text-gray;
+    display: block;
+    margin-top: 0.5rem;
+  }
+}
+
+// Selected File Preview
+.pitch-contest-selected-file {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba($bg-card, 0.6);
+  border: 1px solid rgba($primary-orange, 0.2);
+  border-radius: 10px;
+  padding: 1rem 1.25rem;
+  margin-top: 1rem;
+  animation: fadeIn 0.4s ease-out;
+
+  span {
+    font-size: 1rem;
+    color: $text-light-gray;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+
+    // Optional: Add a file icon
+    &::before {
+      content: "📄";
+      font-size: 1.3rem;
+    }
+  }
+
+  .pitch-contest-clear-file-btn {
+    background: rgba($error-red, 0.1);
+    border: 1px solid rgba($error-red, 0.3);
+    color: $error-red;
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background: $error-red;
+      color: white;
+      transform: scale(1.1);
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+}
+
+// Responsive Adjustments
+@media (max-width: 640px) {
+  .pitch-contest-upload-box {
+    padding: 1.5rem 1rem;
+
+    p {
+      font-size: 1rem;
+    }
+
+    small {
+      font-size: 0.85rem;
+    }
+  }
+
+  .pitch-contest-selected-file {
+    padding: 0.875rem 1rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+
+    span {
+      font-size: 0.95rem;
+    }
+
+    .pitch-contest-clear-file-btn {
+      align-self: flex-end;
+    }
+  }
+}
+
+// Optional: Add subtle glow on focus/hover for accessibility
+.pitch-contest-upload-label:focus-within .pitch-contest-upload-box {
+  border-color: $primary-orange;
+  box-shadow: 0 0 0 4px rgba($primary-orange, 0.15);
+}

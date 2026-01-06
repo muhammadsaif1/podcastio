@@ -1,7 +1,6 @@
-import { ArrowRight } from "lucide-react";
-import { useEffect, useState, useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchEpisodes } from "@/redux/slices/episodeSlice";
+"use client";
+
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Play,
@@ -10,11 +9,15 @@ import {
   ChevronRight,
   Calendar,
   User,
+  ArrowRight,
+  Trophy,
 } from "lucide-react";
 import "./pitch-contest-section.scss";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchPitches } from "@/redux/slices/pitchSlice";
 
-// helpers
+// YouTube helpers
 const getYoutubeVideoId = (url) => {
   if (!url) return null;
   const m = url.match(
@@ -35,116 +38,66 @@ const getYoutubeEmbedUrl = (url) => {
   return id ? `https://www.youtube.com/embed/${id}?autoplay=1` : null;
 };
 
-const formatDate = (dateString) => {
-  if (!dateString) return "Unknown Date";
-  const date = new Date(dateString);
-  return date.toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-  });
-};
-
-// Get the next Sunday at 23:59:59
-const getNextSundayDeadline = () => {
-  const now = new Date();
-  const dayOfWeek = now.getDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
-
-  // Calculate days until next Sunday
-  const daysUntilSunday = dayOfWeek === 0 ? 7 : 7 - dayOfWeek;
-
-  // Create next Sunday date
-  const nextSunday = new Date(now);
-  nextSunday.setDate(now.getDate() + daysUntilSunday);
-  nextSunday.setHours(23, 59, 59, 999);
-
-  return nextSunday;
-};
-
-// Countdown helper
-const calculateTimeLeft = (deadline) => {
-  const difference = +new Date(deadline) - +new Date();
-  let timeLeft = {};
-  if (difference > 0) {
-    timeLeft = {
-      days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-      hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
-      minutes: Math.floor((difference / 1000 / 60) % 60),
-      seconds: Math.floor((difference / 1000) % 60),
-    };
-  }
-  return timeLeft;
-};
-
 const PitchContestSection = () => {
   const dispatch = useDispatch();
-  const reduxState = useSelector((state) => state.episodes || {});
+  const reduxState = useSelector((state) => state.pitches || {});
   const listFromStore = reduxState.list || [];
   const loading = reduxState.loadingList || false;
   const error = reduxState.error || null;
 
-  // Filter only pitch-tag episodes
-  const filteredEpisodes = listFromStore.filter(
-    (episode) => episode.tag?.toLowerCase() === "pitch"
+  // Filter only admin-created pitches
+  const adminPitches = Array.isArray(listFromStore)
+    ? listFromStore.filter((p) => p.byAdmin === true)
+    : [];
+
+  // Sort by createdAt descending (latest first)
+  const sortedPitches = [...adminPitches].sort(
+    (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
   );
 
-  const [deadline, setDeadline] = useState(getNextSundayDeadline());
-  const [timeLeft, setTimeLeft] = useState(calculateTimeLeft(deadline));
+  // Separate winner if exists
+  const winnerPitch = sortedPitches.find((p) => p.winnerOfTheWeek);
+  const displayPitches = sortedPitches;
 
   const [selected, setSelected] = useState(null);
   const [modalType, setModalType] = useState(null); // 'video' or 'details'
   const [iframeKey, setIframeKey] = useState(0);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [itemsPerView, setItemsPerView] = useState(3);
-  const carouselRef = useRef(null);
 
   useEffect(() => {
-    dispatch(fetchEpisodes());
+    dispatch(fetchPitches());
   }, [dispatch]);
 
-  // Handle responsive items per view
+  // Responsive items per view
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth < 768) {
-        setItemsPerView(1);
-      } else if (window.innerWidth < 1024) {
-        setItemsPerView(2);
-      } else {
-        setItemsPerView(3);
-      }
+      if (window.innerWidth < 768) setItemsPerView(1);
+      else if (window.innerWidth < 1024) setItemsPerView(2);
+      else setItemsPerView(3);
       setCurrentIndex(0);
     };
-
     handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const maxIndex = Math.max(0, filteredEpisodes.length - itemsPerView);
+  const maxIndex = Math.max(0, displayPitches.length - itemsPerView);
   const canGoLeft = currentIndex > 0;
   const canGoRight = currentIndex < maxIndex;
 
-  const handlePrev = () => {
-    if (canGoLeft) {
-      setCurrentIndex((prev) => prev - 1);
-    }
-  };
+  const handlePrev = () => canGoLeft && setCurrentIndex((prev) => prev - 1);
+  const handleNext = () => canGoRight && setCurrentIndex((prev) => prev + 1);
 
-  const handleNext = () => {
-    if (canGoRight) {
-      setCurrentIndex((prev) => prev + 1);
-    }
-  };
-
-  const handleThumbnailClick = (episode) => {
-    setSelected(episode);
+  const handleThumbnailClick = (pitch) => {
+    setSelected(pitch);
     setModalType("video");
     setIframeKey((k) => k + 1);
     document.body.style.overflow = "hidden";
   };
 
-  const handleTitleClick = (episode) => {
-    setSelected(episode);
+  const handleTitleClick = (pitch) => {
+    setSelected(pitch);
     setModalType("details");
     document.body.style.overflow = "hidden";
   };
@@ -155,32 +108,11 @@ const PitchContestSection = () => {
     document.body.style.overflow = "unset";
   };
 
-  // Cleanup on unmount
   useEffect(() => {
     return () => {
       document.body.style.overflow = "unset";
     };
   }, []);
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      const newTimeLeft = calculateTimeLeft(deadline);
-
-      // Check if countdown reached zero
-      if (Object.keys(newTimeLeft).length === 0) {
-        // Reset to next Sunday
-        const newDeadline = getNextSundayDeadline();
-        setDeadline(newDeadline);
-        setTimeLeft(calculateTimeLeft(newDeadline));
-      } else {
-        setTimeLeft(newTimeLeft);
-      }
-    }, 1000);
-
-    return () => clearInterval(timer);
-  }, [deadline]);
-
-  const formatTimeUnit = (unit) => (unit < 10 ? `0${unit}` : unit);
 
   return (
     <section className="pitch-contest-section texture-bg-2">
@@ -190,7 +122,6 @@ const PitchContestSection = () => {
           initial={{ opacity: 0, y: -10 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.4 }}
         >
           <a href="/pitch" className="pitch-btn">
             <span className="pitch-icon">🚀</span> Pitch Contest
@@ -202,11 +133,10 @@ const PitchContestSection = () => {
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.4 }}
         >
           <h2 className="pitch-headline">
             Got 5 Minutes 🕐 ? Pitch to Win $100💰 + a Shot to Launch on
-            Kurudy🎉
+            Returnus🎉
           </h2>
 
           <p className="pitch-description">
@@ -215,60 +145,65 @@ const PitchContestSection = () => {
             company.
           </p>
 
-          {/* Countdown Timer */}
-          {/* <div className="pitch-countdown">
-            <div className="time-unit">
-              <motion.span
-                key={timeLeft.days}
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, ease: "easeOut" }}
-                className="time-value"
-              >
-                {formatTimeUnit(timeLeft.days || 0)}
-              </motion.span>
-              <span className="time-label">days</span>
+          {/* Winner Announcement */}
+          {winnerPitch ? (
+            <div className="pitch-winner-banner">
+              <Trophy size={28} />
+              <span>
+                <strong>{winnerPitch.fullName}</strong> is this week's winner!
+              </span>
             </div>
-            <span className="separator">:</span>
-            <div className="time-unit">
-              <motion.span
-                key={timeLeft.hours}
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, ease: "easeOut" }}
-                className="time-value"
-              >
-                {formatTimeUnit(timeLeft.hours || 0)}
-              </motion.span>
-              <span className="time-label">hours</span>
+          ) : (
+            <div className="pitch-winner-soon">
+              <span>Winner will be announced soon...</span>
             </div>
-            <span className="separator">:</span>
-            <div className="time-unit">
-              <motion.span
-                key={timeLeft.minutes}
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, ease: "easeOut" }}
-                className="time-value"
-              >
-                {formatTimeUnit(timeLeft.minutes || 0)}
-              </motion.span>
-              <span className="time-label">mins</span>
-            </div>
-            <span className="separator">:</span>
-            <div className="time-unit">
-              <motion.span
-                key={timeLeft.seconds}
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, ease: "easeOut" }}
-                className="time-value"
-              >
-                {formatTimeUnit(timeLeft.seconds || 0)}
-              </motion.span>
-              <span className="time-label">secs</span>
-            </div>
-          </div> */}
+          )}
+
+          {/* ==================== WINNER HIGHLIGHT CARD ==================== */}
+          {winnerPitch && (
+            <motion.div
+              className="pitch-winner-highlight"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
+              <div className="pitch-winner-highlight-card">
+                <div
+                  className="pitch-winner-highlight-thumbnail"
+                  onClick={() => handleThumbnailClick(winnerPitch)}
+                >
+                  <img
+                    src={getYoutubeThumbnail(winnerPitch.pitchVideo)}
+                    alt={winnerPitch.fullName}
+                  />
+                  <div className="pitch-winner-highlight-play">
+                    <Play size={48} />
+                  </div>
+                </div>
+
+                <div className="pitch-winner-highlight-info">
+                  <h3>{winnerPitch.companyName || winnerPitch.fullName}</h3>
+                  <p className="pitch-winner-highlight-founder">
+                    <User size={16} /> {winnerPitch.fullName}
+                  </p>
+                  <p className="pitch-winner-highlight-summary">
+                    {winnerPitch.oneSentenceSummary}
+                  </p>
+
+                  <button
+                    className="pitch-winner-highlight-btn"
+                    onClick={() => handleThumbnailClick(winnerPitch)}
+                  >
+                    Watch Winning Pitch
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          )}
+          {/* ============================================================ */}
+
+          <h2 className="pitches-text-tag">All Pitches</h2>
 
           {loading ? (
             <div className="pitch-loading-row">
@@ -281,11 +216,11 @@ const PitchContestSection = () => {
             </div>
           ) : error ? (
             <div className="pitch-error-row">
-              <p>⚠️ Failed to fetch pitches. Please check your connection.</p>
+              <p>⚠️ Failed to load pitches</p>
             </div>
-          ) : filteredEpisodes.length === 0 ? (
+          ) : displayPitches.length === 0 ? (
             <div className="pitch-empty-row">
-              <p>No pitches yet. Stay tuned!</p>
+              <p>No pitches available yet. Stay tuned!</p>
             </div>
           ) : (
             <div className="pitch-carousel-container">
@@ -293,85 +228,73 @@ const PitchContestSection = () => {
                 className="pitch-carousel-nav left"
                 onClick={handlePrev}
                 disabled={!canGoLeft}
-                aria-label="Previous pitches"
+                aria-label="Previous"
               >
                 <ChevronLeft size={20} />
               </button>
 
-              <div className="pitch-carousel-wrapper" ref={carouselRef}>
+              <div className="pitch-carousel-wrapper">
                 <motion.div
                   className="pitch-carousel"
-                  animate={{
-                    x: `-${currentIndex * (100 / itemsPerView)}%`,
-                  }}
+                  animate={{ x: `-${currentIndex * (100 / itemsPerView)}%` }}
                   transition={{ type: "spring", stiffness: 300, damping: 30 }}
                 >
-                  {filteredEpisodes.map((ep, i) => (
-                    <div className="pitch-episode-card" key={ep._id || i}>
-                      <div
-                        className="pitch-thumbnail-wrap"
-                        onClick={() => handleThumbnailClick(ep)}
-                      >
-                        <img
-                          src={getYoutubeThumbnail(ep.youtubeLink)}
-                          alt={ep.title}
-                        />
-                        <div className="pitch-play-overlay">
-                          <div className="pitch-play-icon-circle">
-                            <Play size={24} fill="white" />
-                          </div>
-                        </div>
-                        <button
-                          className="pitch-play-btn"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleThumbnailClick(ep);
-                          }}
+                  {displayPitches.map((pitch, i) => {
+                    const pitchNumber = displayPitches.length - i;
+                    return (
+                      <div className="pitch-episode-card" key={pitch._id}>
+                        <div
+                          className="pitch-thumbnail-wrap"
+                          onClick={() => handleThumbnailClick(pitch)}
                         >
-                          <Play size={14} fill="currentColor" />
-                        </button>
-                      </div>
-                      <div className="pitch-episode-info">
-                        <div className="pitch-episode-meta">
-                          <span className="pitch-episode-badge">
-                            Pitch {filteredEpisodes.length - i}
-                          </span>
-                          <span className="pitch-episode-founder">
-                            <User size={12} />
-                            {ep.author || "Founder"}
-                          </span>
-                        </div>
-                        <h3 onClick={() => handleTitleClick(ep)}>{ep.title}</h3>
-                        <p className="pitch-tagline">
-                          {ep.description ||
-                            ep.tagline ||
-                            "Discover insights and stories"}
-                        </p>
-                        <div className="pitch-episode-footer">
-                          <div
-                            style={{
-                              display: "flex",
-                              flexDirection: "column",
-                              gap: "0.5rem",
-                              flex: 1,
-                            }}
-                          >
-                            {ep.tag && (
-                              <span className="pitch-episode-tag">
-                                {ep.tag}
-                              </span>
-                            )}
+                          <img
+                            src={getYoutubeThumbnail(pitch.pitchVideo)}
+                            alt={pitch.fullName}
+                          />
+                          <div className="pitch-play-overlay">
+                            <div className="pitch-play-icon-circle">
+                              <Play size={24} fill="white" />
+                            </div>
                           </div>
-                          <button
-                            className="pitch-watch-now"
-                            onClick={() => handleThumbnailClick(ep)}
-                          >
-                            Watch Now
-                          </button>
+                          {pitch.winnerOfTheWeek && (
+                            <div className="pitch-winner-badge">
+                              <Trophy size={20} />
+                              Winner
+                            </div>
+                          )}
+                          <div className="pitch-number-badge">
+                            PITCH {String(pitchNumber).padStart(2, "0")}
+                          </div>
+                        </div>
+
+                        <div className="pitch-episode-info">
+                          <div className="pitch-episode-meta">
+                            <span className="pitch-episode-founder">
+                              <User size={12} />
+                              {pitch.fullName}
+                            </span>
+                          </div>
+                          <h3 onClick={() => handleTitleClick(pitch)}>
+                            {pitch.companyName || pitch.fullName}
+                          </h3>
+                          <p className="pitch-tagline">
+                            {pitch.oneSentenceSummary || "Amazing startup idea"}
+                          </p>
+                          <div className="pitch-episode-footer ">
+                            <button className="pitch-watch-now pitch-episode-category">
+                              {pitch.pitchCategory}
+                            </button>
+                            <button
+                              className="pitch-watch-now"
+                              onClick={() => handleThumbnailClick(pitch)}
+                            >
+                              Watch Now
+                            </button>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </motion.div>
               </div>
 
@@ -379,15 +302,15 @@ const PitchContestSection = () => {
                 className="pitch-carousel-nav right"
                 onClick={handleNext}
                 disabled={!canGoRight}
-                aria-label="Next pitches"
+                aria-label="Next"
               >
                 <ChevronRight size={20} />
               </button>
             </div>
           )}
 
-          {/* Carousel Indicators */}
-          {filteredEpisodes.length > itemsPerView && (
+          {/* Indicators */}
+          {displayPitches.length > itemsPerView && (
             <div className="pitch-carousel-indicators">
               {Array.from({ length: maxIndex + 1 }).map((_, idx) => (
                 <button
@@ -396,7 +319,6 @@ const PitchContestSection = () => {
                     currentIndex === idx ? "active" : ""
                   }`}
                   onClick={() => setCurrentIndex(idx)}
-                  aria-label={`Go to slide ${idx + 1}`}
                 />
               ))}
             </div>
@@ -430,20 +352,20 @@ const PitchContestSection = () => {
                 initial={{ scale: 0.9, y: 20, opacity: 0 }}
                 animate={{ scale: 1, y: 0, opacity: 1 }}
                 exit={{ scale: 0.9, y: 20, opacity: 0 }}
-                transition={{ duration: 0.2 }}
               >
                 <div className="pitch-modal-header">
-                  <h2>{selected.title}</h2>
+                  <h2>{selected.companyName || selected.fullName}</h2>
                   <button className="pitch-close-btn" onClick={handleClose}>
                     <X size={24} />
                   </button>
                 </div>
+
                 <div className="pitch-modal-body">
                   {modalType === "video" ? (
                     <div className="pitch-video-container">
                       <iframe
                         key={"player-" + iframeKey}
-                        src={getYoutubeEmbedUrl(selected.youtubeLink)}
+                        src={getYoutubeEmbedUrl(selected.pitchVideo)}
                         title="Pitch Player"
                         frameBorder="0"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -456,19 +378,70 @@ const PitchContestSection = () => {
                         <div className="pitch-detail-item">
                           <span className="pitch-detail-label">Founder:</span>
                           <span className="pitch-detail-value">
-                            {selected.author || "Not specified"}
+                            {selected.fullName}
                           </span>
+                        </div>
+                        {selected.companyName && (
+                          <div className="pitch-detail-item">
+                            <span className="pitch-detail-label">Company:</span>
+                            <span className="pitch-detail-value">
+                              {selected.companyName}
+                            </span>
+                          </div>
+                        )}
+                        <div className="pitch-detail-item full-width">
+                          <span className="pitch-detail-label">Summary:</span>
+                          <p className="pitch-detail-description">
+                            {selected.oneSentenceSummary}
+                          </p>
+                        </div>
+                        <div className="pitch-detail-item full-width">
+                          <span className="pitch-detail-label">Stage</span>
+                          <p className="pitch-detail-description">
+                            {selected.stage}
+                          </p>
                         </div>
                         <div className="pitch-detail-item full-width">
                           <span className="pitch-detail-label">
-                            Description:
+                            Pitch Category
                           </span>
                           <p className="pitch-detail-description">
-                            {selected.description ||
-                              selected.tagline ||
-                              "No description available for this pitch."}
+                            {selected.pitchCategory}
                           </p>
                         </div>
+
+                        {selected.logoOrDeck && (
+                          <div className="pitch-detail-item full-width">
+                            <span className="pitch-detail-label">
+                              Logo / Deck:
+                            </span>
+                            <div className="pitch-logo-deck-preview">
+                              {selected.logoOrDeckMimeType ===
+                              "application/pdf" ? (
+                                <iframe
+                                  src={`data:application/pdf;base64,${selected.logoOrDeck}`}
+                                  width="100%"
+                                  height="500px"
+                                  style={{
+                                    border: "none",
+                                    borderRadius: "8px",
+                                  }}
+                                />
+                              ) : (
+                                <img
+                                  src={`data:${selected.logoOrDeckMimeType};base64,${selected.logoOrDeck}`}
+                                  alt="Logo/Deck"
+                                  style={{
+                                    maxWidth: "100%",
+                                    borderRadius: "8px",
+                                    boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
+                                  }}
+                                />
+                              )}
+                            </div>
+                          </div>
+                        )}
+
                         <div className="pitch-modal-actions">
                           <button
                             className="pitch-watch-btn"
@@ -478,7 +451,7 @@ const PitchContestSection = () => {
                             }}
                           >
                             <Play size={16} />
-                            Watch Pitch
+                            Watch Video
                           </button>
                         </div>
                       </div>

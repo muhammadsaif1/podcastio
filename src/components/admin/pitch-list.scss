@@ -537,3 +537,53 @@ $error-red: #ff4d4f;
 .download-btn:hover {
   background-color: $accent;
 }
+
+/* Add to Admin Button */
+.admin-action-group {
+  margin-top: 1.5rem;
+  text-align: center;
+
+  .add-to-admin-btn {
+    background: linear-gradient(135deg, #00e676, #00c853);
+    color: #000;
+    border: none;
+    padding: 0.9rem 2rem;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 6px 20px rgba(0, 230, 118, 0.3);
+
+    &:hover:not(:disabled) {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 30px rgba(0, 230, 118, 0.4);
+    }
+
+    &:active:not(:disabled) {
+      transform: translateY(0);
+    }
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      background: #666;
+      color: #aaa;
+    }
+  }
+
+  .admin-note {
+    margin-top: 0.75rem;
+    font-size: 0.9rem;
+    color: #00e676;
+    font-style: italic;
+  }
+
+  @media (max-width: 560px) {
+    .add-to-admin-btn {
+      width: 100%;
+      padding: 0.8rem;
+      font-size: 0.95rem;
+    }
+  }
+}

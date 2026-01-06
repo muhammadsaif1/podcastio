@@ -47,12 +47,28 @@ export const createPitch = createAsyncThunk(
   }
 );
 
+// ✅ UPDATE pitch
+export const updatePitch = createAsyncThunk(
+  "pitches/updatePitch",
+  async ({ id, updates }, { rejectWithValue }) => {
+    try {
+      const { data } = await axios.put(`${API}/pitch/${id}`, updates);
+      return data;
+    } catch (err) {
+      return rejectWithValue(
+        err.response?.data?.error || "Failed to update pitch"
+      );
+    }
+  }
+);
+
+// ✅ DELETE pitch
 export const deletePitch = createAsyncThunk(
   "pitches/deletePitch",
   async (id, { rejectWithValue }) => {
     try {
       await axios.delete(`${API}/pitch/${id}`);
-      return id; // return deleted pitch ID
+      return id;
     } catch (err) {
       return rejectWithValue(
         err.response?.data?.error || "Failed to delete pitch"
@@ -69,6 +85,8 @@ const pitchSlice = createSlice({
     loadingList: false,
     loadingCurrent: false,
     creating: false,
+    updating: false,
+    deleting: false,
     error: null,
   },
   reducers: {
@@ -122,15 +140,38 @@ const pitchSlice = createSlice({
         state.creating = false;
         state.error = action.payload;
       })
-      // delete
+
+      // ✅ UPDATE
+      .addCase(updatePitch.pending, (state) => {
+        state.updating = true;
+        state.error = null;
+      })
+      .addCase(updatePitch.fulfilled, (state, action) => {
+        state.updating = false;
+        const index = state.list.findIndex((p) => p._id === action.payload._id);
+        if (index !== -1) {
+          state.list[index] = action.payload;
+        }
+        if (state.currentPitch?._id === action.payload._id) {
+          state.currentPitch = action.payload;
+        }
+      })
+      .addCase(updatePitch.rejected, (state, action) => {
+        state.updating = false;
+        state.error = action.payload;
+      })
+
+      // ✅ DELETE
       .addCase(deletePitch.pending, (state) => {
+        state.deleting = true;
         state.error = null;
       })
       .addCase(deletePitch.fulfilled, (state, action) => {
-        // Remove deleted pitch from list
+        state.deleting = false;
         state.list = state.list.filter((pitch) => pitch._id !== action.payload);
       })
       .addCase(deletePitch.rejected, (state, action) => {
+        state.deleting = false;
         state.error = action.payload;
       });
   },

@@ -6,15 +6,21 @@ import { Play, X, Trash2 } from "lucide-react";
 import "./pitch-list.scss";
 
 import { useDispatch, useSelector } from "react-redux";
-import { fetchPitches, deletePitch } from "@/redux/slices/pitchSlice";
+import {
+  fetchPitches,
+  deletePitch,
+  updatePitch,
+} from "@/redux/slices/pitchSlice";
 
 // helpers: extract youtube id, thumbnail, embed url
 const getYoutubeVideoId = (url) => {
   if (!url) return null;
-  const m = url.match(
-    /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&\n?#]+)/i
-  );
-  return m ? m[1] : null;
+
+  // Handles: youtube.com/watch?v=, youtu.be/, youtube.com/shorts/, youtube.com/embed/
+  const regex =
+    /(?:youtube\.com\/(?:watch\?v=|shorts\/|embed\/)|youtu\.be\/)([^&\n?#]+)/i;
+  const match = url.match(regex);
+  return match ? match[1] : null;
 };
 const getYoutubeThumbnail = (url) => {
   const id = getYoutubeVideoId(url);
@@ -24,7 +30,10 @@ const getYoutubeThumbnail = (url) => {
 };
 const getYoutubeEmbedUrl = (url) => {
   const id = getYoutubeVideoId(url);
-  return id ? `https://www.youtube.com/embed/${id}?autoplay=1` : null;
+  if (!id) return null;
+
+  // Force autoplay + allow Shorts to play properly
+  return `https://www.youtube.com/embed/${id}?autoplay=1&mute=0&playsinline=1&rel=0`;
 };
 
 const PitchList = () => {
@@ -38,6 +47,7 @@ const PitchList = () => {
   const [detailOpen, setDetailOpen] = useState(false);
   const [isPlayingInline, setIsPlayingInline] = useState(false);
   const [iframeKey, setIframeKey] = useState(0);
+  const [updatingToAdmin, setUpdatingToAdmin] = useState(false);
 
   // Delete confirmation state
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
@@ -69,6 +79,29 @@ const PitchList = () => {
     setDetailOpen(true);
     setIsPlayingInline(false);
     setIframeKey((k) => k + 1);
+  };
+
+  const handleAddToAdmin = async () => {
+    if (!selected) return;
+
+    setUpdatingToAdmin(true);
+    try {
+      await dispatch(
+        updatePitch({
+          id: selected._id,
+          updates: { byAdmin: true },
+        })
+      ).unwrap();
+
+      // Close modal and refresh list
+      handleClose();
+      dispatch(fetchPitches()); // optional: refresh immediately
+    } catch (err) {
+      console.error("Failed to add pitch to admin:", err);
+      alert("Failed to promote pitch. Please try again.");
+    } finally {
+      setUpdatingToAdmin(false);
+    }
   };
 
   const handleClose = () => {
@@ -110,10 +143,12 @@ const PitchList = () => {
     }
   };
 
-  const displayList =
-    Array.isArray(listFromStore) && listFromStore.length > 0
-      ? listFromStore
-      : [];
+  // FILTER: Only show user-submitted pitches (byAdmin !== true)
+  const userPitches = Array.isArray(listFromStore)
+    ? listFromStore.filter((pitch) => pitch.byAdmin !== true)
+    : [];
+
+  const displayList = userPitches.length > 0 ? userPitches : [];
 
   return (
     <section className="pitch-list-section">
@@ -138,7 +173,7 @@ const PitchList = () => {
         <div className="error-row">{String(error)}</div>
       ) : displayList.length === 0 ? (
         <div className="empty-row">
-          <p>No pitches yet.</p>
+          <p>No user-submitted pitches yet.</p>
         </div>
       ) : (
         <ul className="pitch-list">
@@ -274,7 +309,7 @@ const PitchList = () => {
 
               {/* Modal body */}
               <div className="modal-body">
-                {/* Video / Thumbnail block - plays inline when isPlayingInline */}
+                {/* Video / Thumbnail block */}
                 <div className="detail-group">
                   <div className="detail-video-wrap">
                     {!isPlayingInline && selected.pitchVideo ? (
@@ -315,7 +350,7 @@ const PitchList = () => {
                   </div>
                 </div>
 
-                {/* All fields — only show if present */}
+                {/* Rest of the fields remain unchanged */}
                 <div className="detail-group">
                   <label>Full Name</label>
                   <p className="detail-value">{selected.fullName}</p>
@@ -361,6 +396,7 @@ const PitchList = () => {
                     </p>
                   </div>
                 )}
+
                 {selected.africanCountry && (
                   <div className="detail-group">
                     <label>Country</label>
@@ -406,10 +442,7 @@ const PitchList = () => {
                   <div className="detail-group">
                     <label>Logo / Deck</label>
                     <div className="logo-deck-preview">
-                      {/* Detect if it's likely a PDF */}
-                      {selected.logoOrDeck.includes("JVBERi0") ||
-                      selected.logoOrDeck.startsWith("JVBER") ? (
-                        // Simple inline PDF preview (works for most cases)
+                      {selected.logoOrDeckMimeType === "application/pdf" ? (
                         <iframe
                           src={`data:application/pdf;base64,${selected.logoOrDeck}`}
                           width="100%"
@@ -418,27 +451,17 @@ const PitchList = () => {
                           title="Pitch Deck PDF"
                         />
                       ) : (
-                        // Assume image (common types: jpeg, png, gif, svg)
                         <img
-                          src={`data:image/png;base64,${selected.logoOrDeck}`}
+                          src={`data:${selected.logoOrDeckMimeType};base64,${selected.logoOrDeck}`}
                           alt="Company Logo or Deck Preview"
                           style={{
                             maxWidth: "100%",
                             height: "auto",
                             borderRadius: "8px",
                           }}
-                          onError={(e) => {
-                            // Fallback if wrong MIME (try jpeg, then generic)
-                            if (e.currentTarget.src.includes("png")) {
-                              e.currentTarget.src = `data:image/jpeg;base64,${selected.logoOrDeck}`;
-                            } else if (e.currentTarget.src.includes("jpeg")) {
-                              e.currentTarget.src = `data:image;base64,${selected.logoOrDeck}`;
-                            }
-                          }}
                         />
                       )}
 
-                      {/* Always show the raw link and View button */}
                       <div
                         className="link-with-button"
                         style={{ marginTop: "12px" }}
@@ -447,77 +470,37 @@ const PitchList = () => {
                           type="button"
                           className="download-btn"
                           onClick={() => {
-                            let mimeType = "application/octet-stream";
-                            let extension = "";
-                            let filename = "logo_or_deck";
+                            const mimeType =
+                              selected.logoOrDeckMimeType ||
+                              "application/octet-stream";
+                            const extension = mimeType.includes("pdf")
+                              ? ".pdf"
+                              : mimeType.includes("jpeg")
+                              ? ".jpg"
+                              : ".png";
+                            const filename = `${(
+                              selected.companyName ||
+                              selected.fullName ||
+                              "pitch"
+                            ).replace(/[^a-z0-9]/gi, "_")}_file${extension}`;
 
-                            const base64String = selected.logoOrDeck;
+                            const dataUri = `data:${mimeType};base64,${selected.logoOrDeck}`;
 
-                            // Detect if it's a PDF (PDF files in base64 almost always start with "JVBERi0")
-                            if (base64String.startsWith("JVBERi0")) {
-                              mimeType = "application/pdf";
-                              extension = ".pdf";
-                              filename = `${(
-                                selected.companyName ||
-                                selected.fullName ||
-                                "pitch"
-                              ).replace(/[^a-z0-9]/gi, "_")}_deck.pdf`;
-                            }
-                            // Detect common image types by checking magic bytes in base64
-                            else if (base64String.startsWith("/9j/")) {
-                              mimeType = "image/jpeg";
-                              extension = ".jpg";
-                              filename = `${(
-                                selected.companyName ||
-                                selected.fullName ||
-                                "pitch"
-                              ).replace(/[^a-z0-9]/gi, "_")}_logo.jpg`;
-                            } else if (base64String.startsWith("iVBORw0KGgo")) {
-                              mimeType = "image/png";
-                              extension = ".png";
-                              filename = `${(
-                                selected.companyName ||
-                                selected.fullName ||
-                                "pitch"
-                              ).replace(/[^a-z0-9]/gi, "_")}_logo.png`;
-                            } else if (base64String.startsWith("R0lGOD")) {
-                              mimeType = "image/gif";
-                              extension = ".gif";
-                              filename = `${(
-                                selected.companyName ||
-                                selected.fullName ||
-                                "pitch"
-                              ).replace(/[^a-z0-9]/gi, "_")}_logo.gif`;
-                            } else {
-                              // Fallback: treat as generic file
-                              extension = ".bin";
-                              filename = `${(
-                                selected.companyName ||
-                                selected.fullName ||
-                                "pitch"
-                              ).replace(/[^a-z0-9]/gi, "_")}_file${extension}`;
-                            }
-
-                            // Create proper data URI with correct MIME
-                            const dataUri = `data:${mimeType};base64,${base64String}`;
-
-                            // Trigger download
                             const link = document.createElement("a");
                             link.href = dataUri;
-                            link.download = filename; // This sets the correct name + extension
+                            link.download = filename;
                             document.body.appendChild(link);
                             link.click();
                             document.body.removeChild(link);
                           }}
                         >
-                          Download logo
+                          Download File
                         </button>
                       </div>
                     </div>
                   </div>
                 )}
 
-                {/* pitchVideo link (raw) */}
                 {selected.pitchVideo && (
                   <div className="detail-group">
                     <label>Pitch Video Link</label>
@@ -551,8 +534,27 @@ const PitchList = () => {
                 <div className="detail-group">
                   <label>Consent</label>
                   <p className="detail-value">
-                    {selected.consent ? "✅" : "❌"}
+                    {selected.consent ? "Yes" : "No"}
                   </p>
+                </div>
+                {/* Add to Admin Pitch Button */}
+                <div className="detail-group admin-action-group">
+                  <button
+                    className="add-to-admin-btn"
+                    onClick={handleAddToAdmin}
+                    disabled={updatingToAdmin || selected.byAdmin}
+                  >
+                    {updatingToAdmin
+                      ? "Adding..."
+                      : selected.byAdmin
+                      ? "Already Added"
+                      : "Add Pitch"}
+                  </button>
+                  {selected.byAdmin && (
+                    <p className="admin-note">
+                      This pitch is already visible in the public contest.
+                    </p>
+                  )}
                 </div>
               </div>
             </motion.div>

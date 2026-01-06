@@ -1,4 +1,6 @@
-import { useState } from "react";
+"use client";
+
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Loader2,
@@ -7,11 +9,14 @@ import {
   ArrowRight,
   Upload,
   X,
+  Play,
+  Trophy,
+  User,
 } from "lucide-react";
 import "./pitchContest.scss";
-import pitchHeroVideo from "@/images/pitch-hero.mp4"; // Update import path as needed
-import { useDispatch } from "react-redux";
-import { createPitch } from "@/redux/slices/pitchSlice";
+import pitchHeroVideo from "@/images/pitch-hero.mp4";
+import { useDispatch, useSelector } from "react-redux";
+import { createPitch, fetchPitches } from "@/redux/slices/pitchSlice";
 import { useNavigate } from "react-router-dom";
 
 // Helpers
@@ -23,18 +28,93 @@ const getYoutubeVideoId = (url) => {
   return m ? m[1] : null;
 };
 
-const getYoutubeEmbedUrl = (url) => {
+const getYoutubeThumbnail = (url) => {
   const id = getYoutubeVideoId(url);
-  return id ? `https://www.youtube.com/embed/${id}?autoplay=0` : null;
+  return id
+    ? `https://img.youtube.com/vi/${id}/maxresdefault.jpg`
+    : "/placeholder-thumbnail.png";
 };
 
-const MAX_FILE_SIZE = 12 * 1024 * 1024; // 12 MB in bytes
+const getYoutubeEmbedUrl = (url) => {
+  const id = getYoutubeVideoId(url);
+  return id ? `https://www.youtube.com/embed/${id}?autoplay=1` : null;
+};
+
+const MAX_FILE_SIZE = 12 * 1024 * 1024;
 const ALLOWED_TYPES = [
   "image/jpeg",
   "image/png",
   "image/gif",
   "image/webp",
   "application/pdf",
+];
+
+const categoryOptions = [
+  "💡 Innovation",
+  "🎨 Creative",
+  "💼 Business",
+  "🏢 Property",
+  "🎯 Impact",
+  "🚚 Logistics",
+];
+
+const stageOptions = ["Idea", "MVP", "Traction", "Revenue"];
+
+const africanCountries = [
+  "🇩🇿 Algeria",
+  "🇦🇴 Angola",
+  "🇧🇯 Benin",
+  "🇧🇼 Botswana",
+  "🇧🇫 Burkina Faso",
+  "🇧🇮 Burundi",
+  "🇨🇻 Cabo Verde",
+  "🇨🇲 Cameroon",
+  "🇨🇫 Central African Republic",
+  "🇹🇩 Chad",
+  "🇰🇲 Comoros",
+  "🇨🇬 Congo",
+  "🇨🇩 Congo, Democratic Republic of the",
+  "🇩🇯 Djibouti",
+  "🇪🇬 Egypt",
+  "🇬🇶 Equatorial Guinea",
+  "🇪🇷 Eritrea",
+  "🇸🇿 Eswatini",
+  "🇪🇹 Ethiopia",
+  "🇬🇦 Gabon",
+  "🇬🇲 Gambia",
+  "🇬🇭 Ghana",
+  "🇬🇳 Guinea",
+  "🇬🇼 Guinea-Bissau",
+  "🇨🇮 Ivory Coast",
+  "🇰🇪 Kenya",
+  "🇱🇸 Lesotho",
+  "🇱🇷 Liberia",
+  "🇱🇾 Libya",
+  "🇲🇬 Madagascar",
+  "🇲🇼 Malawi",
+  "🇲🇱 Mali",
+  "🇲🇷 Mauritania",
+  "🇲🇺 Mauritius",
+  "🇲🇦 Morocco",
+  "🇲🇿 Mozambique",
+  "🇳🇦 Namibia",
+  "🇳🇪 Niger",
+  "🇳🇬 Nigeria",
+  "🇷🇼 Rwanda",
+  "🇸🇹 Sao Tome and Principe",
+  "🇸🇳 Senegal",
+  "🇸🇨 Seychelles",
+  "🇸🇱 Sierra Leone",
+  "🇸🇴 Somalia",
+  "🇿🇦 South Africa",
+  "🇸🇸 South Sudan",
+  "🇸🇩 Sudan",
+  "🇹🇿 Tanzania",
+  "🇹🇬 Togo",
+  "🇹🇳 Tunisia",
+  "🇺🇬 Uganda",
+  "🇿🇲 Zambia",
+  "🇿🇼 Zimbabwe",
 ];
 
 const PitchContest = () => {
@@ -50,9 +130,9 @@ const PitchContest = () => {
     stage: "",
     fundingGoal: "",
     whyYou: "",
-    logoOrDeck: "", // base64 string
-    logoOrDeckMimeType: "", // mime type
-    logoOrDeckFileName: "", // for display
+    logoOrDeck: "",
+    logoOrDeckMimeType: "",
+    logoOrDeckFileName: "",
     consent: false,
   });
 
@@ -66,73 +146,36 @@ const PitchContest = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const categoryOptions = [
-    "💡 Innovation",
-    "🎨 Creative",
-    "💼 Business",
-    "🏢 Property",
-    "🎯 Impact",
-    "🚚 Logistics",
-  ];
+  // Fetch pitches to show winner
+  const reduxState = useSelector((state) => state.pitches || {});
+  const listFromStore = reduxState.list || [];
 
-  const stageOptions = ["Idea", "MVP", "Traction", "Revenue"];
+  // Find winner of the week (byAdmin + winnerOfTheWeek = true)
+  const winnerPitch = Array.isArray(listFromStore)
+    ? listFromStore.find(
+        (p) => p.byAdmin === true && p.winnerOfTheWeek === true
+      )
+    : null;
 
-  const africanCountries = [
-    "🇩🇿 Algeria",
-    "🇦🇴 Angola",
-    "🇧🇯 Benin",
-    "🇧🇼 Botswana",
-    "🇧🇫 Burkina Faso",
-    "🇧🇮 Burundi",
-    "🇨🇻 Cabo Verde",
-    "🇨🇲 Cameroon",
-    "🇨🇫 Central African Republic",
-    "🇹🇩 Chad",
-    "🇰🇲 Comoros",
-    "🇨🇬 Congo",
-    "🇨🇩 Congo, Democratic Republic of the",
-    "🇩🇯 Djibouti",
-    "🇪🇬 Egypt",
-    "🇬🇶 Equatorial Guinea",
-    "🇪🇷 Eritrea",
-    "🇸🇿 Eswatini",
-    "🇪🇹 Ethiopia",
-    "🇬🇦 Gabon",
-    "🇬🇲 Gambia",
-    "🇬🇭 Ghana",
-    "🇬🇳 Guinea",
-    "🇬🇼 Guinea-Bissau",
-    "🇨🇮 Ivory Coast",
-    "🇰🇪 Kenya",
-    "🇱🇸 Lesotho",
-    "🇱🇷 Liberia",
-    "🇱🇾 Libya",
-    "🇲🇬 Madagascar",
-    "🇲🇼 Malawi",
-    "🇲🇱 Mali",
-    "🇲🇷 Mauritania",
-    "🇲🇺 Mauritius",
-    "🇲🇦 Morocco",
-    "🇲🇿 Mozambique",
-    "🇳🇦 Namibia",
-    "🇳🇪 Niger",
-    "🇳🇬 Nigeria",
-    "🇷🇼 Rwanda",
-    "🇸🇹 Sao Tome and Principe",
-    "🇸🇳 Senegal",
-    "🇸🇨 Seychelles",
-    "🇸🇱 Sierra Leone",
-    "🇸🇴 Somalia",
-    "🇿🇦 South Africa",
-    "🇸🇸 South Sudan",
-    "🇸🇩 Sudan",
-    "🇹🇿 Tanzania",
-    "🇹🇬 Togo",
-    "🇹🇳 Tunisia",
-    "🇺🇬 Uganda",
-    "🇿🇲 Zambia",
-    "🇿🇼 Zimbabwe",
-  ];
+  // Modal state for winner video
+  const [winnerModalOpen, setWinnerModalOpen] = useState(false);
+  const [winnerVideoUrl, setWinnerVideoUrl] = useState("");
+
+  useEffect(() => {
+    dispatch(fetchPitches());
+  }, [dispatch]);
+
+  const handleWinnerClick = (pitch) => {
+    setWinnerVideoUrl(pitch.pitchVideo);
+    setWinnerModalOpen(true);
+    document.body.style.overflow = "hidden";
+  };
+
+  const handleCloseWinnerModal = () => {
+    setWinnerModalOpen(false);
+    setWinnerVideoUrl("");
+    document.body.style.overflow = "unset";
+  };
 
   const isValidYoutubeUrl = (url) => {
     if (!url || typeof url !== "string") return false;
@@ -152,13 +195,8 @@ const PitchContest = () => {
     if (!form.oneSentenceSummary.trim())
       e.oneSentenceSummary = "1-sentence summary is required";
     if (!form.pitchVideo.trim()) e.pitchVideo = "Pitch video link is required";
-
-    if (!form.pitchVideo.trim()) {
-      e.pitchVideo = "Pitch video link is required";
-    } else if (!isValidYoutubeUrl(form.pitchVideo)) {
+    else if (!isValidYoutubeUrl(form.pitchVideo))
       e.pitchVideo = "Only YouTube links are allowed (youtube.com or youtu.be)";
-    }
-
     if (!form.stage) e.stage = "Stage is required";
     if (!form.whyYou.trim()) e.whyYou = "This field is required";
     if (!form.consent) e.consent = "Consent is required";
@@ -337,6 +375,64 @@ const PitchContest = () => {
           <h1>Pitch Your Idea.</h1>
         </div>
       </motion.div>
+
+      {/* ==================== WINNER OF THE WEEK ==================== */}
+      <motion.div
+        className="pitch-winner-section"
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+      >
+        {winnerPitch ? (
+          <div className="pitch-winner-badge">
+            <Trophy size={28} />
+            <span>Winner of the Week</span>
+          </div>
+        ) : (
+          ""
+        )}
+        {winnerPitch ? (
+          <div className="pitch-winner-card">
+            <div
+              className="pitch-winner-thumbnail"
+              onClick={() => handleWinnerClick(winnerPitch)}
+            >
+              <img
+                src={getYoutubeThumbnail(winnerPitch.pitchVideo)}
+                alt={winnerPitch.fullName}
+              />
+              <div className="pitch-winner-play-overlay">
+                <Play size={48} />
+              </div>
+            </div>
+
+            <div className="pitch-winner-info">
+              <h3>{winnerPitch.companyName || winnerPitch.fullName}</h3>
+              <p className="pitch-winner-founder">
+                <User size={16} /> {winnerPitch.fullName}
+              </p>
+              <p className="pitch-winner-summary">
+                {winnerPitch.oneSentenceSummary}
+              </p>
+
+              <button
+                className="pitch-winner-watch-btn"
+                onClick={() => handleWinnerClick(winnerPitch)}
+              >
+                Watch Winning Pitch
+              </button>
+            </div>
+          </div>
+        ) : (
+          <div className="pitch-winner-soon">
+            <Trophy size={36} />
+            <h3>Winner of the Week Coming Soon</h3>
+            <p>Stay tuned — the next winner will be announced shortly!</p>
+          </div>
+        )}
+      </motion.div>
+      {/* ============================================================ */}
 
       <motion.div
         className="pitch-contest-how-it-works-section"
@@ -796,6 +892,48 @@ const PitchContest = () => {
           </form>
         </div>
       </motion.div>
+
+      {/* Winner Video Modal */}
+      <AnimatePresence>
+        {winnerModalOpen && winnerVideoUrl && (
+          <motion.div
+            className="pitch-episode-modal"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={handleCloseWinnerModal}
+          >
+            <motion.div
+              className="pitch-modal-content"
+              onClick={(e) => e.stopPropagation()}
+              initial={{ scale: 0.9, y: 20, opacity: 0 }}
+              animate={{ scale: 1, y: 0, opacity: 1 }}
+              exit={{ scale: 0.9, y: 20, opacity: 0 }}
+            >
+              <div className="pitch-modal-header">
+                <h2>Winning Pitch</h2>
+                <button
+                  className="pitch-close-btn"
+                  onClick={handleCloseWinnerModal}
+                >
+                  <X size={24} />
+                </button>
+              </div>
+              <div className="pitch-modal-body">
+                <div className="pitch-video-container">
+                  <iframe
+                    src={getYoutubeEmbedUrl(winnerVideoUrl)}
+                    title="Winning Pitch Video"
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  />
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 };

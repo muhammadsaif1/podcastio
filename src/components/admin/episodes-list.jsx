@@ -544,9 +544,12 @@ const EpisodesList = () => {
   }, [errorFromStore]);
 
   useEffect(() => {
-    if (Array.isArray(listFromStore) && listFromStore.length > 0) {
-      setEpisodes(listFromStore);
-      setFilteredEpisodes(listFromStore);
+    if (Array.isArray(listFromStore)) {
+      // Exclude episodes with tag === "pitch"
+      const nonPitchEpisodes = listFromStore.filter((ep) => ep.tag !== "pitch");
+
+      setEpisodes(nonPitchEpisodes);
+      setFilteredEpisodes(nonPitchEpisodes);
     } else {
       setEpisodes([]);
       setFilteredEpisodes([]);
@@ -654,7 +657,7 @@ const EpisodesList = () => {
 
   const filterOptions = [
     { value: "all", label: "All" },
-    { value: "pitch", label: "Pitches" },
+    // { value: "pitch", label: "Pitches" },
     { value: "founder", label: "Founder" },
     { value: "investor", label: "Investors" },
   ];
@@ -682,14 +685,11 @@ const EpisodesList = () => {
     <div className="admin-episodes-modern-container">
       <div className="admin-episodes-modern-filter-section">
         <h2>
-          {selectedFilter &&
-            selectedFilter.charAt(0).toUpperCase() + selectedFilter.slice(1)}
-
-          {selectedFilter === "pitch"
-            ? "es"
-            : selectedFilter === "all"
-            ? ""
-            : "s"}
+          {selectedFilter === "all"
+            ? "All Episodes"
+            : selectedFilter.charAt(0).toUpperCase() +
+              selectedFilter.slice(1) +
+              "s"}
         </h2>
         <div className="admin-episodes-modern-filter-wrapper">
           <label
@@ -733,31 +733,13 @@ const EpisodesList = () => {
           <AnimatePresence>
             {filteredEpisodes.map((episode, idx) => {
               // Calculate episode number based on tag
-              let episodeNumber;
-              let episodePrefix;
+              const sortedEpisodes = [...episodes].sort(
+                (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
+              );
+              const episodeNumber =
+                sortedEpisodes.findIndex((ep) => ep._id === episode._id) + 1;
 
-              if (episode.tag === "pitch") {
-                // Count only pitch episodes for pitch numbering
-                const pitchEpisodes = [...episodes]
-                  .filter((ep) => ep.tag === "pitch")
-                  .sort(
-                    (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
-                  );
-                episodeNumber =
-                  pitchEpisodes.findIndex((ep) => ep._id === episode._id) + 1;
-                episodePrefix = "PITCH EP";
-              } else {
-                // Count non-pitch episodes for regular numbering
-                const nonPitchEpisodes = [...episodes]
-                  .filter((ep) => ep.tag !== "pitch")
-                  .sort(
-                    (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
-                  );
-                episodeNumber =
-                  nonPitchEpisodes.findIndex((ep) => ep._id === episode._id) +
-                  1;
-                episodePrefix = "EP";
-              }
+              const episodePrefix = "EP";
 
               return (
                 <motion.li
