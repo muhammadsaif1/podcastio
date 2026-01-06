@@ -28,16 +28,11 @@ const getYoutubeVideoId = (url) => {
   return m ? m[1] : null;
 };
 
-const getYoutubeThumbnail = (url) => {
+const getYoutubeEmbedUrl = (url, autoplay = false) => {
   const id = getYoutubeVideoId(url);
-  return id
-    ? `https://img.youtube.com/vi/${id}/maxresdefault.jpg`
-    : "/placeholder-thumbnail.png";
-};
+  if (!id) return null;
 
-const getYoutubeEmbedUrl = (url) => {
-  const id = getYoutubeVideoId(url);
-  return id ? `https://www.youtube.com/embed/${id}?autoplay=1` : null;
+  return `https://www.youtube.com/embed/${id}?autoplay=0&playsinline=1&rel=0`;
 };
 
 const MAX_FILE_SIZE = 12 * 1024 * 1024;
@@ -187,19 +182,14 @@ const PitchContest = () => {
   const validate = () => {
     const e = {};
     if (!form.fullName.trim()) e.fullName = "Full name is required";
+    if (!form.companyName.trim()) e.companyName = "Company name is required";
     if (!form.email.trim()) e.email = "Email is required";
     if (form.email && !/^\S+@\S+\.\S+$/.test(form.email))
       e.email = "Email is invalid";
-    if (!form.pitchCategory) e.pitchCategory = "Pitch category is required";
-    if (!form.africanCountry) e.africanCountry = "African country is required";
-    if (!form.oneSentenceSummary.trim())
-      e.oneSentenceSummary = "1-sentence summary is required";
+
     if (!form.pitchVideo.trim()) e.pitchVideo = "Pitch video link is required";
     else if (!isValidYoutubeUrl(form.pitchVideo))
       e.pitchVideo = "Only YouTube links are allowed (youtube.com or youtu.be)";
-    if (!form.stage) e.stage = "Stage is required";
-    if (!form.whyYou.trim()) e.whyYou = "This field is required";
-    if (!form.consent) e.consent = "Consent is required";
     if (form.whyYou && form.whyYou.length > 1000)
       e.whyYou = "Must be under 1000 characters";
 
@@ -596,7 +586,7 @@ const PitchContest = () => {
                 }
                 disabled={isSubmitting}
               >
-                <option value="">Select Pitch Category</option>
+                <option value="">Select Pitch Category (optional)</option>
                 {categoryOptions.map((category) => (
                   <option key={category} value={category}>
                     {category}
@@ -625,7 +615,7 @@ const PitchContest = () => {
                 }
                 disabled={isSubmitting}
               >
-                <option value="">Choose African Country</option>
+                <option value="">Choose African Country (optional)</option>
                 {africanCountries.map((country) => (
                   <option key={country} value={country}>
                     {country}
@@ -655,7 +645,7 @@ const PitchContest = () => {
                 className={
                   errors.oneSentenceSummary ? "pitch-contest-input-error" : ""
                 }
-                placeholder="1-Sentence Summary (Quick overview of your idea)"
+                placeholder="1-Sentence Summary (Quick overview of your idea - Optional)"
                 disabled={isSubmitting}
               />
               {errors.oneSentenceSummary && (
@@ -700,7 +690,7 @@ const PitchContest = () => {
                 className={errors.stage ? "pitch-contest-input-error" : ""}
                 disabled={isSubmitting}
               >
-                <option value="">Stage</option>
+                <option value="">Stage (optional)</option>
                 {stageOptions.map((s) => (
                   <option key={s} value={s}>
                     {s}
@@ -741,7 +731,7 @@ const PitchContest = () => {
                 value={form.whyYou}
                 onChange={(e) => handleField("whyYou", e.target.value)}
                 className={errors.whyYou ? "pitch-contest-input-error" : ""}
-                placeholder="Why You? (100 words)"
+                placeholder="Why You? (100 words - optional)"
                 disabled={isSubmitting}
               />
               {errors.whyYou && (

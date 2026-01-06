@@ -7,7 +7,6 @@ import {
   X,
   ChevronLeft,
   ChevronRight,
-  Calendar,
   User,
   ArrowRight,
   Trophy,
@@ -35,7 +34,76 @@ const getYoutubeThumbnail = (url) => {
 
 const getYoutubeEmbedUrl = (url) => {
   const id = getYoutubeVideoId(url);
-  return id ? `https://www.youtube.com/embed/${id}?autoplay=1` : null;
+  return id ? `https://www.youtube.com/embed/${id}?autoplay=1&rel=0` : null;
+};
+
+// Weekly Timer Logic (Friday 00:00 EST → Thursday 23:59 EST)
+const useWeeklyCountdown = () => {
+  const [timeLeft, setTimeLeft] = useState({
+    days: 0,
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
+  });
+
+  useEffect(() => {
+    const tz = "America/New_York";
+
+    const calculateTimeLeft = () => {
+      // Get current time in EST
+      const now = new Date();
+      const estTime = new Date(now.toLocaleString("en-US", { timeZone: tz }));
+
+      // Get current EST day (0=Sun, 1=Mon, ..., 6=Sat)
+      const estWeekday = estTime.getDay();
+
+      // Calculate days back to last Friday
+      let daysBack;
+      if (estWeekday >= 5) {
+        // Friday (5), Saturday (6)
+        daysBack = estWeekday - 5;
+      } else {
+        // Sunday (0) to Thursday (4)
+        daysBack = estWeekday + 2;
+      }
+
+      // Create week start (last Friday 00:00 EST)
+      const weekStart = new Date(estTime);
+      weekStart.setDate(estTime.getDate() - daysBack);
+      weekStart.setHours(0, 0, 0, 0);
+
+      // Create week end (following Thursday 23:59:59.999 EST)
+      const weekEnd = new Date(weekStart);
+      weekEnd.setDate(weekStart.getDate() + 6); // +6 days from Friday = Thursday
+      weekEnd.setHours(23, 59, 59, 999);
+
+      // FIXED: Calculate difference directly between EST times
+      const diff = weekEnd.getTime() - estTime.getTime();
+
+      if (diff <= 0) {
+        return { days: 0, hours: 0, minutes: 0, seconds: 0 };
+      }
+
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor(
+        (diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+      );
+      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+      return { days, hours, minutes, seconds };
+    };
+
+    setTimeLeft(calculateTimeLeft());
+
+    const interval = setInterval(() => {
+      setTimeLeft(calculateTimeLeft());
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  return timeLeft;
 };
 
 const PitchContestSection = () => {
@@ -43,33 +111,30 @@ const PitchContestSection = () => {
   const reduxState = useSelector((state) => state.pitches || {});
   const listFromStore = reduxState.list || [];
   const loading = reduxState.loadingList || false;
-  const error = reduxState.error || null;
 
-  // Filter only admin-created pitches
   const adminPitches = Array.isArray(listFromStore)
     ? listFromStore.filter((p) => p.byAdmin === true)
     : [];
 
-  // Sort by createdAt descending (latest first)
   const sortedPitches = [...adminPitches].sort(
     (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
   );
 
-  // Separate winner if exists
   const winnerPitch = sortedPitches.find((p) => p.winnerOfTheWeek);
   const displayPitches = sortedPitches;
 
   const [selected, setSelected] = useState(null);
-  const [modalType, setModalType] = useState(null); // 'video' or 'details'
+  const [modalType, setModalType] = useState(null);
   const [iframeKey, setIframeKey] = useState(0);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [itemsPerView, setItemsPerView] = useState(3);
+
+  const { days, hours, minutes, seconds } = useWeeklyCountdown();
 
   useEffect(() => {
     dispatch(fetchPitches());
   }, [dispatch]);
 
-  // Responsive items per view
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth < 768) setItemsPerView(1);
@@ -145,6 +210,41 @@ const PitchContestSection = () => {
             company.
           </p>
 
+          {/* Weekly Countdown Timer */}
+          <div className="weekly-timer-container">
+            <h3 className="timer-title">Voting Ends In</h3>
+            <div className="timer-display">
+              <div className="time-block">
+                <span className="time-value">
+                  {String(days).padStart(2, "0")}
+                </span>
+                <span className="time-label">Days</span>
+              </div>
+              <span className="timer-separator">:</span>
+              <div className="time-block">
+                <span className="time-value">
+                  {String(hours).padStart(2, "0")}
+                </span>
+                <span className="time-label">Hours</span>
+              </div>
+              <span className="timer-separator">:</span>
+              <div className="time-block">
+                <span className="time-value">
+                  {String(minutes).padStart(2, "0")}
+                </span>
+                <span className="time-label">Mins</span>
+              </div>
+              <span className="timer-separator">:</span>
+              <div className="time-block">
+                <span className="time-value">
+                  {String(seconds).padStart(2, "0")}
+                </span>
+                <span className="time-label">Secs</span>
+              </div>
+            </div>
+            <p className="timer-note">New contest starts every Friday</p>
+          </div>
+
           {/* Winner Announcement */}
           {winnerPitch ? (
             <div className="pitch-winner-banner">
@@ -159,7 +259,7 @@ const PitchContestSection = () => {
             </div>
           )}
 
-          {/* ==================== WINNER HIGHLIGHT CARD ==================== */}
+          {/* Winner Highlight */}
           {winnerPitch && (
             <motion.div
               className="pitch-winner-highlight"
@@ -190,7 +290,6 @@ const PitchContestSection = () => {
                   <p className="pitch-winner-highlight-summary">
                     {winnerPitch.oneSentenceSummary}
                   </p>
-
                   <button
                     className="pitch-winner-highlight-btn"
                     onClick={() => handleThumbnailClick(winnerPitch)}
@@ -201,7 +300,6 @@ const PitchContestSection = () => {
               </div>
             </motion.div>
           )}
-          {/* ============================================================ */}
 
           <h2 className="pitches-text-tag">All Pitches</h2>
 
@@ -213,10 +311,6 @@ const PitchContestSection = () => {
                 transition={{ repeat: Infinity, duration: 1 }}
               />
               <p>Loading pitches…</p>
-            </div>
-          ) : error ? (
-            <div className="pitch-error-row">
-              <p>⚠️ Failed to load pitches</p>
             </div>
           ) : displayPitches.length === 0 ? (
             <div className="pitch-empty-row">
@@ -280,7 +374,7 @@ const PitchContestSection = () => {
                           <p className="pitch-tagline">
                             {pitch.oneSentenceSummary || "Amazing startup idea"}
                           </p>
-                          <div className="pitch-episode-footer ">
+                          <div className="pitch-episode-footer">
                             <button className="pitch-watch-now pitch-episode-category">
                               {pitch.pitchCategory}
                             </button>
@@ -309,7 +403,6 @@ const PitchContestSection = () => {
             </div>
           )}
 
-          {/* Indicators */}
           {displayPitches.length > itemsPerView && (
             <div className="pitch-carousel-indicators">
               {Array.from({ length: maxIndex + 1 }).map((_, idx) => (
@@ -334,7 +427,7 @@ const PitchContestSection = () => {
           </div>
         </motion.div>
 
-        {/* Modal */}
+        {/* Modal - Logo/Deck Removed */}
         <AnimatePresence>
           {selected && modalType && (
             <motion.div
@@ -409,38 +502,6 @@ const PitchContestSection = () => {
                             {selected.pitchCategory}
                           </p>
                         </div>
-
-                        {selected.logoOrDeck && (
-                          <div className="pitch-detail-item full-width">
-                            <span className="pitch-detail-label">
-                              Logo / Deck:
-                            </span>
-                            <div className="pitch-logo-deck-preview">
-                              {selected.logoOrDeckMimeType ===
-                              "application/pdf" ? (
-                                <iframe
-                                  src={`data:application/pdf;base64,${selected.logoOrDeck}`}
-                                  width="100%"
-                                  height="500px"
-                                  style={{
-                                    border: "none",
-                                    borderRadius: "8px",
-                                  }}
-                                />
-                              ) : (
-                                <img
-                                  src={`data:${selected.logoOrDeckMimeType};base64,${selected.logoOrDeck}`}
-                                  alt="Logo/Deck"
-                                  style={{
-                                    maxWidth: "100%",
-                                    borderRadius: "8px",
-                                    boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
-                                  }}
-                                />
-                              )}
-                            </div>
-                          </div>
-                        )}
 
                         <div className="pitch-modal-actions">
                           <button

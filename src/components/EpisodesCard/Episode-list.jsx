@@ -23,7 +23,9 @@ const YouTubeModal = ({ isOpen, videoUrl, onClose }) => {
     const videoId = url.match(
       /(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\n?#]+)/
     )?.[1];
-    return videoId ? `https://www.youtube.com/embed/${videoId}?autoplay=1` : "";
+    return videoId
+      ? `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`
+      : "";
   };
 
   if (!isOpen) return null;

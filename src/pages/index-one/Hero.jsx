@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { X, Play, YoutubeIcon } from "lucide-react";
+import { X, Play } from "lucide-react";
 import "./ModernHero.scss";
 import { Link } from "react-router-dom";
 import { fetchEpisodes } from "@/redux/slices/episodeSlice";
@@ -164,11 +164,11 @@ const ModernHero = () => {
                 Where Ideas Meet Investment and Culture.
               </h1>
               <p className="modern-hero-description">
-                Returnus is more than a podcast; it’s a movement. A space where
+                Returnus is more than a podcast; it's a movement. A space where
                 diverse founders meet everyday investors, and where
                 conversations about tech, travel, sneakers, and culture spark
                 ideas that turn into innovation and generational impact. Hosted
-                by long-time friends and family, it’s where passion meets
+                by long-time friends and family, it's where passion meets
                 purpose, and where every story could be the next big return.
               </p>
             </div>
@@ -214,7 +214,7 @@ const ModernHero = () => {
               <iframe
                 width="100%"
                 height="100%"
-                src={`https://www.youtube.com/embed/${youtubeVideoId}?autoplay=1`}
+                src={`https://www.youtube.com/embed/${youtubeVideoId}?autoplay=1&rel=0&modestbranding=1&showinfo=0&iv_load_policy=3&color=white`}
                 title="YouTube video player"
                 frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"

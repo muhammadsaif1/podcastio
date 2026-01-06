@@ -374,16 +374,7 @@ const PitchModal = ({ isOpen, onClose }) => {
   const [errors, setErrors] = useState({});
   const [fileError, setFileError] = useState("");
 
-  const requiredFields = [
-    "fullName",
-    "email",
-    "pitchCategory",
-    "oneSentenceSummary",
-    "pitchVideo",
-    "stage",
-    "whyYou",
-    "africanCountry",
-  ];
+  const requiredFields = ["fullName", "email", "companyName", "pitchVideo"];
 
   const validate = () => {
     const newErrors = {};
@@ -551,7 +542,10 @@ const PitchModal = ({ isOpen, onClose }) => {
             </div>
 
             <div className="form-group">
-              <label>Company Name</label>
+              <label>
+                Company Name
+                <span className="required">*</span>
+              </label>
               <input
                 type="text"
                 value={formData.companyName}
@@ -584,9 +578,7 @@ const PitchModal = ({ isOpen, onClose }) => {
             </div>
 
             <div className="form-group">
-              <label>
-                Pitch Category <span className="required">*</span>
-              </label>
+              <label>Pitch Category</label>
               <select
                 value={formData.pitchCategory}
                 onChange={(e) => handleChange("pitchCategory", e.target.value)}
@@ -605,9 +597,7 @@ const PitchModal = ({ isOpen, onClose }) => {
             </div>
 
             <div className="form-group">
-              <label>
-                African Country <span className="required">*</span>
-              </label>
+              <label>African Country</label>
               <select
                 value={formData.africanCountry}
                 onChange={(e) => handleChange("africanCountry", e.target.value)}
@@ -626,9 +616,7 @@ const PitchModal = ({ isOpen, onClose }) => {
             </div>
 
             <div className="form-group">
-              <label>
-                One Sentence Summary <span className="required">*</span>
-              </label>
+              <label>One Sentence Summary</label>
               <textarea
                 value={formData.oneSentenceSummary}
                 onChange={(e) =>
@@ -659,9 +647,7 @@ const PitchModal = ({ isOpen, onClose }) => {
             </div>
 
             <div className="form-group">
-              <label>
-                Stage <span className="required">*</span>
-              </label>
+              <label>Stage</label>
               <select
                 value={formData.stage}
                 onChange={(e) => handleChange("stage", e.target.value)}
@@ -689,9 +675,7 @@ const PitchModal = ({ isOpen, onClose }) => {
             </div>
 
             <div className="form-group">
-              <label>
-                Why You? <span className="required">*</span>
-              </label>
+              <label>Why You?</label>
               <textarea
                 value={formData.whyYou}
                 onChange={(e) => handleChange("whyYou", e.target.value)}

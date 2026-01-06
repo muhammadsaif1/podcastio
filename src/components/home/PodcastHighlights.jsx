@@ -32,7 +32,7 @@ const getYoutubeThumbnail = (url) => {
 
 const getYoutubeEmbedUrl = (url) => {
   const id = getYoutubeVideoId(url);
-  return id ? `https://www.youtube.com/embed/${id}?autoplay=1` : null;
+  return id ? `https://www.youtube.com/embed/${id}?autoplay=1&rel=0` : null;
 };
 
 const formatDate = (dateString) => {
