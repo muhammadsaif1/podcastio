@@ -2,7 +2,6 @@ import React, { useRef } from "react";
 import { motion } from "framer-motion";
 import "./about-page.scss";
 import waveLine from "@/images/wave-line.png";
-import kurudy from "@/images/kurudy-logo.png";
 import Hosts from "@/components/home/Hosts";
 
 const AboutPage = () => {

@@ -8,7 +8,6 @@ import {
   X,
   ChevronLeft,
   ChevronRight,
-  Calendar,
   User,
 } from "lucide-react";
 import "./podcast-highlights.scss";
