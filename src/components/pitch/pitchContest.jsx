@@ -172,6 +172,16 @@ const PitchContest = () => {
     document.body.style.overflow = "unset";
   };
 
+  const getYouTubeThumbnail = (url) => {
+    if (!url) return "/episode-thumbnail.jpg";
+    const videoId = url.match(
+      /(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\n?#]+)/
+    )?.[1];
+    return videoId
+      ? `https://img.youtube.com/vi/${videoId}/mqdefault.jpg`
+      : "/episode-thumbnail.jpg";
+  };
+
   const isValidYoutubeUrl = (url) => {
     if (!url || typeof url !== "string") return false;
     const youtubeRegex =
@@ -389,7 +399,7 @@ const PitchContest = () => {
               onClick={() => handleWinnerClick(winnerPitch)}
             >
               <img
-                src={getYoutubeThumbnail(winnerPitch.pitchVideo)}
+                src={getYouTubeThumbnail(winnerPitch.pitchVideo)}
                 alt={winnerPitch.fullName}
               />
               <div className="pitch-winner-play-overlay">

@@ -482,26 +482,58 @@ const PitchContestSection = () => {
                             </span>
                           </div>
                         )}
-                        <div className="pitch-detail-item full-width">
-                          <span className="pitch-detail-label">Summary:</span>
-                          <p className="pitch-detail-description">
-                            {selected.oneSentenceSummary}
-                          </p>
-                        </div>
-                        <div className="pitch-detail-item full-width">
-                          <span className="pitch-detail-label">Stage</span>
-                          <p className="pitch-detail-description">
-                            {selected.stage}
-                          </p>
-                        </div>
-                        <div className="pitch-detail-item full-width">
-                          <span className="pitch-detail-label">
-                            Pitch Category
-                          </span>
-                          <p className="pitch-detail-description">
-                            {selected.pitchCategory}
-                          </p>
-                        </div>
+                        {selected.africanCountry && (
+                          <div className="pitch-detail-item">
+                            <span className="pitch-detail-label">Country:</span>
+                            <span className="pitch-detail-value">
+                              <span className="country-flag-wrapper">
+                                <span className="country-flag">
+                                  {selected.africanCountry.slice(0, 2)}
+                                </span>
+                                <span className="country-name-tooltip">
+                                  {selected.africanCountry.slice(3)}
+                                </span>
+                              </span>
+                            </span>
+                          </div>
+                        )}
+                        {selected.oneSentenceSummary && (
+                          <div className="pitch-detail-item full-width">
+                            <span className="pitch-detail-label">Summary:</span>
+                            <p className="pitch-detail-description">
+                              {selected.oneSentenceSummary}
+                            </p>
+                          </div>
+                        )}
+                        {selected.fundingGoal && (
+                          <div className="pitch-detail-item full-width">
+                            <span className="pitch-detail-label">
+                              Funding Goal:
+                            </span>
+                            <p className="pitch-detail-description">
+                              {selected.fundingGoal}
+                            </p>
+                          </div>
+                        )}
+
+                        {selected.stage && (
+                          <div className="pitch-detail-item full-width">
+                            <span className="pitch-detail-label">Stage</span>
+                            <p className="pitch-detail-description">
+                              {selected.stage}
+                            </p>
+                          </div>
+                        )}
+                        {selected.pitchCategory && (
+                          <div className="pitch-detail-item full-width">
+                            <span className="pitch-detail-label">
+                              Pitch Category
+                            </span>
+                            <p className="pitch-detail-description">
+                              {selected.pitchCategory}
+                            </p>
+                          </div>
+                        )}
 
                         <div className="pitch-modal-actions">
                           <button

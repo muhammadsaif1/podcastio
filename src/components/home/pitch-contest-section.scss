@@ -132,7 +132,10 @@
 
     .pitch-carousel {
       display: flex;
-      gap: 1.5rem;
+      gap: 1rem;
+      @media (max-width: 1024px) {
+        gap: 0;
+      }
 
       .pitch-episode-card {
         flex: 0 0 calc((100% - 3rem) / 3);
@@ -837,4 +840,51 @@
   50% {
     opacity: 1;
   }
+}
+
+.country-flag-wrapper {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.country-flag {
+  font-size: 1.5rem;
+  display: inline-block;
+  line-height: 1;
+}
+
+.country-name-tooltip {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(0, 0, 0, 0.8);
+  color: #ffffff;
+  padding: 0.5rem 0.75rem;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  pointer-events: none;
+  margin-bottom: 0.5rem;
+  z-index: 10;
+
+  // Tooltip arrow
+  &::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: rgba(0, 0, 0, 0.8);
+  }
+}
+
+.country-flag-wrapper:hover .country-name-tooltip {
+  opacity: 1;
+  visibility: visible;
 }

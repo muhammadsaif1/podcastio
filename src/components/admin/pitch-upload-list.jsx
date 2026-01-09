@@ -345,28 +345,30 @@ const PitchDetailModal = ({ isOpen, pitch, onClose, onUpdated, onEdit }) => {
                   </p>
                 </div>
               )}
-
-              <div className="admin-pitches-modern-detail-group">
-                <label>Pitch Category</label>
-                <p className="admin-pitches-modern-detail-value">
-                  {pitch.pitchCategory}
-                </p>
-              </div>
-
-              <div className="admin-pitches-modern-detail-group">
-                <label>Stage</label>
-                <p className="admin-pitches-modern-detail-value">
-                  {pitch.stage}
-                </p>
-              </div>
-
-              <div className="admin-pitches-modern-detail-group">
-                <label>Country</label>
-                <p className="admin-pitches-modern-detail-value">
-                  {pitch.africanCountry}
-                </p>
-              </div>
-
+              {pitch.pitchCategory && (
+                <div className="admin-pitches-modern-detail-group">
+                  <label>Pitch Category</label>
+                  <p className="admin-pitches-modern-detail-value">
+                    {pitch.pitchCategory}
+                  </p>
+                </div>
+              )}
+              {pitch.stage && (
+                <div className="admin-pitches-modern-detail-group">
+                  <label>Stage</label>
+                  <p className="admin-pitches-modern-detail-value">
+                    {pitch.stage}
+                  </p>
+                </div>
+              )}
+              {pitch.africanCountry && (
+                <div className="admin-pitches-modern-detail-group">
+                  <label>Country</label>
+                  <p className="admin-pitches-modern-detail-value">
+                    {pitch.africanCountry}
+                  </p>
+                </div>
+              )}
               <div className="admin-pitches-modern-detail-group">
                 <label>Winner of the Week</label>
                 <p className="admin-pitches-modern-detail-value">
@@ -382,21 +384,22 @@ const PitchDetailModal = ({ isOpen, pitch, onClose, onUpdated, onEdit }) => {
                   </p>
                 </div>
               )}
-
-              <div className="admin-pitches-modern-detail-group admin-pitches-modern-full-width">
-                <label>One Sentence Summary</label>
-                <p className="admin-pitches-modern-detail-value admin-pitches-modern-description-text">
-                  {pitch.oneSentenceSummary}
-                </p>
-              </div>
-
-              <div className="admin-pitches-modern-detail-group admin-pitches-modern-full-width">
-                <label>Why You?</label>
-                <p className="admin-pitches-modern-detail-value admin-pitches-modern-description-text">
-                  {pitch.whyYou}
-                </p>
-              </div>
-
+              {pitch.oneSentenceSummary && (
+                <div className="admin-pitches-modern-detail-group admin-pitches-modern-full-width">
+                  <label>One Sentence Summary</label>
+                  <p className="admin-pitches-modern-detail-value admin-pitches-modern-description-text">
+                    {pitch.oneSentenceSummary}
+                  </p>
+                </div>
+              )}
+              {pitch.whyYou && (
+                <div className="admin-pitches-modern-detail-group admin-pitches-modern-full-width">
+                  <label>Why You?</label>
+                  <p className="admin-pitches-modern-detail-value admin-pitches-modern-description-text">
+                    {pitch.whyYou}
+                  </p>
+                </div>
+              )}
               <div className="admin-pitches-modern-detail-group">
                 <label>Pitch Video Link</label>
                 <div className="admin-pitches-modern-link-with-button">
