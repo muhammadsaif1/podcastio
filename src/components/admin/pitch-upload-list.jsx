@@ -227,13 +227,17 @@ const PitchDetailModal = ({ isOpen, pitch, onClose, onUpdated, onEdit }) => {
     if (pitch.logoOrDeckMimeType === "application/pdf") {
       return (
         <div className="admin-pitches-modern-pdf-preview">
-          <iframe
+          <object
             src={dataUri}
             width="100%"
             height="600px"
             style={{ border: "none", borderRadius: "8px" }}
             title="Pitch Deck PDF"
-          />
+          >
+            <p style={{ padding: "20px", textAlign: "center" }}>
+              PDF preview not available in your browser.
+            </p>
+          </object>
         </div>
       );
     }

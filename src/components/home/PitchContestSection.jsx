@@ -287,9 +287,11 @@ const PitchContestSection = () => {
                   <p className="pitch-winner-highlight-founder">
                     <User size={16} /> {winnerPitch.fullName}
                   </p>
-                  <p className="pitch-winner-highlight-summary">
-                    {winnerPitch.oneSentenceSummary}
-                  </p>
+                  {winnerPitch.oneSentenceSummary && (
+                    <p className="pitch-winner-highlight-summary">
+                      {winnerPitch.oneSentenceSummary}
+                    </p>
+                  )}
                   <button
                     className="pitch-winner-highlight-btn"
                     onClick={() => handleThumbnailClick(winnerPitch)}
@@ -371,13 +373,18 @@ const PitchContestSection = () => {
                           <h3 onClick={() => handleTitleClick(pitch)}>
                             {pitch.companyName || pitch.fullName}
                           </h3>
-                          <p className="pitch-tagline">
-                            {pitch.oneSentenceSummary || "Amazing startup idea"}
-                          </p>
+                          {pitch.oneSentenceSummary && (
+                            <p className="pitch-tagline">
+                              {pitch.oneSentenceSummary ||
+                                "Amazing startup idea"}
+                            </p>
+                          )}
                           <div className="pitch-episode-footer">
-                            <button className="pitch-watch-now pitch-episode-category">
-                              {pitch.pitchCategory}
-                            </button>
+                            {pitch.pitchCategory && (
+                              <button className="pitch-watch-now pitch-episode-category">
+                                {pitch.pitchCategory}
+                              </button>
+                            )}
                             <button
                               className="pitch-watch-now"
                               onClick={() => handleThumbnailClick(pitch)}
@@ -486,17 +493,25 @@ const PitchContestSection = () => {
                           <div className="pitch-detail-item">
                             <span className="pitch-detail-label">Country:</span>
                             <span className="pitch-detail-value">
+                              {selected.africanCountry}
+                            </span>
+                          </div>
+                        )}
+                        {/* {selected.africanCountry && (
+                          <div className="pitch-detail-item">
+                            <span className="pitch-detail-label">Country:</span>
+                            <span className="pitch-detail-value">
                               <span className="country-flag-wrapper">
                                 <span className="country-flag">
-                                  {selected.africanCountry.slice(0, 2)}
+                                  {selected.africanCountry.slice(0, 4)}
                                 </span>
                                 <span className="country-name-tooltip">
-                                  {selected.africanCountry.slice(3)}
+                                  {selected.africanCountry.slice(5)}
                                 </span>
                               </span>
                             </span>
                           </div>
-                        )}
+                        )} */}
                         {selected.oneSentenceSummary && (
                           <div className="pitch-detail-item full-width">
                             <span className="pitch-detail-label">Summary:</span>
