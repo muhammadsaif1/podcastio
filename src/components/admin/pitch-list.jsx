@@ -503,21 +503,10 @@ const PitchList = () => {
                     <label>Logo / Deck</label>
                     <div className="logo-deck-preview">
                       {selected.logoOrDeckMimeType === "application/pdf" ? (
-                        <object
-                          data={`data:application/pdf;base64,${selected.logoOrDeck}`}
-                          type="application/pdf"
-                          width="100%"
-                          height="600px"
-                          style={{
-                            border: "1px solid #ddd",
-                            borderRadius: "8px",
-                          }}
-                        >
-                          <p style={{ padding: "20px", textAlign: "center" }}>
-                            PDF preview not available in your browser. Please
-                            download the file to view.
-                          </p>
-                        </object>
+                        <p style={{ padding: "20px", textAlign: "center" }}>
+                          PDF preview not available in your browser. Please
+                          download the file to view.
+                        </p>
                       ) : (
                         <img
                           src={`data:${selected.logoOrDeckMimeType};base64,${selected.logoOrDeck}`}
