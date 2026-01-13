@@ -374,7 +374,7 @@ const PitchModal = ({ isOpen, onClose }) => {
   const [errors, setErrors] = useState({});
   const [fileError, setFileError] = useState("");
 
-  const requiredFields = ["fullName", "email", "companyName", "pitchVideo"];
+  const requiredFields = ["fullName", "email", "companyName"];
 
   const validate = () => {
     const newErrors = {};
@@ -632,9 +632,7 @@ const PitchModal = ({ isOpen, onClose }) => {
             </div>
 
             <div className="form-group">
-              <label>
-                Pitch Video URL (YouTube) <span className="required">*</span>
-              </label>
+              <label>Pitch Video URL (YouTube)</label>
               <input
                 type="text"
                 value={formData.pitchVideo}

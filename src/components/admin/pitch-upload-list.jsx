@@ -24,6 +24,8 @@ import {
   updatePitch,
   deletePitch,
 } from "@/redux/slices/pitchSlice";
+import { AFRICAN_COUNTRY_CODE_MAP } from "../home/PitchContestSection";
+import ReactCountryFlag from "react-country-flag";
 
 // Dropdown options
 const categoryOptions = [
@@ -253,6 +255,15 @@ const PitchDetailModal = ({ isOpen, pitch, onClose, onUpdated, onEdit }) => {
     );
   };
 
+  const getCountryCodeFromName = (value) => {
+    if (!value) return null;
+
+    // Remove emoji if present and trim
+    const cleanedName = value.replace(/[\u{1F1E6}-\u{1F1FF}]/gu, "").trim();
+
+    return AFRICAN_COUNTRY_CODE_MAP[cleanedName] || null;
+  };
+
   return (
     <>
       <AnimatePresence>
@@ -369,7 +380,23 @@ const PitchDetailModal = ({ isOpen, pitch, onClose, onUpdated, onEdit }) => {
                 <div className="admin-pitches-modern-detail-group">
                   <label>Country</label>
                   <p className="admin-pitches-modern-detail-value">
-                    {pitch.africanCountry}
+                    {(() => {
+                      const code = getCountryCodeFromName(pitch.africanCountry);
+                      return code ? (
+                        <ReactCountryFlag
+                          countryCode={code}
+                          svg
+                          style={{
+                            width: "1.8em",
+                            height: "1.8em",
+                            borderRadius: "4px",
+                            boxShadow: "0 1px 4px rgba(0,0,0,0.2)",
+                            marginRight: "6px",
+                          }}
+                        />
+                      ) : null;
+                    })()}
+                    {pitch.africanCountry.slice(5)}
                   </p>
                 </div>
               )}
@@ -902,29 +929,35 @@ const PitchUploadList = () => {
                   whileHover={{ scale: 1.02, x: 4 }}
                   whileTap={{ scale: 0.98 }}
                 >
-                  <div
-                    className="admin-pitches-modern-thumbnail"
-                    onClick={(e) => handleThumbnailClick(e, pitch.pitchVideo)}
-                  >
-                    <img
-                      src={
-                        getYoutubeThumbnail(pitch.pitchVideo) ||
-                        "/placeholder.svg"
-                      }
-                      alt={pitch.companyName || pitch.fullName}
-                    />
-                    <div className="admin-pitches-modern-play-overlay">
-                      <Play size={32} />
-                    </div>
-                    {pitch.winnerOfTheWeek && (
-                      <div className="admin-pitches-modern-winner-overlay">
-                        <Trophy size={24} />
+                  {pitch.pitchVideo ? (
+                    <div
+                      className="admin-pitches-modern-thumbnail"
+                      onClick={(e) => handleThumbnailClick(e, pitch.pitchVideo)}
+                    >
+                      <img
+                        src={
+                          getYoutubeThumbnail(pitch.pitchVideo) ||
+                          "/placeholder.svg"
+                        }
+                        alt={pitch.companyName || pitch.fullName}
+                      />
+                      <div className="admin-pitches-modern-play-overlay">
+                        <Play size={32} />
                       </div>
-                    )}
-                    <div className="admin-pitches-modern-pitch-number">
+                      {pitch.winnerOfTheWeek && (
+                        <div className="admin-pitches-modern-winner-overlay">
+                          <Trophy size={24} />
+                        </div>
+                      )}
+                      <div className="admin-pitches-modern-pitch-number">
+                        PITCH {String(pitchNumber).padStart(2, "0")}
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="admin-pitches-modern-pitch-number admin-pitches-modern-thumbnail">
                       PITCH {String(pitchNumber).padStart(2, "0")}
                     </div>
-                  </div>
+                  )}
 
                   <div className="admin-pitches-modern-content">
                     <div className="admin-pitches-modern-header">
@@ -978,9 +1011,11 @@ const PitchUploadList = () => {
                       <Clock size={14} />
                       <span>{formatDate(pitch.createdAt)}</span>
                     </div>
-                    <p className="admin-pitches-modern-preview">
-                      {pitch.oneSentenceSummary}
-                    </p>
+                    {pitch.oneSentenceSummary && (
+                      <p className="admin-pitches-modern-preview">
+                        {pitch.oneSentenceSummary}
+                      </p>
+                    )}
                   </div>
                 </motion.li>
               );

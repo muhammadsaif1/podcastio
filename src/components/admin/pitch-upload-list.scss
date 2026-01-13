@@ -1076,3 +1076,30 @@
 .admin-pitches-modern-edit-form select::-moz-focus-inner {
   border: 0;
 }
+
+.admin-pitches-modern-pitch-number {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  background: linear-gradient(135deg, #ff6b35 0%, #ff8c42 100%);
+  color: #ffffff;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  z-index: 5;
+
+  @media (max-width: 640px) {
+    font-size: 0.65rem;
+    padding: 3px 8px;
+    bottom: 6px;
+    right: 6px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 0.6rem;
+    padding: 2px 6px;
+  }
+}

@@ -15,6 +15,7 @@ import "./pitch-contest-section.scss";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchPitches } from "@/redux/slices/pitchSlice";
+import ReactCountryFlag from "react-country-flag";
 
 // YouTube helpers
 const getYoutubeVideoId = (url) => {
@@ -35,6 +36,65 @@ const getYoutubeThumbnail = (url) => {
 const getYoutubeEmbedUrl = (url) => {
   const id = getYoutubeVideoId(url);
   return id ? `https://www.youtube.com/embed/${id}?autoplay=1&rel=0` : null;
+};
+
+export const AFRICAN_COUNTRY_CODE_MAP = {
+  Algeria: "DZ",
+  Angola: "AO",
+  Benin: "BJ",
+  Botswana: "BW",
+  "Burkina Faso": "BF",
+  Burundi: "BI",
+  "Cabo Verde": "CV",
+  Cameroon: "CM",
+  "Central African Republic": "CF",
+  Chad: "TD",
+  Comoros: "KM",
+  Congo: "CG",
+  "Congo, Democratic Republic of the": "CD",
+  "Democratic Republic of the Congo": "CD",
+  Djibouti: "DJ",
+  Egypt: "EG",
+  "Equatorial Guinea": "GQ",
+  Eritrea: "ER",
+  Eswatini: "SZ",
+  Ethiopia: "ET",
+  Gabon: "GA",
+  Gambia: "GM",
+  Ghana: "GH",
+  Guinea: "GN",
+  "Guinea-Bissau": "GW",
+  "Ivory Coast": "CI",
+  "Côte d'Ivoire": "CI",
+  Kenya: "KE",
+  Lesotho: "LS",
+  Liberia: "LR",
+  Libya: "LY",
+  Madagascar: "MG",
+  Malawi: "MW",
+  Mali: "ML",
+  Mauritania: "MR",
+  Mauritius: "MU",
+  Morocco: "MA",
+  Mozambique: "MZ",
+  Namibia: "NA",
+  Niger: "NE",
+  Nigeria: "NG",
+  Rwanda: "RW",
+  "Sao Tome and Principe": "ST",
+  Senegal: "SN",
+  Seychelles: "SC",
+  "Sierra Leone": "SL",
+  Somalia: "SO",
+  "South Africa": "ZA",
+  "South Sudan": "SS",
+  Sudan: "SD",
+  Tanzania: "TZ",
+  Togo: "TG",
+  Tunisia: "TN",
+  Uganda: "UG",
+  Zambia: "ZM",
+  Zimbabwe: "ZW",
 };
 
 // Weekly Timer Logic (Friday 00:00 EST → Thursday 23:59 EST)
@@ -179,6 +239,15 @@ const PitchContestSection = () => {
     };
   }, []);
 
+  const getCountryCodeFromName = (value) => {
+    if (!value) return null;
+
+    // Remove emoji if present and trim
+    const cleanedName = value.replace(/[\u{1F1E6}-\u{1F1FF}]/gu, "").trim();
+
+    return AFRICAN_COUNTRY_CODE_MAP[cleanedName] || null;
+  };
+
   return (
     <section className="pitch-contest-section texture-bg-2">
       <div className="pitch-section-container">
@@ -269,18 +338,20 @@ const PitchContestSection = () => {
               transition={{ duration: 0.6 }}
             >
               <div className="pitch-winner-highlight-card">
-                <div
-                  className="pitch-winner-highlight-thumbnail"
-                  onClick={() => handleThumbnailClick(winnerPitch)}
-                >
-                  <img
-                    src={getYoutubeThumbnail(winnerPitch.pitchVideo)}
-                    alt={winnerPitch.fullName}
-                  />
-                  <div className="pitch-winner-highlight-play">
-                    <Play size={48} />
+                {winnerPitch.pitchVideo && (
+                  <div
+                    className="pitch-winner-highlight-thumbnail"
+                    onClick={() => handleThumbnailClick(winnerPitch)}
+                  >
+                    <img
+                      src={getYoutubeThumbnail(winnerPitch.pitchVideo)}
+                      alt={winnerPitch.fullName}
+                    />
+                    <div className="pitch-winner-highlight-play">
+                      <Play size={48} />
+                    </div>
                   </div>
-                </div>
+                )}
 
                 <div className="pitch-winner-highlight-info">
                   <h3>{winnerPitch.companyName || winnerPitch.fullName}</h3>
@@ -339,29 +410,31 @@ const PitchContestSection = () => {
                     const pitchNumber = displayPitches.length - i;
                     return (
                       <div className="pitch-episode-card" key={pitch._id}>
-                        <div
-                          className="pitch-thumbnail-wrap"
-                          onClick={() => handleThumbnailClick(pitch)}
-                        >
-                          <img
-                            src={getYoutubeThumbnail(pitch.pitchVideo)}
-                            alt={pitch.fullName}
-                          />
-                          <div className="pitch-play-overlay">
-                            <div className="pitch-play-icon-circle">
-                              <Play size={24} fill="white" />
+                        {pitch.pitchVideo && (
+                          <div
+                            className="pitch-thumbnail-wrap"
+                            onClick={() => handleThumbnailClick(pitch)}
+                          >
+                            <img
+                              src={getYoutubeThumbnail(pitch.pitchVideo)}
+                              alt={pitch.fullName}
+                            />
+                            <div className="pitch-play-overlay">
+                              <div className="pitch-play-icon-circle">
+                                <Play size={24} fill="white" />
+                              </div>
+                            </div>
+                            {pitch.winnerOfTheWeek && (
+                              <div className="pitch-winner-badge">
+                                <Trophy size={20} />
+                                Winner
+                              </div>
+                            )}
+                            <div className="pitch-number-badge">
+                              PITCH {String(pitchNumber).padStart(2, "0")}
                             </div>
                           </div>
-                          {pitch.winnerOfTheWeek && (
-                            <div className="pitch-winner-badge">
-                              <Trophy size={20} />
-                              Winner
-                            </div>
-                          )}
-                          <div className="pitch-number-badge">
-                            PITCH {String(pitchNumber).padStart(2, "0")}
-                          </div>
-                        </div>
+                        )}
 
                         <div className="pitch-episode-info">
                           <div className="pitch-episode-meta">
@@ -493,7 +566,25 @@ const PitchContestSection = () => {
                           <div className="pitch-detail-item">
                             <span className="pitch-detail-label">Country:</span>
                             <span className="pitch-detail-value">
-                              {selected.africanCountry}
+                              {(() => {
+                                const code = getCountryCodeFromName(
+                                  selected.africanCountry
+                                );
+                                return code ? (
+                                  <ReactCountryFlag
+                                    countryCode={code}
+                                    svg
+                                    style={{
+                                      width: "1.8em",
+                                      height: "1.8em",
+                                      borderRadius: "4px",
+                                      boxShadow: "0 1px 4px rgba(0,0,0,0.2)",
+                                      marginRight: "6px",
+                                    }}
+                                  />
+                                ) : null;
+                              })()}
+                              {selected.africanCountry.slice(5)}
                             </span>
                           </div>
                         )}

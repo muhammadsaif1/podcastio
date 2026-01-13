@@ -197,8 +197,7 @@ const PitchContest = () => {
     if (form.email && !/^\S+@\S+\.\S+$/.test(form.email))
       e.email = "Email is invalid";
 
-    if (!form.pitchVideo.trim()) e.pitchVideo = "Pitch video link is required";
-    else if (!isValidYoutubeUrl(form.pitchVideo))
+    if (form.pitchVideo && !isValidYoutubeUrl(form.pitchVideo))
       e.pitchVideo = "Only YouTube links are allowed (youtube.com or youtu.be)";
     if (form.whyYou && form.whyYou.length > 1000)
       e.whyYou = "Must be under 1000 characters";
@@ -394,18 +393,20 @@ const PitchContest = () => {
         )}
         {winnerPitch ? (
           <div className="pitch-winner-card">
-            <div
-              className="pitch-winner-thumbnail"
-              onClick={() => handleWinnerClick(winnerPitch)}
-            >
-              <img
-                src={getYouTubeThumbnail(winnerPitch.pitchVideo)}
-                alt={winnerPitch.fullName}
-              />
-              <div className="pitch-winner-play-overlay">
-                <Play size={48} />
+            {winnerPitch.pitchVideo && (
+              <div
+                className="pitch-winner-thumbnail"
+                onClick={() => handleWinnerClick(winnerPitch)}
+              >
+                <img
+                  src={getYouTubeThumbnail(winnerPitch.pitchVideo)}
+                  alt={winnerPitch.fullName}
+                />
+                <div className="pitch-winner-play-overlay">
+                  <Play size={48} />
+                </div>
               </div>
-            </div>
+            )}
 
             <div className="pitch-winner-info">
               <h3>{winnerPitch.companyName || winnerPitch.fullName}</h3>
@@ -655,7 +656,7 @@ const PitchContest = () => {
                 className={
                   errors.oneSentenceSummary ? "pitch-contest-input-error" : ""
                 }
-                placeholder="1-Sentence Summary (Quick overview of your idea - Optional)"
+                placeholder="1-Sentence Summary (Quick overview of your idea - optional)"
                 disabled={isSubmitting}
               />
               {errors.oneSentenceSummary && (
@@ -677,7 +678,7 @@ const PitchContest = () => {
                 value={form.pitchVideo}
                 onChange={(e) => handleField("pitchVideo", e.target.value)}
                 className={errors.pitchVideo ? "pitch-contest-input-error" : ""}
-                placeholder="Pitch Video Link (YouTube - max 5 minutes)"
+                placeholder="Pitch Video Link (YouTube - max 5 minutes- optional)"
                 disabled={isSubmitting}
               />
               {errors.pitchVideo && (

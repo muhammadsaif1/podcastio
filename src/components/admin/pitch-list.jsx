@@ -11,6 +11,8 @@ import {
   deletePitch,
   updatePitch,
 } from "@/redux/slices/pitchSlice";
+import ReactCountryFlag from "react-country-flag";
+import { AFRICAN_COUNTRY_CODE_MAP } from "../home/PitchContestSection";
 
 // helpers: extract youtube id, thumbnail, embed url
 const getYoutubeVideoId = (url) => {
@@ -56,17 +58,44 @@ const PitchList = () => {
 
   // Lock body scroll when modal open
   useEffect(() => {
-    if (detailOpen || deleteConfirmOpen) {
+    const isModalOpen = detailOpen || deleteConfirmOpen;
+
+    if (isModalOpen) {
+      // 1. Prevent scrolling on body
       document.body.style.overflow = "hidden";
-      document.body.classList.add("body-locked");
-    } else {
-      document.body.style.overflow = "";
-      document.body.classList.remove("body-locked");
-      setIsPlayingInline(false);
+
+      // 2. Most reliable way - prevent touch move on mobile
+      const preventScroll = (e) => {
+        e.preventDefault();
+      };
+
+      // 3. Add to document (catches most cases)
+      document.addEventListener("touchmove", preventScroll, { passive: false });
+
+      // 4. Optional: remember scroll position and lock it
+      const scrollY = window.scrollY;
+      // document.body.style.position = "fixed";
+      // document.body.style.top = `-${scrollY}px`;
+      document.body.style.width = "100%";
+
+      // Cleanup when modal closes
+      return () => {
+        document.body.style.overflow = "";
+        document.body.style.position = "";
+        document.body.style.top = "";
+        document.body.style.width = "";
+        window.scrollTo(0, scrollY); // restore scroll position
+
+        document.removeEventListener("touchmove", preventScroll);
+      };
     }
+
+    // If no modal → full cleanup
     return () => {
       document.body.style.overflow = "";
-      document.body.classList.remove("body-locked");
+      document.body.style.position = "";
+      document.body.style.top = "";
+      document.body.style.width = "";
     };
   }, [detailOpen, deleteConfirmOpen]);
 
@@ -150,6 +179,14 @@ const PitchList = () => {
 
   const displayList = userPitches.length > 0 ? userPitches : [];
 
+  const getCountryCodeFromName = (value) => {
+    if (!value) return null;
+
+    // Remove emoji if present and trim
+    const cleanedName = value.replace(/[\u{1F1E6}-\u{1F1FF}]/gu, "").trim();
+
+    return AFRICAN_COUNTRY_CODE_MAP[cleanedName] || null;
+  };
   return (
     <section className="pitch-list-section">
       <div className="list-header">
@@ -310,45 +347,50 @@ const PitchList = () => {
               {/* Modal body */}
               <div className="modal-body">
                 {/* Video / Thumbnail block */}
-                <div className="detail-group">
-                  <div className="detail-video-wrap">
-                    {!isPlayingInline && selected.pitchVideo ? (
-                      <div
-                        className="detail-thumbnail"
-                        role="button"
-                        tabIndex={0}
-                        onClick={handlePlayInline}
-                        onKeyDown={(e) =>
-                          e.key === "Enter" ? handlePlayInline() : null
-                        }
-                        aria-label="Play pitch video"
-                      >
-                        <img
-                          src={getYoutubeThumbnail(selected.pitchVideo)}
-                          alt={`${selected.fullName} pitch thumbnail`}
-                        />
-                        <div className="play-overlay">
-                          <Play size={36} />
+                {selected.pitchVideo && (
+                  <div className="detail-group">
+                    <div className="detail-video-wrap">
+                      {!isPlayingInline && selected.pitchVideo ? (
+                        <div
+                          className="detail-thumbnail"
+                          role="button"
+                          tabIndex={0}
+                          onClick={handlePlayInline}
+                          onKeyDown={(e) =>
+                            e.key === "Enter" ? handlePlayInline() : null
+                          }
+                          aria-label="Play pitch video"
+                        >
+                          <img
+                            src={getYoutubeThumbnail(selected.pitchVideo)}
+                            alt={`${selected.fullName} pitch thumbnail`}
+                          />
+                          <div className="play-overlay">
+                            <Play size={36} />
+                          </div>
                         </div>
-                      </div>
-                    ) : selected.pitchVideo ? (
-                      <div className="detail-video-inline">
-                        <iframe
-                          key={"player-" + iframeKey}
-                          src={getYoutubeEmbedUrl(selected.pitchVideo)}
-                          title="Pitch Video Player"
-                          frameBorder="0"
-                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                          allowFullScreen
-                        />
-                      </div>
-                    ) : (
-                      <div className="detail-thumbnail no-video">
-                        <img src="/placeholder-thumbnail.png" alt="no video" />
-                      </div>
-                    )}
+                      ) : selected.pitchVideo ? (
+                        <div className="detail-video-inline">
+                          <iframe
+                            key={"player-" + iframeKey}
+                            src={getYoutubeEmbedUrl(selected.pitchVideo)}
+                            title="Pitch Video Player"
+                            frameBorder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowFullScreen
+                          />
+                        </div>
+                      ) : (
+                        <div className="detail-thumbnail no-video">
+                          <img
+                            src="/placeholder-thumbnail.png"
+                            alt="no video"
+                          />
+                        </div>
+                      )}
+                    </div>
                   </div>
-                </div>
+                )}
 
                 {/* Rest of the fields remain unchanged */}
                 <div className="detail-group">
@@ -401,7 +443,25 @@ const PitchList = () => {
                   <div className="detail-group">
                     <label>Country</label>
                     <p className="detail-value tag-badge">
-                      {selected.africanCountry}
+                      {(() => {
+                        const code = getCountryCodeFromName(
+                          selected.africanCountry
+                        );
+                        return code ? (
+                          <ReactCountryFlag
+                            countryCode={code}
+                            svg
+                            style={{
+                              width: "1.8em",
+                              height: "1.8em",
+                              borderRadius: "4px",
+                              boxShadow: "0 1px 4px rgba(0,0,0,0.2)",
+                              marginRight: "6px",
+                            }}
+                          />
+                        ) : null;
+                      })()}
+                      {selected.africanCountry.slice(5)}
                     </p>
                   </div>
                 )}

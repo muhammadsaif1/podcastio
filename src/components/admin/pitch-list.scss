@@ -587,3 +587,31 @@ $error-red: #ff4d4f;
     }
   }
 }
+/* Prevent any weird jumps when body becomes fixed */
+body.body-locked {
+  overflow: hidden !important;
+}
+
+/* Make sure modal backdrop covers everything */
+.pitch-detail-modal,
+.delete-confirm-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1000; // make sure it's high enough
+  background: rgba(0, 0, 0, 0.65); // semi-transparent backdrop
+  backdrop-filter: blur(4px); // nice modern effect (optional)
+  -webkit-backdrop-filter: blur(4px);
+}
+
+/* Modal content should be above backdrop */
+.modal-content,
+.confirm-content {
+  position: relative;
+  z-index: 10;
+  background: #1a1a1a; // or your dark theme color
+  border-radius: 12px;
+  max-width: 90%;
+  max-height: 92vh;
+  overflow-y: auto;
+  margin: 4vh auto;
+}
