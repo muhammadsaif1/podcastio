@@ -498,66 +498,6 @@ const PitchList = () => {
                   </div>
                 )}
 
-                {selected.logoOrDeck && (
-                  <div className="detail-group">
-                    <label>Logo / Deck</label>
-                    <div className="logo-deck-preview">
-                      {selected.logoOrDeckMimeType === "application/pdf" ? (
-                        <p style={{ padding: "20px", textAlign: "center" }}>
-                          PDF preview not available in your browser. Please
-                          download the file to view.
-                        </p>
-                      ) : (
-                        <img
-                          src={`data:${selected.logoOrDeckMimeType};base64,${selected.logoOrDeck}`}
-                          alt="Company Logo or Deck Preview"
-                          style={{
-                            maxWidth: "100%",
-                            height: "auto",
-                            borderRadius: "8px",
-                          }}
-                        />
-                      )}
-
-                      <div
-                        className="link-with-button"
-                        style={{ marginTop: "12px" }}
-                      >
-                        <button
-                          type="button"
-                          className="download-btn"
-                          onClick={() => {
-                            const mimeType =
-                              selected.logoOrDeckMimeType ||
-                              "application/octet-stream";
-                            const extension = mimeType.includes("pdf")
-                              ? ".pdf"
-                              : mimeType.includes("jpeg")
-                              ? ".jpg"
-                              : ".png";
-                            const filename = `${(
-                              selected.companyName ||
-                              selected.fullName ||
-                              "pitch"
-                            ).replace(/[^a-z0-9]/gi, "_")}_file${extension}`;
-
-                            const dataUri = `data:${mimeType};base64,${selected.logoOrDeck}`;
-
-                            const link = document.createElement("a");
-                            link.href = dataUri;
-                            link.download = filename;
-                            document.body.appendChild(link);
-                            link.click();
-                            document.body.removeChild(link);
-                          }}
-                        >
-                          Download File
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
                 {selected.pitchVideo && (
                   <div className="detail-group">
                     <label>Pitch Video Link</label>

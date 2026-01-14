@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Upload } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import "./admin-dashboard.scss";
 import { EpisodesList } from "@/components/admin/episodes-list";
 import { MessagesList } from "@/components/admin/messages-list";
@@ -365,9 +365,6 @@ const PitchModal = ({ isOpen, onClose }) => {
     fundingGoal: "",
     whyYou: "",
     winnerOfTheWeek: false,
-    logoOrDeck: "",
-    logoOrDeckMimeType: "",
-    logoOrDeckFileName: "",
     africanCountry: "",
   });
 
@@ -393,60 +390,6 @@ const PitchModal = ({ isOpen, onClose }) => {
     }
   };
 
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    setFileError("");
-
-    if (!file) {
-      setFormData((prev) => ({
-        ...prev,
-        logoOrDeck: "",
-        logoOrDeckMimeType: "",
-        logoOrDeckFileName: "",
-      }));
-      return;
-    }
-
-    if (!ALLOWED_TYPES.includes(file.type)) {
-      setFileError(
-        "Only JPEG, PNG, GIF, WebP images and PDF files are allowed."
-      );
-      e.target.value = "";
-      return;
-    }
-
-    if (file.size > MAX_FILE_SIZE) {
-      setFileError("File size must be 12 MB or smaller.");
-      e.target.value = "";
-      return;
-    }
-
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      const base64String = event.target.result.split(",")[1];
-      setFormData((prev) => ({
-        ...prev,
-        logoOrDeck: base64String,
-        logoOrDeckMimeType: file.type,
-        logoOrDeckFileName: file.name,
-      }));
-    };
-    reader.onerror = () => {
-      setFileError("Error reading file. Please try again.");
-    };
-    reader.readAsDataURL(file);
-  };
-
-  const clearFile = () => {
-    setFormData((prev) => ({
-      ...prev,
-      logoOrDeck: "",
-      logoOrDeckMimeType: "",
-      logoOrDeckFileName: "",
-    }));
-    setFileError("");
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     const validationErrors = validate();
@@ -467,8 +410,6 @@ const PitchModal = ({ isOpen, onClose }) => {
       stage: formData.stage,
       fundingGoal: formData.fundingGoal.trim(),
       whyYou: formData.whyYou.trim(),
-      logoOrDeck: formData.logoOrDeck,
-      logoOrDeckMimeType: formData.logoOrDeckMimeType,
       winnerOfTheWeek: formData.winnerOfTheWeek,
       byAdmin: true,
       consent: true,
@@ -496,9 +437,6 @@ const PitchModal = ({ isOpen, onClose }) => {
         fundingGoal: "",
         whyYou: "",
         winnerOfTheWeek: false,
-        logoOrDeck: "",
-        logoOrDeckMimeType: "",
-        logoOrDeckFileName: "",
         africanCountry: "",
       });
       setErrors({});
@@ -685,39 +623,6 @@ const PitchModal = ({ isOpen, onClose }) => {
             </div>
 
             {/* File Upload */}
-            <div className="form-group">
-              <label>Logo / Deck (Optional - max 12MB)</label>
-              <label className="pitch-contest-upload-label">
-                <input
-                  type="file"
-                  accept="image/jpeg,image/png,image/gif,image/webp,application/pdf"
-                  onChange={handleFileChange}
-                  disabled={creating}
-                  style={{ display: "none" }}
-                />
-                <div className="pitch-contest-upload-box">
-                  <Upload size={28} className="pitch-contest-upload-icon" />
-                  <p>{formData.logoOrDeckFileName || "Click to upload file"}</p>
-                  <small>Images (JPEG, PNG, GIF, WebP) or PDF</small>
-                </div>
-              </label>
-
-              {formData.logoOrDeckFileName && (
-                <div className="pitch-contest-selected-file">
-                  <span>{formData.logoOrDeckFileName}</span>
-                  <button
-                    type="button"
-                    onClick={clearFile}
-                    disabled={creating}
-                    className="pitch-contest-clear-file-btn"
-                  >
-                    <X size={18} />
-                  </button>
-                </div>
-              )}
-
-              {fileError && <span className="error-message">{fileError}</span>}
-            </div>
 
             {/* Winner of the Week */}
             <div className="admin-episodes-modern-form-group admin-episodes-modern-form-group-switch">
