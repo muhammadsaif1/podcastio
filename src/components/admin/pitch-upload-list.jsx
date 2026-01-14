@@ -221,40 +221,6 @@ const PitchDetailModal = ({ isOpen, pitch, onClose, onUpdated, onEdit }) => {
     }
   };
 
-  const renderLogoOrDeck = () => {
-    if (!pitch.logoOrDeck || !pitch.logoOrDeckMimeType) return null;
-
-    const dataUri = `data:${pitch.logoOrDeckMimeType};base64,${pitch.logoOrDeck}`;
-
-    if (pitch.logoOrDeckMimeType === "application/pdf") {
-      return (
-        <div className="admin-pitches-modern-pdf-preview">
-          <object
-            src={dataUri}
-            width="100%"
-            height="600px"
-            style={{ border: "none", borderRadius: "8px" }}
-            title="Pitch Deck PDF"
-          >
-            <p style={{ padding: "20px", textAlign: "center" }}>
-              PDF preview not available in your browser.
-            </p>
-          </object>
-        </div>
-      );
-    }
-
-    return (
-      <div className="admin-pitches-modern-image-preview">
-        <img
-          src={dataUri}
-          alt="Company Logo/Deck"
-          className="admin-pitches-modern-logo-preview"
-        />
-      </div>
-    );
-  };
-
   const getCountryCodeFromName = (value) => {
     if (!value) return null;
 
@@ -452,14 +418,6 @@ const PitchDetailModal = ({ isOpen, pitch, onClose, onUpdated, onEdit }) => {
                   </motion.button>
                 </div>
               </div>
-
-              {pitch.logoOrDeck && (
-                <div className="admin-pitches-modern-detail-group admin-pitches-modern-full-width">
-                  <label>Logo / Deck</label>
-                  {renderLogoOrDeck()}
-                </div>
-              )}
-
               <div className="admin-pitches-modern-detail-group">
                 <label>Submitted</label>
                 <p className="admin-pitches-modern-detail-value">
