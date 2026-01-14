@@ -410,7 +410,7 @@ const PitchContestSection = () => {
                     const pitchNumber = displayPitches.length - i;
                     return (
                       <div className="pitch-episode-card" key={pitch._id}>
-                        {pitch.pitchVideo && (
+                        {pitch.pitchVideo ? (
                           <div
                             className="pitch-thumbnail-wrap"
                             onClick={() => handleThumbnailClick(pitch)}
@@ -433,6 +433,10 @@ const PitchContestSection = () => {
                             <div className="pitch-number-badge">
                               PITCH {String(pitchNumber).padStart(2, "0")}
                             </div>
+                          </div>
+                        ) : (
+                          <div className="pitch-number-badge">
+                            PITCH {String(pitchNumber).padStart(2, "0")}
                           </div>
                         )}
 
