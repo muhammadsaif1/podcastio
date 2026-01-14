@@ -7,7 +7,6 @@ import {
   CheckCircle,
   XCircle,
   ArrowRight,
-  Upload,
   X,
   Play,
   Trophy,
@@ -125,9 +124,6 @@ const PitchContest = () => {
     stage: "",
     fundingGoal: "",
     whyYou: "",
-    logoOrDeck: "",
-    logoOrDeckMimeType: "",
-    logoOrDeckFileName: "",
     consent: false,
   });
 
@@ -219,60 +215,6 @@ const PitchContest = () => {
     if (validationError) validate();
   };
 
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    setFileError("");
-
-    if (!file) {
-      setForm((p) => ({
-        ...p,
-        logoOrDeck: "",
-        logoOrDeckMimeType: "",
-        logoOrDeckFileName: "",
-      }));
-      return;
-    }
-
-    if (!ALLOWED_TYPES.includes(file.type)) {
-      setFileError(
-        "Only JPEG, PNG, GIF, WebP images and PDF files are allowed."
-      );
-      e.target.value = "";
-      return;
-    }
-
-    if (file.size > MAX_FILE_SIZE) {
-      setFileError("File size must be 12 MB or smaller.");
-      e.target.value = "";
-      return;
-    }
-
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      const base64String = event.target.result.split(",")[1];
-      setForm((p) => ({
-        ...p,
-        logoOrDeck: base64String,
-        logoOrDeckMimeType: file.type,
-        logoOrDeckFileName: file.name,
-      }));
-    };
-    reader.onerror = () => {
-      setFileError("Error reading file. Please try again.");
-    };
-    reader.readAsDataURL(file);
-  };
-
-  const clearFile = () => {
-    setForm((p) => ({
-      ...p,
-      logoOrDeck: "",
-      logoOrDeckMimeType: "",
-      logoOrDeckFileName: "",
-    }));
-    setFileError("");
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validate()) return;
@@ -292,8 +234,6 @@ const PitchContest = () => {
       stage: form.stage,
       fundingGoal: form.fundingGoal.trim(),
       whyYou: form.whyYou.trim(),
-      logoOrDeck: form.logoOrDeck,
-      logoOrDeckMimeType: form.logoOrDeckMimeType,
       consent: form.consent,
     };
 
@@ -319,9 +259,6 @@ const PitchContest = () => {
             stage: "",
             fundingGoal: "",
             whyYou: "",
-            logoOrDeck: "",
-            logoOrDeckMimeType: "",
-            logoOrDeckFileName: "",
             consent: false,
           });
           setFileError("");
@@ -749,52 +686,6 @@ const PitchContest = () => {
                 <span className="pitch-contest-field-error">
                   {errors.whyYou}
                 </span>
-              )}
-            </motion.div>
-
-            {/* File Upload Section */}
-            <motion.div
-              className="pitch-contest-form-group pitch-contest-upload-group"
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.6 }}
-            >
-              <label className="pitch-contest-upload-label">
-                <input
-                  type="file"
-                  accept="image/jpeg,image/png,image/gif,image/webp,application/pdf"
-                  onChange={handleFileChange}
-                  disabled={isSubmitting}
-                  style={{ display: "none" }}
-                />
-                <div className="pitch-contest-upload-box">
-                  <Upload size={28} className="pitch-contest-upload-icon" />
-                  <p>
-                    {form.logoOrDeckFileName
-                      ? form.logoOrDeckFileName
-                      : "Upload Logo / Deck (optional - max 12 MB)"}
-                  </p>
-                  <small>Images (JPEG, PNG, GIF, WebP) or PDF</small>
-                </div>
-              </label>
-
-              {form.logoOrDeckFileName && (
-                <div className="pitch-contest-selected-file">
-                  <span>{form.logoOrDeckFileName}</span>
-                  <button
-                    type="button"
-                    onClick={clearFile}
-                    disabled={isSubmitting}
-                    className="pitch-contest-clear-file-btn"
-                  >
-                    <X size={18} />
-                  </button>
-                </div>
-              )}
-
-              {fileError && (
-                <span className="pitch-contest-field-error">{fileError}</span>
               )}
             </motion.div>
 
